@@ -1,0 +1,99 @@
+---
+// Mobile Menu Component with slide-in overlay
+---
+
+<!-- Hamburger Button -->
+<button
+  id="mobile-menu-toggle"
+  class="lg:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 z-50"
+  aria-label="Menü öffnen"
+  aria-expanded="false"
+  aria-controls="mobile-menu"
+>
+  <span class="hamburger-line w-6 h-0.5 bg-dark transition-all duration-300 origin-center"></span>
+  <span class="hamburger-line w-6 h-0.5 bg-dark transition-all duration-300"></span>
+  <span class="hamburger-line w-6 h-0.5 bg-dark transition-all duration-300 origin-center"></span>
+</button>
+
+<!-- Mobile Menu Overlay -->
+<div
+  id="mobile-menu"
+  class="fixed inset-0 bg-sand z-40 transform translate-x-full transition-transform duration-300 ease-in-out lg:hidden"
+  aria-hidden="true"
+>
+  <div class="flex flex-col items-center justify-center h-full gap-8 p-8">
+    <nav class="flex flex-col items-center gap-6">
+      <a href="#manifest" class="mobile-nav-link text-2xl font-headline uppercase text-dark hover:text-primary transition-colors">
+        Manifest
+      </a>
+      <a href="#themen" class="mobile-nav-link text-2xl font-headline uppercase text-dark hover:text-primary transition-colors">
+        Themen
+      </a>
+      <a href="#kontakt" class="mobile-nav-link text-2xl font-headline uppercase text-dark hover:text-primary transition-colors">
+        Kontakt
+      </a>
+    </nav>
+    <a href="#mitmachen" class="btn btn-primary text-lg mt-4">
+      Mitmachen
+    </a>
+  </div>
+</div>
+
+<style>
+  /* Hamburger animation when menu is open */
+  .menu-open .hamburger-line:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  .menu-open .hamburger-line:nth-child(2) {
+    opacity: 0;
+  }
+  .menu-open .hamburger-line:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  /* Menu open state */
+  .menu-open #mobile-menu {
+    transform: translateX(0);
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('mobile-menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  const body = document.body;
+  const navLinks = document.querySelectorAll('.mobile-nav-link');
+
+  function openMenu() {
+    body.classList.add('menu-open', 'overflow-hidden');
+    toggle?.setAttribute('aria-expanded', 'true');
+    menu?.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeMenu() {
+    body.classList.remove('menu-open', 'overflow-hidden');
+    toggle?.setAttribute('aria-expanded', 'false');
+    menu?.setAttribute('aria-hidden', 'true');
+  }
+
+  toggle?.addEventListener('click', () => {
+    if (body.classList.contains('menu-open')) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  // Close menu when clicking a nav link
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      closeMenu();
+    });
+  });
+
+  // Close menu on escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && body.classList.contains('menu-open')) {
+      closeMenu();
+    }
+  });
+</script>

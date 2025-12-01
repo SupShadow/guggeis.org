@@ -1,0 +1,142 @@
+---
+// Themen-Sektion mit Top-5-Garantien und 7 Themenbereichen aus dem SPD-Programm 2026
+
+const topGarantien = [
+  {
+    nummer: "1",
+    titel: "Wohnen muss leistbarer werden",
+    text: "Teisnacher Modell einführen, 30% Sozialquote bei Neubauprojekten, Wohnbauoffensive starten."
+  },
+  {
+    nummer: "2",
+    titel: "Vorfahrt für Familien & Bildung",
+    text: "Jugendzentrum Resi sichern, Straubing-Zulage für Erzieher:innen einführen."
+  },
+  {
+    nummer: "3",
+    titel: "Straubing bewegt sich besser",
+    text: "Unterführung Otto-von-Dandl-Ring bauen, Bustakt verdichten – auch abends und am Wochenende."
+  },
+  {
+    nummer: "4",
+    titel: "(Innen-)Stadt neu erleben",
+    text: "Donaustrand realisieren, Pop-Up-Stores ermöglichen, Leerstände beleben."
+  },
+  {
+    nummer: "5",
+    titel: "Sicherheit & Sauberkeit",
+    text: "Mehr Kümmerer vor Ort, klare Strategie gegen Vandalismus und Müll-Hotspots."
+  }
+];
+
+const themen = [
+  {
+    icon: "🏠",
+    titel: "Wohnen",
+    punkte: ["Teisnacher Modell", "30%-Sozialgarantie", "Erbbaurecht für Familien"]
+  },
+  {
+    icon: "👨‍👩‍👧",
+    titel: "Bildung & Betreuung",
+    punkte: ["Straubing-Zulage", "Jugendzentrum Resi", "Schulsanierung"]
+  },
+  {
+    icon: "🚌",
+    titel: "Mobilität & Umwelt",
+    punkte: ["Unterführung bauen", "Bustakt verdichten", "Entsiegelung"]
+  },
+  {
+    icon: "💼",
+    titel: "Arbeit & Wirtschaft",
+    punkte: ["Beschäftigungs-GmbH", "Silicon Valley an der Donau", "Handwerkerhöfe"]
+  },
+  {
+    icon: "❤️",
+    titel: "Soziales",
+    punkte: ["St.-Nikola-Heim", "Safe-Taxi", "Frauenhaus stärken"]
+  },
+  {
+    icon: "⚽",
+    titel: "Kultur & Sport",
+    punkte: ["Donaustrand", "Sport-/Rehazentrum", "Ehrenamt fördern"]
+  },
+  {
+    icon: "🗳️",
+    titel: "Demokratie",
+    punkte: ["Bürgerhaushalt", "Digitales Rathaus", "Stadtrat-Livestream"]
+  }
+];
+---
+
+<section id="themen" class="relative bg-sand py-20 lg:py-28">
+  <!-- Angled top edge -->
+  <div class="absolute top-0 left-0 right-0 h-16 bg-white transform -skew-y-2 origin-top-right -translate-y-8"></div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <!-- Header -->
+    <div class="text-center mb-16">
+      <span class="inline-block text-primary font-headline text-sm uppercase tracking-widest mb-4">
+        Unser Programm 2026
+      </span>
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl text-dark mb-6">
+        Unsere Top-5-Garantien
+      </h2>
+      <p class="text-lg text-gray max-w-2xl mx-auto">
+        Das versprechen wir den Straubingerinnen und Straubingern. Konkret. Umsetzbar. Mutig.
+      </p>
+    </div>
+
+    <!-- Top-5 Garantien -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
+      {topGarantien.map((garantie) => (
+        <div class="bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
+          <div class="flex items-start gap-4">
+            <span class="flex-shrink-0 w-10 h-10 bg-primary text-white font-headline text-lg flex items-center justify-center">
+              {garantie.nummer}
+            </span>
+            <div>
+              <h3 class="font-headline text-lg text-dark uppercase mb-2">
+                {garantie.titel}
+              </h3>
+              <p class="text-gray text-sm leading-relaxed">
+                {garantie.text}
+              </p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Themen-Grid -->
+    <div class="border-t border-dark/10 pt-16">
+      <h3 class="text-center text-2xl font-headline text-dark uppercase mb-10">
+        Alle Themenbereiche
+      </h3>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {themen.map((thema) => (
+          <div class="bg-white p-5 shadow-sm hover:shadow-md transition-shadow group">
+            <span class="text-3xl mb-3 block" role="img" aria-hidden="true">
+              {thema.icon}
+            </span>
+            <h4 class="font-headline text-dark uppercase text-sm mb-3 group-hover:text-primary transition-colors">
+              {thema.titel}
+            </h4>
+            <ul class="text-sm text-gray space-y-1">
+              {thema.punkte.map((punkt) => (
+                <li class="flex items-start gap-2">
+                  <span class="text-primary mt-1">•</span>
+                  <span>{punkt}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="text-center mt-12">
+      <p class="text-gray mb-4">Das vollständige Wahlprogramm gibt es bald zum Download.</p>
+    </div>
+  </div>
+</section>

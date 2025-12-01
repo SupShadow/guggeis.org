@@ -1,0 +1,54 @@
+---
+import Button from './Button.astro';
+---
+
+<section class="relative bg-sand overflow-hidden">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid lg:grid-cols-2 min-h-[calc(100vh-5rem)]">
+      <!-- Text Content -->
+      <div class="flex flex-col justify-center px-6 py-12 lg:py-20 lg:px-12 order-2 lg:order-1">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-primary mb-6 leading-none">
+          Mutig für<br />unser Zuhause.
+        </h1>
+        <p class="text-lg lg:text-xl text-gray max-w-lg mb-8 leading-relaxed">
+          Straubing braucht keine Verwalter, sondern Gestalter.
+          <strong class="text-dark">Sozial. Modern. Selbstbewusst.</strong>
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <Button href="#plan" variant="primary">
+            Mein Plan für 2026
+          </Button>
+          <Button href="#manifest" variant="outline">
+            Mehr erfahren
+          </Button>
+        </div>
+      </div>
+
+      <!-- Image with Mutig-Winkel -->
+      <div class="relative order-1 lg:order-2 h-64 sm:h-80 lg:h-auto">
+        <!-- Diagonal clip-path for the "Mutig-Winkel" effect -->
+        <div class="absolute inset-0 lg:clip-path-angle">
+          <img
+            src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=1200&h=1600&fit=crop&crop=faces"
+            alt="Straubing Stadtansicht"
+            class="w-full h-full object-cover"
+            loading="eager"
+          />
+          <!-- Overlay gradient -->
+          <div class="absolute inset-0 bg-gradient-to-t from-sand/30 via-transparent to-transparent lg:bg-gradient-to-l"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Angled bottom edge -->
+  <div class="absolute bottom-0 left-0 right-0 h-16 bg-white transform -skew-y-2 origin-bottom-left translate-y-8"></div>
+</section>
+
+<style>
+  @media (min-width: 1024px) {
+    .lg\:clip-path-angle {
+      clip-path: polygon(15% 0, 100% 0, 100% 100%, 0 100%);
+    }
+  }
+</style>

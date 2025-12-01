@@ -1,0 +1,63 @@
+---
+import MobileMenu from './MobileMenu.astro';
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-sand/95 backdrop-blur-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 lg:h-20">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2">
+        <span class="font-headline text-xl lg:text-2xl text-dark uppercase tracking-tight">
+          Guggeis
+        </span>
+        <span class="text-primary font-headline text-xl lg:text-2xl">|</span>
+        <span class="font-headline text-xl lg:text-2xl text-primary uppercase tracking-tight">
+          SPD
+        </span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden lg:flex items-center gap-8">
+        <a href="#manifest" class="nav-link text-dark hover:text-primary transition-colors font-medium">
+          Manifest
+        </a>
+        <a href="#themen" class="nav-link text-dark hover:text-primary transition-colors font-medium">
+          Themen
+        </a>
+        <a href="#kontakt" class="nav-link text-dark hover:text-primary transition-colors font-medium">
+          Kontakt
+        </a>
+        <a href="#mitmachen" class="btn btn-primary">
+          Mitmachen
+        </a>
+      </nav>
+
+      <!-- Mobile Menu Toggle -->
+      <MobileMenu />
+    </div>
+  </div>
+</header>
+
+<!-- Spacer to prevent content from going under fixed header -->
+<div class="h-16 lg:h-20"></div>
+
+<style>
+  .nav-link {
+    position: relative;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-primary);
+    transition: width 0.3s ease;
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+</style>

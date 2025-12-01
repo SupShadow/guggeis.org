@@ -1,0 +1,177 @@
+@import "tailwindcss";
+
+/* =====================================================
+   MUTIG FÜR STRAUBING - Design System
+   Corporate Design Tokens & Utilities
+   ===================================================== */
+
+@theme {
+  /* Colors - Corporate Design "Mutig für Straubing" */
+  --color-primary: #E3001B;        /* Mutig-Rot */
+  --color-secondary: #005C9E;      /* Donaublau */
+  --color-sand: #F6E7D3;           /* Gäubodensand */
+  --color-accent-teal: #00B7A3;    /* Campus-Türkis */
+  --color-accent-yellow: #F6B800;  /* Straubing-Gelb */
+  --color-accent-berry: #8B0034;   /* Beerenrot */
+
+  /* Neutrals */
+  --color-dark: #1a1a1a;
+  --color-gray: #4a4a4a;
+  --color-light-gray: #f5f5f5;
+  --color-white: #ffffff;
+
+  /* Typography - Fonts */
+  --font-headline: "Archivo Black", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  /* Spacing */
+  --spacing-section: 5rem;
+  --spacing-section-mobile: 3rem;
+}
+
+/* =====================================================
+   BASE STYLES
+   ===================================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-dark);
+  background-color: var(--color-sand);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-headline);
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+/* =====================================================
+   MUTIG-WINKEL - Angled Section Dividers
+   Signature design element: 3° angle for "Kante zeigen"
+   ===================================================== */
+
+/* Section with angled bottom edge */
+.mutig-angle-bottom {
+  position: relative;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 3vw), 0 100%);
+  padding-bottom: 4vw;
+}
+
+/* Section with angled top edge */
+.mutig-angle-top {
+  position: relative;
+  clip-path: polygon(0 3vw, 100% 0, 100% 100%, 0 100%);
+  margin-top: -3vw;
+  padding-top: 4vw;
+}
+
+/* Combined: angled top and bottom */
+.mutig-angle-both {
+  position: relative;
+  clip-path: polygon(0 3vw, 100% 0, 100% calc(100% - 3vw), 0 100%);
+  margin-top: -3vw;
+  padding-top: 4vw;
+  padding-bottom: 4vw;
+}
+
+/* Alternative: Skew transform for containers */
+.mutig-skew {
+  transform: skewY(-3deg);
+}
+
+.mutig-skew-content {
+  transform: skewY(3deg);
+}
+
+/* =====================================================
+   BUTTON STYLES - Sharp Edges, No Border Radius
+   ===================================================== */
+
+.btn {
+  display: inline-block;
+  padding: 0.875rem 2rem;
+  font-family: var(--font-headline);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.btn-primary:hover {
+  background-color: #c9001a;
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-white);
+}
+
+.btn-secondary:hover {
+  background-color: #004d85;
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+/* =====================================================
+   UTILITY CLASSES
+   ===================================================== */
+
+/* Container with max-width */
+.container-narrow {
+  max-width: 65ch;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+/* Highlight box with accent color */
+.highlight-box {
+  border-left: 4px solid var(--color-primary);
+  padding-left: 1.5rem;
+  background-color: rgba(227, 0, 27, 0.05);
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Selection color */
+::selection {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}

@@ -1,5 +1,7 @@
 ---
 import Button from './Button.astro';
+import { Image } from 'astro:assets';
+import julianRede from '../assets/julian-rede.jpg';
 ---
 
 <section class="relative bg-sand overflow-hidden">
@@ -45,14 +47,17 @@ import Button from './Button.astro';
       </div>
 
       <!-- Image with Mutig-Winkel -->
-      <div class="relative order-1 lg:order-2 h-64 sm:h-80 lg:h-auto">
+      <div class="relative order-1 lg:order-2 h-72 sm:h-80 lg:h-auto">
         <!-- Diagonal clip-path for the "Mutig-Winkel" effect -->
         <div class="absolute inset-0 lg:clip-path-angle">
-          <img
-            src="/images/julian-rede.jpg"
+          <Image
+            src={julianRede}
             alt="Julian Guggeis bei einer SPD-Veranstaltung"
+            widths={[400, 800, 1200]}
+            sizes="(max-width: 1024px) 100vw, 50vw"
             class="w-full h-full object-cover"
             loading="eager"
+            decoding="async"
           />
           <!-- Overlay gradient -->
           <div class="absolute inset-0 bg-gradient-to-t from-sand/30 via-transparent to-transparent lg:bg-gradient-to-l"></div>

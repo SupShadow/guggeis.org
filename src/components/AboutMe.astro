@@ -1,5 +1,7 @@
 ---
 // Über mich Sektion
+import { Image } from 'astro:assets';
+import julianRede from '../assets/julian-rede.jpg';
 ---
 
 <section id="ueber-mich" class="relative bg-white py-20 lg:py-28">
@@ -8,11 +10,14 @@
       <!-- Bild -->
       <div class="relative">
         <div class="aspect-[4/5] bg-sand overflow-hidden">
-          <img
-            src="/images/julian-rede.jpg"
+          <Image
+            src={julianRede}
             alt="Julian Guggeis bei einer SPD-Veranstaltung"
+            widths={[400, 600, 800]}
+            sizes="(max-width: 1024px) 100vw, 50vw"
             class="w-full h-full object-cover object-[center_20%]"
             loading="lazy"
+            decoding="async"
           />
         </div>
         <!-- Dekoratives Element -->

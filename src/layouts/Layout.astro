@@ -19,7 +19,7 @@ const ogImageURL = new URL(image, Astro.site);
 <html lang="de">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="description" content={description} />
     <meta name="author" content="Julian Guggeis" />
     <meta name="generator" content={Astro.generator} />
@@ -85,11 +85,21 @@ const ogImageURL = new URL(image, Astro.site);
       @import '../styles/global.css';
     </style>
   </head>
-  <body class="min-h-screen flex flex-col">
+  <body class="min-h-screen flex flex-col pb-[calc(4rem+env(safe-area-inset-bottom))] lg:pb-0">
     <!-- Skip Link für Tastatur-Navigation -->
     <a href="#main-content" class="skip-link">
       Zum Hauptinhalt springen
     </a>
     <slot />
+
+    <!-- Sticky Mobile CTA - nur auf Mobile sichtbar -->
+    <div
+      class="fixed bottom-0 left-0 right-0 p-4 bg-sand/95 backdrop-blur-sm border-t border-dark/10 lg:hidden z-30"
+      style="padding-bottom: calc(1rem + env(safe-area-inset-bottom))"
+    >
+      <a href="#mitmachen" class="btn btn-primary w-full text-center justify-center">
+        Jetzt mitmachen
+      </a>
+    </div>
   </body>
 </html>

@@ -2,8 +2,8 @@
 import MobileMenu from './MobileMenu.astro';
 ---
 
-<header class="fixed top-0 left-0 right-0 z-50 bg-sand/95 backdrop-blur-sm">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<header class="fixed top-0 left-0 right-0 z-50 bg-sand/95 backdrop-blur-sm" style="padding-top: env(safe-area-inset-top)">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style="padding-left: max(1rem, env(safe-area-inset-left)); padding-right: max(1rem, env(safe-area-inset-right))">
     <div class="flex items-center justify-between h-16 lg:h-20">
       <!-- Logo -->
       <a href="/" class="flex items-center gap-2">

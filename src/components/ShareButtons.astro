@@ -5,7 +5,7 @@ const shareUrl = "https://guggeis.org";
 const shareText = "Straubing kann mehr. Julian Guggeis - Mutig für Straubing.";
 ---
 
-<div class="fixed bottom-6 right-6 z-40 flex flex-col gap-2">
+<div id="share-container" class="fixed right-6 z-40 flex flex-col gap-2">
   <!-- Toggle Button -->
   <button
     id="share-toggle"
@@ -74,9 +74,30 @@ const shareText = "Straubing kann mehr. Julian Guggeis - Mutig für Straubing.";
 </div>
 
 <!-- Toast für Feedback -->
-<div id="copy-toast" class="fixed bottom-24 right-6 bg-dark text-white px-4 py-2 rounded shadow-lg opacity-0 transition-opacity pointer-events-none z-50">
+<div id="copy-toast" class="fixed right-6 bg-dark text-white px-4 py-2 rounded shadow-lg opacity-0 transition-opacity pointer-events-none z-50 toast-position">
   Link kopiert!
 </div>
+
+<style>
+  /* Position oberhalb des Sticky CTA auf Mobile */
+  #share-container {
+    bottom: calc(5rem + env(safe-area-inset-bottom));
+  }
+
+  .toast-position {
+    bottom: calc(8rem + env(safe-area-inset-bottom));
+  }
+
+  @media (min-width: 1024px) {
+    #share-container {
+      bottom: 1.5rem;
+    }
+
+    .toast-position {
+      bottom: 6rem;
+    }
+  }
+</style>
 
 <script>
   const toggle = document.getElementById('share-toggle');

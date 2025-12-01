@@ -35,6 +35,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem; /* Header height offset for anchor links */
 }
 
 body {
@@ -94,7 +95,10 @@ h1, h2, h3, h4, h5, h6 {
    ===================================================== */
 
 .btn {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px; /* Touch target minimum */
   padding: 0.875rem 2rem;
   font-family: var(--font-headline);
   font-size: 0.875rem;
@@ -103,7 +107,8 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: 0.05em;
   border: none;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+  -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
 }
 
 .btn:hover {
@@ -112,7 +117,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn:active {
-  transform: translateY(0);
+  transform: scale(0.97);
+  opacity: 0.9;
+}
+
+@media (hover: none) {
+  /* Touch devices: Remove hover effect, keep active */
+  .btn:hover {
+    transform: none;
+    box-shadow: none;
+  }
 }
 
 .btn-primary {

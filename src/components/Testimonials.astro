@@ -1,0 +1,47 @@
+---
+// Unterstützer-Stimmen Platzhalter
+// Wird später mit echten Zitaten gefüllt
+---
+
+<section class="relative bg-white py-20 lg:py-28">
+  <!-- Angled top edge -->
+  <div class="absolute top-0 left-0 right-0 h-16 bg-sand transform -skew-y-2 origin-top-right -translate-y-8"></div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <div class="text-center mb-12">
+      <span class="inline-block text-primary font-headline text-sm uppercase tracking-widest mb-4">
+        Stimmen
+      </span>
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl text-dark mb-6">
+        Was andere sagen
+      </h2>
+      <p class="text-lg text-gray max-w-2xl mx-auto">
+        Menschen aus Straubing über ihre Erwartungen und Hoffnungen.
+      </p>
+    </div>
+
+    <!-- Platzhalter-Karten -->
+    <div class="grid md:grid-cols-3 gap-6">
+      {[1, 2, 3].map(() => (
+        <div class="bg-sand p-6 text-center">
+          <div class="w-16 h-16 bg-gray/20 rounded-full mx-auto mb-4 flex items-center justify-center">
+            <svg class="w-8 h-8 text-gray/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
+          <div class="h-4 bg-gray/20 rounded mb-3 mx-8"></div>
+          <div class="h-4 bg-gray/20 rounded mb-3 mx-12"></div>
+          <div class="h-4 bg-gray/20 rounded mx-16"></div>
+          <p class="text-gray/60 text-sm mt-6 italic">
+            Stimmen folgen...
+          </p>
+        </div>
+      ))}
+    </div>
+
+    <p class="text-center text-gray mt-8">
+      Du möchtest deine Stimme teilen?
+      <a href="#kontakt" class="text-primary hover:underline">Schreib mir!</a>
+    </p>
+  </div>
+</section>

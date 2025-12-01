@@ -1,26 +1,7 @@
 ---
 // Termine-Sektion für Wahlkampfveranstaltungen
-// Termine hier einfach pflegen:
-
-const termine = [
-  // Beispiel-Termine (auskommentiert bis echte Termine feststehen):
-  // {
-  //   datum: "15. Januar 2026",
-  //   uhrzeit: "19:00 Uhr",
-  //   titel: "Bürgerversammlung Innenstadt",
-  //   ort: "Rathaus Straubing, Großer Saal",
-  //   beschreibung: "Offene Diskussion über die Zukunft unserer Innenstadt."
-  // },
-  // {
-  //   datum: "22. Januar 2026",
-  //   uhrzeit: "18:30 Uhr",
-  //   titel: "Stammtisch SR-Süd",
-  //   ort: "Gasthaus zur Post",
-  //   beschreibung: "Ungezwungener Austausch über lokale Themen."
-  // },
-];
-
-const hatTermine = termine.length > 0;
+// Lädt Termine von externer API (GitHub Pages)
+const API_URL = "https://supshadow.github.io/spd-straubing-kampagne-termine/api/termine.json";
 ---
 
 <section id="termine" class="relative bg-secondary py-20 lg:py-28">
@@ -40,36 +21,24 @@ const hatTermine = termine.length > 0;
       </p>
     </div>
 
-    {hatTermine ? (
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {termine.map((termin) => (
-          <div class="bg-white/10 backdrop-blur-sm p-6 hover:bg-white/20 transition-colors">
-            <div class="flex items-start gap-4">
-              <div class="flex-shrink-0 text-center">
-                <span class="block text-accent-yellow font-headline text-2xl leading-none">
-                  {termin.datum.split(" ")[0]}
-                </span>
-                <span class="block text-white/60 text-sm uppercase">
-                  {termin.datum.split(" ")[1]} {termin.datum.split(" ")[2]}
-                </span>
-              </div>
-              <div>
-                <h3 class="font-headline text-white uppercase text-lg mb-1">
-                  {termin.titel}
-                </h3>
-                <p class="text-white/60 text-sm mb-2">
-                  {termin.uhrzeit} • {termin.ort}
-                </p>
-                <p class="text-white/80 text-sm">
-                  {termin.beschreibung}
-                </p>
-              </div>
-            </div>
-          </div>
-        ))}
+    <!-- Termine Container - wird via JavaScript gefüllt -->
+    <div id="termine-container">
+      <!-- Lade-Indikator -->
+      <div id="termine-loading" class="text-center py-8">
+        <div class="inline-flex items-center gap-3 text-white/70">
+          <svg class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Termine werden geladen...
+        </div>
       </div>
-    ) : (
-      <div class="text-center py-12">
+
+      <!-- Termine Grid (initial versteckt) -->
+      <div id="termine-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 hidden"></div>
+
+      <!-- Fallback wenn keine Termine -->
+      <div id="termine-fallback" class="text-center py-12 hidden">
         <div class="inline-flex items-center justify-center w-16 h-16 bg-white/10 rounded-full mb-6">
           <svg class="w-8 h-8 text-accent-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -94,6 +63,73 @@ const hatTermine = termine.length > 0;
           @jguggeis folgen
         </a>
       </div>
-    )}
+    </div>
   </div>
 </section>
+
+<script define:vars={{ API_URL }}>
+  async function loadTermine() {
+    const loading = document.getElementById('termine-loading');
+    const grid = document.getElementById('termine-grid');
+    const fallback = document.getElementById('termine-fallback');
+
+    try {
+      const response = await fetch(API_URL);
+
+      if (!response.ok) {
+        throw new Error('API nicht erreichbar');
+      }
+
+      const data = await response.json();
+      const termine = data.termine || [];
+
+      loading?.classList.add('hidden');
+
+      if (termine.length === 0) {
+        fallback?.classList.remove('hidden');
+        return;
+      }
+
+      // Termine anzeigen
+      grid?.classList.remove('hidden');
+
+      termine.forEach(termin => {
+        // Datum parsen (Format: "2026-01-15")
+        const dateParts = termin.datum.split('-');
+        const day = dateParts[2];
+        const monthNames = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+        const month = monthNames[parseInt(dateParts[1]) - 1];
+        const year = dateParts[0];
+
+        const card = document.createElement('div');
+        card.className = 'bg-white/10 backdrop-blur-sm p-6 hover:bg-white/20 transition-colors';
+        card.innerHTML = `
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 text-center">
+              <span class="block text-accent-yellow font-headline text-2xl leading-none">${day}</span>
+              <span class="block text-white/60 text-sm uppercase">${month} ${year}</span>
+            </div>
+            <div>
+              <h3 class="font-headline text-white uppercase text-lg mb-1">${termin.titel}</h3>
+              <p class="text-white/60 text-sm mb-2">${termin.uhrzeit} Uhr • ${termin.ort}</p>
+              <p class="text-white/80 text-sm">${termin.beschreibung}</p>
+            </div>
+          </div>
+        `;
+        grid?.appendChild(card);
+      });
+
+    } catch (error) {
+      console.warn('Termine konnten nicht geladen werden:', error);
+      loading?.classList.add('hidden');
+      fallback?.classList.remove('hidden');
+    }
+  }
+
+  // Termine laden wenn DOM bereit
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadTermine);
+  } else {
+    loadTermine();
+  }
+</script>

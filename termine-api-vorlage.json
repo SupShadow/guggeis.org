@@ -1,0 +1,25 @@
+{
+  "termine": [
+    {
+      "datum": "2026-01-15",
+      "uhrzeit": "19:00",
+      "titel": "Bürgerversammlung Innenstadt",
+      "ort": "Rathaus Straubing, Großer Saal",
+      "beschreibung": "Offene Diskussion über die Zukunft unserer Innenstadt."
+    },
+    {
+      "datum": "2026-01-22",
+      "uhrzeit": "18:30",
+      "titel": "Stammtisch SR-Süd",
+      "ort": "Gasthaus zur Post",
+      "beschreibung": "Ungezwungener Austausch über lokale Themen."
+    },
+    {
+      "datum": "2026-02-05",
+      "uhrzeit": "10:00",
+      "titel": "Infostand Theresienplatz",
+      "ort": "Theresienplatz",
+      "beschreibung": "Gespräche mit Bürgerinnen und Bürgern."
+    }
+  ]
+}

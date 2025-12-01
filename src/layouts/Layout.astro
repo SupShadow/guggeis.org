@@ -86,6 +86,10 @@ const ogImageURL = new URL(image, Astro.site);
     </style>
   </head>
   <body class="min-h-screen flex flex-col">
+    <!-- Skip Link für Tastatur-Navigation -->
+    <a href="#main-content" class="skip-link">
+      Zum Hauptinhalt springen
+    </a>
     <slot />
   </body>
 </html>

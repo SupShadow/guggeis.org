@@ -13,22 +13,28 @@
     </p>
 
     <div class="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
+      <label for="newsletter-email" class="sr-only">E-Mail Adresse für Newsletter</label>
       <input
+        id="newsletter-email"
         type="email"
         placeholder="Deine E-Mail-Adresse"
         disabled
+        aria-disabled="true"
+        aria-describedby="newsletter-status"
         class="flex-1 px-4 py-3 bg-white/20 text-white placeholder-white/60 border border-white/30 focus:outline-none focus:border-white cursor-not-allowed"
       />
       <button
+        type="button"
         disabled
+        aria-disabled="true"
         class="px-6 py-3 bg-white/30 text-white/60 font-headline uppercase text-sm tracking-wide cursor-not-allowed"
       >
         Anmelden
       </button>
     </div>
 
-    <p class="text-white/60 text-sm mt-4">
-      📬 Newsletter-Anmeldung kommt bald!
+    <p id="newsletter-status" class="text-white/60 text-sm mt-4">
+      <span role="img" aria-label="Briefkasten">📬</span> Newsletter-Anmeldung kommt bald!
     </p>
   </div>
 </section>

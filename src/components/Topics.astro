@@ -32,36 +32,43 @@ const topGarantien = [
 const themen = [
   {
     icon: "🏠",
+    iconLabel: "Haus",
     titel: "Wohnen",
     punkte: ["Teisnacher Modell", "30%-Sozialgarantie", "Erbbaurecht für Familien"]
   },
   {
     icon: "👨‍👩‍👧",
+    iconLabel: "Familie",
     titel: "Bildung & Betreuung",
     punkte: ["Straubing-Zulage", "Jugendzentrum Resi", "Schulsanierung"]
   },
   {
     icon: "🚌",
+    iconLabel: "Bus",
     titel: "Mobilität & Umwelt",
     punkte: ["Unterführung bauen", "Bustakt verdichten", "Entsiegelung"]
   },
   {
     icon: "💼",
+    iconLabel: "Aktentasche",
     titel: "Arbeit & Wirtschaft",
     punkte: ["Beschäftigungs-GmbH", "Silicon Valley an der Donau", "Handwerkerhöfe"]
   },
   {
     icon: "❤️",
+    iconLabel: "Herz",
     titel: "Soziales",
     punkte: ["St.-Nikola-Heim", "Safe-Taxi", "Frauenhaus stärken"]
   },
   {
     icon: "⚽",
+    iconLabel: "Fußball",
     titel: "Kultur & Sport",
     punkte: ["Donaustrand", "Sport-/Rehazentrum", "Ehrenamt fördern"]
   },
   {
     icon: "🗳️",
+    iconLabel: "Wahlurne",
     titel: "Demokratie",
     punkte: ["Bürgerhaushalt", "Digitales Rathaus", "Stadtrat-Livestream"]
   }
@@ -115,7 +122,7 @@ const themen = [
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {themen.map((thema) => (
           <div class="bg-white p-5 shadow-sm hover:shadow-md transition-shadow group">
-            <span class="text-3xl mb-3 block" role="img" aria-hidden="true">
+            <span class="text-3xl mb-3 block" role="img" aria-label={thema.iconLabel}>
               {thema.icon}
             </span>
             <h4 class="font-headline text-dark uppercase text-sm mb-3 group-hover:text-primary transition-colors">
@@ -136,16 +143,18 @@ const themen = [
 
     <!-- CTA -->
     <div class="text-center mt-12">
-      <p class="text-gray mb-4">Das vollständige Wahlprogramm gibt es bald zum Download.</p>
+      <p class="text-gray mb-4" id="program-status">Das vollständige Wahlprogramm gibt es bald zum Download.</p>
       <button
+        type="button"
         disabled
+        aria-disabled="true"
+        aria-describedby="program-status"
         class="btn bg-gray/30 text-gray/60 cursor-not-allowed inline-flex items-center gap-2"
-        title="Wahlprogramm wird noch erstellt"
       >
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
-        Wahlprogramm herunterladen (bald verfügbar)
+        Wahlprogramm herunterladen
       </button>
     </div>
   </div>

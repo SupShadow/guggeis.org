@@ -86,41 +86,49 @@ import Footer from '../components/Footer.astro';
       <!-- Ausführliche Biografie -->
       <section class="mb-16">
         <h2 class="text-2xl font-headline text-dark uppercase mb-6">
-          Ausführliche Biografie
+          Die Geschichte
         </h2>
         <div class="prose prose-lg max-w-none text-gray">
-          <p class="mb-4">
-            <strong class="text-dark">Julian Guggeis</strong> wurde 1993 in Straubing geboren und ist
-            hier aufgewachsen. Nach seinem Abitur am Johannes-Turmair-Gymnasium studierte er
-            Wirtschaftsinformatik und sammelte erste Berufserfahrung in verschiedenen IT-Projekten.
+          <p class="mb-4 text-xl text-dark font-medium italic">
+            "Das kannst du nicht."
           </p>
           <p class="mb-4">
-            <strong class="text-dark">2018 wagte er den Schritt in die Selbstständigkeit</strong> und
-            gründete sein eigenes IT-Unternehmen in Straubing. Seitdem unterstützt er lokale Unternehmen
-            und Organisationen bei der Digitalisierung. Diese Erfahrung als Unternehmer in einer
-            Mittelstadt hat seinen Blick für die Herausforderungen der lokalen Wirtschaft geschärft.
+            Diesen Satz hat Julian Guggeis oft gehört. Als Hauptschüler. Als junger Mensch mit
+            großen Träumen in einer Welt, die ihm wenig zutraute.
           </p>
           <p class="mb-4">
-            <strong class="text-dark">Politik bedeutet für Julian Guggeis:</strong> Zuhören, verstehen,
-            handeln. Er ist überzeugt, dass Straubing enormes Potenzial hat, das noch nicht ausgeschöpft
-            wird. Ob bei der Wohnraumfrage, beim öffentlichen Nahverkehr oder bei der Attraktivität der
-            Innenstadt – er sieht Handlungsbedarf und bringt konkrete Ideen mit.
+            Heute, mit 31, berät er Konzerne bei ihrer digitalen Transformation. Nicht weil ihm
+            jemand den Weg geebnet hat – <strong class="text-dark">sondern weil er sich jeden
+            Schritt selbst erkämpft hat.</strong>
           </p>
           <p class="mb-4">
-            <strong class="text-dark">Als junger Kandidat</strong> will er eine Brücke schlagen zwischen
-            den Generationen. Er kennt die Sorgen junger Familien bei der Wohnungssuche ebenso wie die
-            Wünsche älterer Mitbürger nach besserer Anbindung und lebendigen Begegnungsorten.
+            2018 gründete er sein eigenes IT-Unternehmen in Straubing. Was als Ein-Mann-Projekt
+            begann, ist heute ein Unternehmen, das mit den Größten der Branche arbeitet.
+            <strong class="text-dark">Von der Hauptschule in Straubing zu den Vorstandsetagen der Welt.</strong>
           </p>
-          <p>
-            Julian Guggeis lebt und arbeitet in Straubing. In seiner Freizeit engagiert er sich für
-            lokale Initiativen und ist leidenschaftlicher Verfechter einer offenen, zukunftsorientierten
-            Kommunalpolitik.
+          <p class="mb-4">
+            Doch bei allem Erfolg hat Julian eines nie verloren: seinen sozialen Kompass. Er weiß,
+            wie es sich anfühlt, unterschätzt zu werden. Er weiß, was es bedeutet, wenn einem
+            niemand etwas zutraut. Und genau deshalb will er Politik machen.
+          </p>
+          <p class="mb-4 text-lg text-dark font-medium">
+            Für alle, denen gesagt wird: "Das kannst du nicht."
+          </p>
+          <p class="mb-4">
+            Für die junge Familie, die keine bezahlbare Wohnung findet. Für den Azubi, der abends
+            keinen Bus mehr nach Hause hat. Für jeden, der in diesem System manchmal das Gefühl
+            hat, vergessen zu werden.
+          </p>
+          <p class="text-dark">
+            <strong>Julian Guggeis kandidiert nicht für sich. Er kandidiert für ein Straubing,
+            das an seine Menschen glaubt – so wie er an sich selbst geglaubt hat, als es sonst
+            niemand tat.</strong>
           </p>
         </div>
         <button
           id="copy-long-bio"
           class="btn btn-outline text-sm mt-6"
-          data-text="Julian Guggeis wurde 1993 in Straubing geboren und ist hier aufgewachsen. Nach seinem Abitur am Johannes-Turmair-Gymnasium studierte er Wirtschaftsinformatik und sammelte erste Berufserfahrung in verschiedenen IT-Projekten. 2018 wagte er den Schritt in die Selbstständigkeit und gründete sein eigenes IT-Unternehmen in Straubing. Seitdem unterstützt er lokale Unternehmen und Organisationen bei der Digitalisierung. Diese Erfahrung als Unternehmer in einer Mittelstadt hat seinen Blick für die Herausforderungen der lokalen Wirtschaft geschärft. Politik bedeutet für Julian Guggeis: Zuhören, verstehen, handeln. Er ist überzeugt, dass Straubing enormes Potenzial hat, das noch nicht ausgeschöpft wird. Ob bei der Wohnraumfrage, beim öffentlichen Nahverkehr oder bei der Attraktivität der Innenstadt – er sieht Handlungsbedarf und bringt konkrete Ideen mit. Als junger Kandidat will er eine Brücke schlagen zwischen den Generationen. Er kennt die Sorgen junger Familien bei der Wohnungssuche ebenso wie die Wünsche älterer Mitbürger nach besserer Anbindung und lebendigen Begegnungsorten. Julian Guggeis lebt und arbeitet in Straubing. In seiner Freizeit engagiert er sich für lokale Initiativen und ist leidenschaftlicher Verfechter einer offenen, zukunftsorientierten Kommunalpolitik."
+          data-text={`„Das kannst du nicht." Diesen Satz hat Julian Guggeis oft gehört. Als Hauptschüler. Als junger Mensch mit großen Träumen in einer Welt, die ihm wenig zutraute. Heute, mit 31, berät er Konzerne bei ihrer digitalen Transformation. Nicht weil ihm jemand den Weg geebnet hat – sondern weil er sich jeden Schritt selbst erkämpft hat. 2018 gründete er sein eigenes IT-Unternehmen in Straubing. Was als Ein-Mann-Projekt begann, ist heute ein Unternehmen, das mit den Größten der Branche arbeitet. Von der Hauptschule in Straubing zu den Vorstandsetagen der Welt. Doch bei allem Erfolg hat Julian eines nie verloren: seinen sozialen Kompass. Er weiß, wie es sich anfühlt, unterschätzt zu werden. Er weiß, was es bedeutet, wenn einem niemand etwas zutraut. Und genau deshalb will er Politik machen. Für alle, denen gesagt wird: „Das kannst du nicht." Für die junge Familie, die keine bezahlbare Wohnung findet. Für den Azubi, der abends keinen Bus mehr nach Hause hat. Für jeden, der in diesem System manchmal das Gefühl hat, vergessen zu werden. Julian Guggeis kandidiert nicht für sich. Er kandidiert für ein Straubing, das an seine Menschen glaubt – so wie er an sich selbst geglaubt hat, als es sonst niemand tat.`}
         >
           Text kopieren
         </button>

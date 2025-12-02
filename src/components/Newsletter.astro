@@ -1,6 +1,7 @@
 ---
-// Newsletter-Anmeldung Platzhalter
-// Wird später mit echtem Newsletter-Service verbunden
+// Newsletter-Anmeldung
+// Nutzt Formspree für einfache Email-Sammlung
+const formspreeId = "meoykgve"; // Gleiche ID wie Kontaktformular
 ---
 
 <section class="bg-primary py-12">
@@ -12,29 +13,71 @@
       Erhalte Updates zu Veranstaltungen, neuen Ideen und dem Wahlkampf direkt in dein Postfach.
     </p>
 
-    <div class="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
+    <form
+      action={`https://formspree.io/f/${formspreeId}`}
+      method="POST"
+      class="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto"
+      id="newsletter-form"
+    >
+      <!-- Hidden field to identify as newsletter signup -->
+      <input type="hidden" name="_subject" value="Newsletter-Anmeldung" />
+      <input type="hidden" name="type" value="newsletter" />
+
       <label for="newsletter-email" class="sr-only">E-Mail Adresse für Newsletter</label>
       <input
         id="newsletter-email"
         type="email"
+        name="email"
+        required
+        aria-required="true"
         placeholder="Deine E-Mail-Adresse"
-        disabled
-        aria-disabled="true"
-        aria-describedby="newsletter-status"
-        class="flex-1 px-4 py-3 bg-white/20 text-white placeholder-white/60 border border-white/30 focus:outline-none focus:border-white cursor-not-allowed"
+        class="flex-1 px-4 py-3 bg-white/20 text-white placeholder-white/60 border border-white/30 focus:outline-none focus:border-white focus:bg-white/30 transition-colors"
       />
       <button
-        type="button"
-        disabled
-        aria-disabled="true"
-        class="px-6 py-3 bg-white/30 text-white/60 font-headline uppercase text-sm tracking-wide cursor-not-allowed"
+        type="submit"
+        class="px-6 py-3 bg-white text-primary font-headline uppercase text-sm tracking-wide hover:bg-white/90 transition-colors"
       >
         Anmelden
       </button>
-    </div>
+    </form>
 
     <p id="newsletter-status" class="text-white/60 text-sm mt-4">
-      <span role="img" aria-label="Briefkasten">📬</span> Newsletter-Anmeldung kommt bald!
+      Kein Spam. Abmeldung jederzeit möglich.
     </p>
+
+    <!-- Success Message (hidden by default) -->
+    <div id="newsletter-success" class="hidden mt-4 p-4 bg-white/20 text-white rounded">
+      <p class="font-medium">Danke für deine Anmeldung!</p>
+      <p class="text-sm text-white/80">Du erhältst bald Post von mir.</p>
+    </div>
   </div>
 </section>
+
+<script>
+  const form = document.getElementById('newsletter-form') as HTMLFormElement;
+  const success = document.getElementById('newsletter-success');
+  const status = document.getElementById('newsletter-status');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        form.style.display = 'none';
+        status?.classList.add('hidden');
+        success?.classList.remove('hidden');
+      }
+    } catch (error) {
+      // Fallback: Submit normally
+      form.submit();
+    }
+  });
+</script>

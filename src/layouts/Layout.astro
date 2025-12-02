@@ -30,6 +30,11 @@ const ogImageURL = new URL(image, Astro.site);
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#E3001B" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
     <!-- Google Fonts: Archivo Black (Headlines) + Inter (Body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -101,5 +106,27 @@ const ogImageURL = new URL(image, Astro.site);
         Jetzt mitmachen
       </a>
     </div>
+
+    <!-- Scroll Animation Script -->
+    <script>
+      // Intersection Observer für Scroll-Animationen
+      const animateElements = document.querySelectorAll('[data-animate], [data-animate-stagger]');
+
+      if (animateElements.length > 0) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('animate-in');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, {
+          threshold: 0.1,
+          rootMargin: '0px 0px -50px 0px'
+        });
+
+        animateElements.forEach(el => observer.observe(el));
+      }
+    </script>
   </body>
 </html>

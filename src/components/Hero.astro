@@ -22,19 +22,29 @@ import julianRede from '../assets/julian-rede.jpg';
 
         <!-- Countdown zur Kommunalwahl -->
         <div class="mb-8 p-4 bg-white/80 backdrop-blur-sm inline-block">
-          <p class="text-sm text-gray mb-1">Kommunalwahl Bayern</p>
+          <p class="text-sm text-gray mb-1">Noch</p>
           <p class="text-2xl font-headline text-primary" id="countdown">
-            <span id="countdown-days">---</span> Tage
+            <span id="countdown-days">---</span> Tage bis zur Wahl
           </p>
+          <p class="text-xs text-gray/70 mt-1">14. März 2026</p>
         </div>
 
         <script>
-          const wahltermin = new Date('2026-03-14T00:00:00');
-          const heute = new Date();
-          const diff = wahltermin.getTime() - heute.getTime();
-          const tage = Math.ceil(diff / (1000 * 60 * 60 * 24));
-          const el = document.getElementById('countdown-days');
-          if (el && tage > 0) el.textContent = tage.toString();
+          // Live-Countdown zur Kommunalwahl
+          function updateCountdown() {
+            const wahltermin = new Date('2026-03-14T00:00:00');
+            const jetzt = new Date();
+            const diff = wahltermin.getTime() - jetzt.getTime();
+            const tage = Math.ceil(diff / (1000 * 60 * 60 * 24));
+            const el = document.getElementById('countdown-days');
+            if (el && tage > 0) {
+              el.textContent = tage.toString();
+            }
+          }
+          // Initial update
+          updateCountdown();
+          // Update every minute
+          setInterval(updateCountdown, 60000);
         </script>
         <div class="flex flex-wrap gap-4">
           <Button href="#themen" variant="primary">
@@ -65,6 +75,18 @@ import julianRede from '../assets/julian-rede.jpg';
       </div>
     </div>
   </div>
+
+  <!-- Scroll-Down Indicator -->
+  <a
+    href="#manifest"
+    class="absolute bottom-24 left-1/2 animate-bounce-scroll hidden lg:flex flex-col items-center text-gray/60 hover:text-primary transition-colors"
+    aria-label="Zum nächsten Abschnitt scrollen"
+  >
+    <span class="text-xs uppercase tracking-widest mb-2">Mehr erfahren</span>
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+    </svg>
+  </a>
 
   <!-- Angled bottom edge -->
   <div class="absolute bottom-0 left-0 right-0 h-16 bg-white transform -skew-y-2 origin-bottom-left translate-y-8"></div>

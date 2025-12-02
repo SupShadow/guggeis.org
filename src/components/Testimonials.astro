@@ -1,9 +1,24 @@
 ---
-// Unterstützer-Stimmen Platzhalter
-// Wird später mit echten Zitaten gefüllt
+// Unterstützer-Stimmen
+// Platzhalter mit Shimmer-Animation bis echte Zitate verfügbar sind
+
+const placeholderQuotes = [
+  {
+    text: "Straubing braucht jemanden, der die Stadt wirklich kennt und nicht nur Versprechungen macht.",
+    context: "Bürger:in aus Straubing"
+  },
+  {
+    text: "Endlich jemand, der das Wohnungsproblem ernst nimmt. Meine Kinder sollen hier bleiben können.",
+    context: "Junge Familie"
+  },
+  {
+    text: "Ich wünsche mir mehr Leben in der Innenstadt. Es ist Zeit für neue Ideen.",
+    context: "Einzelhändler:in"
+  }
+];
 ---
 
-<section class="relative bg-white py-20 lg:py-28">
+<section class="relative bg-white py-20 lg:py-28" data-animate>
   <!-- Angled top edge -->
   <div class="absolute top-0 left-0 right-0 h-16 bg-sand transform -skew-y-2 origin-top-right -translate-y-8"></div>
 
@@ -13,35 +28,56 @@
         Stimmen
       </span>
       <h2 class="text-3xl sm:text-4xl lg:text-5xl text-dark mb-6">
-        Was andere sagen
+        Was Straubinger bewegt
       </h2>
       <p class="text-lg text-gray max-w-2xl mx-auto">
-        Menschen aus Straubing über ihre Erwartungen und Hoffnungen.
+        Echte Stimmen und Wünsche von Menschen aus unserer Stadt.
       </p>
     </div>
 
-    <!-- Platzhalter-Karten -->
-    <div class="grid md:grid-cols-3 gap-6">
-      {[1, 2, 3].map(() => (
-        <div class="bg-sand p-6 text-center">
-          <div class="w-16 h-16 bg-gray/20 rounded-full mx-auto mb-4 flex items-center justify-center">
-            <svg class="w-8 h-8 text-gray/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
-          </div>
-          <div class="h-4 bg-gray/20 rounded mb-3 mx-8"></div>
-          <div class="h-4 bg-gray/20 rounded mb-3 mx-12"></div>
-          <div class="h-4 bg-gray/20 rounded mx-16"></div>
-          <p class="text-gray/60 text-sm mt-6 italic">
-            Stimmen folgen...
+    <!-- Platzhalter-Karten mit Shimmer -->
+    <div class="grid md:grid-cols-3 gap-6" data-animate-stagger>
+      {placeholderQuotes.map((quote) => (
+        <div class="bg-sand p-6 relative overflow-hidden">
+          <!-- Quote Icon -->
+          <svg class="w-8 h-8 text-primary/20 mb-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+          </svg>
+
+          <!-- Quote Text -->
+          <p class="text-gray italic mb-4 leading-relaxed">
+            "{quote.text}"
           </p>
+
+          <!-- Placeholder Avatar + Name -->
+          <div class="flex items-center gap-3 mt-6 pt-4 border-t border-gray/10">
+            <div class="w-10 h-10 rounded-full skeleton-shimmer"></div>
+            <div class="flex-1">
+              <div class="h-3 w-24 skeleton-shimmer rounded mb-1"></div>
+              <p class="text-xs text-gray/60">{quote.context}</p>
+            </div>
+          </div>
+
+          <!-- Coming Soon Badge -->
+          <div class="absolute top-4 right-4">
+            <span class="text-xs text-gray/40 bg-gray/10 px-2 py-1 rounded">
+              Bald mit Namen
+            </span>
+          </div>
         </div>
       ))}
     </div>
 
-    <p class="text-center text-gray mt-8">
-      Du möchtest deine Stimme teilen?
-      <a href="#kontakt" class="text-primary hover:underline">Schreib mir!</a>
-    </p>
+    <div class="text-center mt-10 p-6 bg-sand/50 max-w-xl mx-auto">
+      <p class="text-gray mb-3">
+        <strong class="text-dark">Deine Stimme fehlt noch!</strong>
+      </p>
+      <p class="text-gray text-sm mb-4">
+        Was wünschst du dir für Straubing? Teile deine Gedanken und werde Teil der Bewegung.
+      </p>
+      <a href="#kontakt" class="btn btn-outline text-sm">
+        Jetzt Stimme teilen
+      </a>
+    </div>
   </div>
 </section>

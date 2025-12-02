@@ -1,5 +1,6 @@
 ---
 import Button from './Button.astro';
+import SupporterCount from './SupporterCount.astro';
 import { Image } from 'astro:assets';
 import julianRede from '../assets/julian-rede.jpg';
 ---
@@ -50,12 +51,18 @@ import julianRede from '../assets/julian-rede.jpg';
           // Update every minute
           setInterval(updateCountdown, 60000);
         </script>
+
+        <!-- Social Proof: Unterstützer-Zähler -->
+        <div class="mb-6">
+          <SupporterCount count={50} />
+        </div>
+
         <div class="flex flex-wrap gap-4 pb-4">
-          <Button href="#themen" variant="primary">
-            Meine Versprechen
+          <Button href="#mitmachen" variant="primary">
+            Jetzt mitmachen
           </Button>
-          <Button href="#ueber-mich" variant="outline">
-            Wer ich bin
+          <Button href="#themen" variant="outline">
+            Meine Versprechen
           </Button>
         </div>
       </div>

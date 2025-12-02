@@ -1,4 +1,6 @@
 ---
+import ExitIntentPopup from '../components/ExitIntentPopup.astro';
+
 interface Props {
   title: string;
   description?: string;
@@ -103,6 +105,9 @@ const ogImageURL = new URL(image, Astro.site);
       Zum Hauptinhalt springen
     </a>
     <slot />
+
+    <!-- Exit Intent Newsletter Popup -->
+    <ExitIntentPopup />
 
     <!-- WhatsApp Floating Button - Mobile -->
     <a

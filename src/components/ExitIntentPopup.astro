@@ -1,0 +1,156 @@
+---
+// Exit-Intent Popup für Newsletter-Anmeldung
+// Erscheint wenn Nutzer die Seite verlassen will (nur 1x pro Session)
+---
+
+<!-- Exit Intent Popup Modal -->
+<div
+  id="exit-intent-popup"
+  class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-dark/60 backdrop-blur-sm"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="popup-title"
+>
+  <div class="bg-white max-w-md w-full p-6 sm:p-8 shadow-2xl relative animate-popup">
+    <!-- Close Button -->
+    <button
+      id="popup-close"
+      class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center text-gray hover:text-dark transition-colors"
+      aria-label="Schließen"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <!-- Content -->
+    <div class="text-center">
+      <span class="inline-block text-4xl mb-4">📬</span>
+      <h2 id="popup-title" class="font-headline text-2xl sm:text-3xl text-dark uppercase mb-3">
+        Warte kurz!
+      </h2>
+      <p class="text-gray mb-6 leading-relaxed">
+        Bleib auf dem Laufenden! Erhalte Updates zur Kampagne direkt in dein Postfach –
+        kein Spam, nur wichtige Neuigkeiten.
+      </p>
+
+      <!-- Newsletter Form -->
+      <form
+        action="https://formspree.io/f/xlddegqe"
+        method="POST"
+        class="space-y-3"
+        id="popup-newsletter-form"
+      >
+        <input type="hidden" name="_subject" value="Newsletter-Anmeldung (Exit-Popup)" />
+        <input
+          type="email"
+          name="email"
+          placeholder="Deine E-Mail-Adresse"
+          required
+          class="w-full px-4 py-3 border-2 border-gray/20 focus:border-primary focus:outline-none text-dark placeholder:text-gray/50 transition-colors"
+        />
+        <button
+          type="submit"
+          class="btn btn-primary w-full justify-center"
+        >
+          Ja, haltet mich auf dem Laufenden!
+        </button>
+      </form>
+
+      <!-- Skip Link -->
+      <button
+        id="popup-skip"
+        class="mt-4 text-sm text-gray/60 hover:text-gray transition-colors"
+      >
+        Nein danke, ich schaue mich nur um
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  @keyframes popup-enter {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .animate-popup {
+    animation: popup-enter 0.3s ease-out;
+  }
+
+  #exit-intent-popup.show {
+    display: flex;
+  }
+</style>
+
+<script>
+  const popup = document.getElementById('exit-intent-popup');
+  const closeBtn = document.getElementById('popup-close');
+  const skipBtn = document.getElementById('popup-skip');
+  const form = document.getElementById('popup-newsletter-form');
+
+  // Nur 1x pro Session zeigen
+  const STORAGE_KEY = 'exit_popup_shown';
+
+  function showPopup() {
+    if (sessionStorage.getItem(STORAGE_KEY)) return;
+    if (!popup) return;
+
+    popup.classList.add('show');
+    sessionStorage.setItem(STORAGE_KEY, 'true');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function hidePopup() {
+    if (!popup) return;
+    popup.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
+  // Exit Intent Detection (Desktop)
+  let exitIntentTriggered = false;
+
+  document.addEventListener('mouseout', (e) => {
+    // Nur wenn Maus den Viewport nach oben verlässt
+    if (e.clientY <= 0 && !exitIntentTriggered) {
+      exitIntentTriggered = true;
+      // Kleine Verzögerung für bessere UX
+      setTimeout(showPopup, 100);
+    }
+  });
+
+  // Mobile: Nach 30 Sekunden zeigen (wenn User noch da ist)
+  if (window.innerWidth < 1024) {
+    setTimeout(() => {
+      if (!sessionStorage.getItem(STORAGE_KEY)) {
+        showPopup();
+      }
+    }, 30000);
+  }
+
+  // Close handlers
+  closeBtn?.addEventListener('click', hidePopup);
+  skipBtn?.addEventListener('click', hidePopup);
+
+  // Close on backdrop click
+  popup?.addEventListener('click', (e) => {
+    if (e.target === popup) hidePopup();
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') hidePopup();
+  });
+
+  // Form submit handling
+  form?.addEventListener('submit', () => {
+    // Nach kurzer Verzögerung schließen
+    setTimeout(hidePopup, 500);
+  });
+</script>

@@ -1,0 +1,70 @@
+---
+// Unterstützer-Zähler mit animiertem Counter
+interface Props {
+  count?: number;
+}
+
+const { count = 50 } = Astro.props;
+---
+
+<div class="supporter-count flex items-center gap-3 text-dark/80" data-count={count}>
+  <div class="flex -space-x-2">
+    <!-- Stilisierte Avatar-Gruppe -->
+    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold border-2 border-sand">
+      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
+      </svg>
+    </div>
+    <div class="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-white text-xs font-bold border-2 border-sand">
+      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
+      </svg>
+    </div>
+    <div class="w-8 h-8 rounded-full bg-accent-teal flex items-center justify-center text-white text-xs font-bold border-2 border-sand">
+      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" />
+      </svg>
+    </div>
+  </div>
+  <p class="text-sm">
+    <span class="font-headline text-primary text-lg counter-number">{count}</span>
+    <span class="text-dark/70"> Straubinger:innen dabei</span>
+  </p>
+</div>
+
+<script>
+  // Animierter Counter beim Scrollen
+  const counters = document.querySelectorAll('.supporter-count');
+
+  const animateCounter = (element: Element) => {
+    const target = parseInt(element.getAttribute('data-count') || '50');
+    const numberEl = element.querySelector('.counter-number');
+    if (!numberEl) return;
+
+    let current = 0;
+    const increment = target / 30; // 30 Schritte
+    const duration = 1500; // 1.5 Sekunden
+    const stepTime = duration / 30;
+
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) {
+        current = target;
+        clearInterval(timer);
+      }
+      numberEl.textContent = Math.floor(current).toString();
+    }, stepTime);
+  };
+
+  // Intersection Observer für Animation beim Sichtbarwerden
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCounter(entry.target);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  counters.forEach(counter => observer.observe(counter));
+</script>

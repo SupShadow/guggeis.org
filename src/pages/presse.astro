@@ -136,28 +136,41 @@ import Footer from '../components/Footer.astro';
           Bildnachweis: "Julian Guggeis / SPD Straubing"
         </p>
         <div class="grid sm:grid-cols-2 gap-6">
+          <!-- Porträtfoto -->
           <div class="bg-sand p-4">
             <img
-              src="/images/julian-rede.jpg"
-              alt="Julian Guggeis bei einer SPD-Veranstaltung"
-              class="w-full aspect-[4/3] object-cover mb-4"
+              src="/images/julian-portrait.jpg"
+              alt="Julian Guggeis - Porträt"
+              class="w-full aspect-[3/4] object-cover object-top mb-4"
             />
             <div class="flex justify-between items-center">
-              <span class="text-sm text-gray">Bei SPD-Veranstaltung</span>
+              <span class="text-sm text-gray">Porträt (Hochformat)</span>
               <a
-                href="/images/julian-rede.jpg"
-                download="julian-guggeis-rede.jpg"
+                href="/images/julian-portrait.jpg"
+                download="julian-guggeis-portrait.jpg"
                 class="text-primary text-sm hover:underline"
               >
                 Download
               </a>
             </div>
           </div>
-          <!-- Platzhalter für weitere Fotos -->
-          <div class="bg-sand/50 p-4 border-2 border-dashed border-gray/20 flex items-center justify-center min-h-[200px]">
-            <p class="text-gray/50 text-sm text-center">
-              Weitere Fotos<br/>demnächst verfügbar
-            </p>
+          <!-- SPD-Foto mit Namensschild -->
+          <div class="bg-sand p-4">
+            <img
+              src="/images/julian-spd.jpg"
+              alt="Julian Guggeis mit Namensschild vor SPD-Banner"
+              class="w-full aspect-[3/4] object-cover object-top mb-4"
+            />
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-gray">SPD-Kandidat</span>
+              <a
+                href="/images/julian-spd.jpg"
+                download="julian-guggeis-spd.jpg"
+                class="text-primary text-sm hover:underline"
+              >
+                Download
+              </a>
+            </div>
           </div>
         </div>
       </section>

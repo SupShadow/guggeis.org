@@ -1,0 +1,219 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Presse & Materialien | Julian Guggeis | SPD">
+  <Header />
+  <main class="bg-white py-20 lg:py-32">
+    <div class="max-w-4xl mx-auto px-6 lg:px-12">
+      <span class="inline-block text-primary font-headline text-sm uppercase tracking-widest mb-4">
+        Für Medien & Unterstützer
+      </span>
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl text-dark mb-6">
+        Presse-Kit
+      </h1>
+      <p class="text-lg text-gray mb-12 max-w-2xl">
+        Hier finden Sie alle Materialien für Ihre Berichterstattung oder um die Kampagne zu unterstützen.
+      </p>
+
+      <!-- QR-Code Section -->
+      <section class="mb-16 p-8 bg-sand">
+        <h2 class="text-2xl font-headline text-dark uppercase mb-6">
+          QR-Code für Flyer & Plakate
+        </h2>
+        <div class="grid md:grid-cols-2 gap-8 items-center">
+          <div>
+            <p class="text-gray mb-4">
+              Dieser QR-Code führt direkt zu <strong class="text-dark">guggeis.org</strong>.
+              Perfekt für Flyer, Plakate, Visitenkarten oder Wahlkampf-Materialien.
+            </p>
+            <div class="flex flex-wrap gap-4">
+              <a
+                href="https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=https://guggeis.org&format=svg"
+                download="qr-code-guggeis-org.svg"
+                class="btn btn-primary"
+              >
+                SVG herunterladen
+              </a>
+              <a
+                href="https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=https://guggeis.org&format=png"
+                download="qr-code-guggeis-org.png"
+                class="btn btn-outline"
+              >
+                PNG herunterladen
+              </a>
+            </div>
+          </div>
+          <div class="flex justify-center">
+            <div class="bg-white p-4 shadow-lg">
+              <img
+                src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://guggeis.org"
+                alt="QR-Code zu guggeis.org"
+                width="200"
+                height="200"
+                class="w-48 h-48"
+              />
+              <p class="text-center text-xs text-gray mt-2">guggeis.org</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Kurzbiografie -->
+      <section class="mb-16">
+        <h2 class="text-2xl font-headline text-dark uppercase mb-6">
+          Kurzbiografie
+        </h2>
+        <div class="bg-sand p-6 mb-4">
+          <p class="text-gray leading-relaxed">
+            <strong class="text-dark">Julian Guggeis</strong> (31) ist gebürtiger Straubinger und
+            IT-Unternehmer. Seit 2018 führt er sein eigenes Unternehmen in Straubing. Als SPD-Kandidat
+            für die Kommunalwahl am 8. März 2026 setzt er sich für bezahlbaren Wohnraum, eine lebendige
+            Innenstadt und die Förderung junger Familien ein. Sein Motto: "Straubing kann mehr."
+          </p>
+        </div>
+        <button
+          id="copy-bio"
+          class="btn btn-outline text-sm"
+          data-text="Julian Guggeis (31) ist gebürtiger Straubinger und IT-Unternehmer. Seit 2018 führt er sein eigenes Unternehmen in Straubing. Als SPD-Kandidat für die Kommunalwahl am 8. März 2026 setzt er sich für bezahlbaren Wohnraum, eine lebendige Innenstadt und die Förderung junger Familien ein."
+        >
+          Text kopieren
+        </button>
+      </section>
+
+      <!-- Fotos -->
+      <section class="mb-16">
+        <h2 class="text-2xl font-headline text-dark uppercase mb-6">
+          Pressefotos
+        </h2>
+        <p class="text-gray mb-6">
+          Hochauflösende Fotos zur freien Verwendung in redaktionellen Beiträgen.
+          Bildnachweis: "Julian Guggeis / SPD Straubing"
+        </p>
+        <div class="grid sm:grid-cols-2 gap-6">
+          <div class="bg-sand p-4">
+            <img
+              src="/images/julian-rede.jpg"
+              alt="Julian Guggeis bei einer SPD-Veranstaltung"
+              class="w-full aspect-[4/3] object-cover mb-4"
+            />
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-gray">Bei SPD-Veranstaltung</span>
+              <a
+                href="/images/julian-rede.jpg"
+                download="julian-guggeis-rede.jpg"
+                class="text-primary text-sm hover:underline"
+              >
+                Download
+              </a>
+            </div>
+          </div>
+          <!-- Platzhalter für weitere Fotos -->
+          <div class="bg-sand/50 p-4 border-2 border-dashed border-gray/20 flex items-center justify-center min-h-[200px]">
+            <p class="text-gray/50 text-sm text-center">
+              Weitere Fotos<br/>demnächst verfügbar
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pressekontakt -->
+      <section class="mb-16">
+        <h2 class="text-2xl font-headline text-dark uppercase mb-6">
+          Pressekontakt
+        </h2>
+        <div class="bg-primary text-white p-8">
+          <p class="text-lg mb-4">
+            Für Interviewanfragen und Presseanfragen:
+          </p>
+          <p class="mb-2">
+            <strong>Julian Guggeis</strong>
+          </p>
+          <p class="mb-1">
+            E-Mail: <a href="mailto:info@guggeis-it.de" class="underline hover:no-underline">info@guggeis-it.de</a>
+          </p>
+          <p>
+            Telefon: <a href="tel:+4915146523225" class="underline hover:no-underline">0151 46523225</a>
+          </p>
+        </div>
+      </section>
+
+      <!-- Key Facts -->
+      <section class="mb-16">
+        <h2 class="text-2xl font-headline text-dark uppercase mb-6">
+          Fakten auf einen Blick
+        </h2>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-sand p-4 text-center">
+            <span class="block text-primary font-headline text-3xl">31</span>
+            <span class="text-sm text-gray">Jahre alt</span>
+          </div>
+          <div class="bg-sand p-4 text-center">
+            <span class="block text-primary font-headline text-3xl">2018</span>
+            <span class="text-sm text-gray">Unternehmensgründung</span>
+          </div>
+          <div class="bg-sand p-4 text-center">
+            <span class="block text-primary font-headline text-3xl">100%</span>
+            <span class="text-sm text-gray">Straubinger</span>
+          </div>
+          <div class="bg-sand p-4 text-center">
+            <span class="block text-primary font-headline text-3xl">8.3.26</span>
+            <span class="text-sm text-gray">Wahltermin</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Social Media -->
+      <section class="mb-16">
+        <h2 class="text-2xl font-headline text-dark uppercase mb-6">
+          Social Media
+        </h2>
+        <div class="flex flex-wrap gap-4">
+          <a
+            href="https://instagram.com/jguggeis"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-outline"
+          >
+            @jguggeis auf Instagram
+          </a>
+          <a
+            href="https://guggeis.org"
+            class="btn btn-outline"
+          >
+            guggeis.org
+          </a>
+        </div>
+      </section>
+
+      <div class="mt-12 pt-8 border-t border-gray/20">
+        <a href="/" class="btn btn-primary">
+          Zurück zur Startseite
+        </a>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  // Copy bio to clipboard
+  const copyBtn = document.getElementById('copy-bio');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', async () => {
+      const text = copyBtn.getAttribute('data-text') || '';
+      try {
+        await navigator.clipboard.writeText(text);
+        const originalText = copyBtn.textContent;
+        copyBtn.textContent = 'Kopiert!';
+        setTimeout(() => {
+          copyBtn.textContent = originalText;
+        }, 2000);
+      } catch (err) {
+        console.error('Copy failed:', err);
+      }
+    });
+  }
+</script>

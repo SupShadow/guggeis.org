@@ -5,6 +5,15 @@
    Corporate Design Tokens & Utilities
    ===================================================== */
 
+/* Custom Font: PeridotDevanagari for Headlines */
+@font-face {
+  font-family: "PeridotDevanagari";
+  src: url("/fonts/PeridotDevanagari-Blk.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   /* Colors - Corporate Design "Mutig für Straubing" */
   --color-primary: #E3001B;        /* Mutig-Rot */
@@ -21,7 +30,7 @@
   --color-white: #ffffff;
 
   /* Typography - Fonts */
-  --font-headline: "Archivo Black", sans-serif;
+  --font-headline: "PeridotDevanagari", sans-serif;
   --font-body: "Inter", sans-serif;
 
   /* Spacing */
@@ -355,7 +364,7 @@ textarea:focus-visible {
   h1, h2, h3, h4 {
     color: black !important;
     page-break-after: avoid;
-    font-family: "Archivo Black", sans-serif;
+    font-family: "PeridotDevanagari", sans-serif;
   }
 
   h1 { font-size: 24pt; }
@@ -405,7 +414,7 @@ textarea:focus-visible {
     content: "JULIAN GUGGEIS | SPD | guggeis.org";
     display: block;
     text-align: center;
-    font-family: "Archivo Black", sans-serif;
+    font-family: "PeridotDevanagari", sans-serif;
     font-size: 14pt;
     padding: 10pt 0;
     border-bottom: 2pt solid #E3001B;

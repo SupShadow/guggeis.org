@@ -107,6 +107,18 @@ const ogImageURL = new URL(image, Astro.site);
       </a>
     </div>
 
+    <!-- Back to Top Button -->
+    <button
+      id="back-to-top"
+      class="fixed bottom-24 lg:bottom-8 right-4 lg:right-8 w-12 h-12 bg-primary text-white flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 z-40"
+      aria-label="Nach oben scrollen"
+      style="transform: translateY(20px)"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+      </svg>
+    </button>
+
     <!-- Scroll Animation Script -->
     <script>
       // Intersection Observer für Scroll-Animationen
@@ -126,6 +138,53 @@ const ogImageURL = new URL(image, Astro.site);
         });
 
         animateElements.forEach(el => observer.observe(el));
+      }
+
+      // Back to Top Button
+      const backToTop = document.getElementById('back-to-top');
+      if (backToTop) {
+        window.addEventListener('scroll', () => {
+          if (window.scrollY > 500) {
+            backToTop.style.opacity = '1';
+            backToTop.style.pointerEvents = 'auto';
+            backToTop.style.transform = 'translateY(0)';
+          } else {
+            backToTop.style.opacity = '0';
+            backToTop.style.pointerEvents = 'none';
+            backToTop.style.transform = 'translateY(20px)';
+          }
+        }, { passive: true });
+
+        backToTop.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+
+      // Active Nav State
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.nav-link');
+
+      if (sections.length > 0 && navLinks.length > 0) {
+        const navObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const id = entry.target.getAttribute('id');
+              navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href === `#${id}`) {
+                  link.classList.add('nav-active');
+                } else {
+                  link.classList.remove('nav-active');
+                }
+              });
+            }
+          });
+        }, {
+          threshold: 0.3,
+          rootMargin: '-20% 0px -60% 0px'
+        });
+
+        sections.forEach(section => navObserver.observe(section));
       }
     </script>
   </body>

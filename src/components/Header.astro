@@ -57,7 +57,12 @@ import MobileMenu from './MobileMenu.astro';
     transition: width 0.3s ease;
   }
 
-  .nav-link:hover::after {
+  .nav-link:hover::after,
+  .nav-link.nav-active::after {
     width: 100%;
+  }
+
+  .nav-link.nav-active {
+    color: var(--color-primary);
   }
 </style>

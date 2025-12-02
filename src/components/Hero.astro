@@ -26,13 +26,13 @@ import julianRede from '../assets/julian-rede.jpg';
           <p class="text-2xl font-headline text-primary" id="countdown">
             <span id="countdown-days">---</span> Tage bis zur Wahl
           </p>
-          <p class="text-xs text-gray/70 mt-1">14. März 2026</p>
+          <p class="text-xs text-gray/70 mt-1">8. März 2026</p>
         </div>
 
         <script>
           // Live-Countdown zur Kommunalwahl
           function updateCountdown() {
-            const wahltermin = new Date('2026-03-14T00:00:00');
+            const wahltermin = new Date('2026-03-08T00:00:00');
             const jetzt = new Date();
             const diff = wahltermin.getTime() - jetzt.getTime();
             const tage = Math.ceil(diff / (1000 * 60 * 60 * 24));

@@ -94,6 +94,9 @@ const API_URL = "https://supshadow.github.io/spd-straubing-kampagne-termine/api/
       // Termine anzeigen
       grid?.classList.remove('hidden');
 
+      // Schema.org JSON-LD für alle Events
+      const schemaEvents = [];
+
       termine.forEach(termin => {
         // Datum parsen (Format: "2026-01-15")
         const dateParts = termin.datum.split('-');
@@ -101,6 +104,41 @@ const API_URL = "https://supshadow.github.io/spd-straubing-kampagne-termine/api/
         const monthNames = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
         const month = monthNames[parseInt(dateParts[1]) - 1];
         const year = dateParts[0];
+
+        // ISO 8601 Datum für Schema.org (z.B. "2026-01-15T18:00:00")
+        const startDateTime = `${termin.datum}T${termin.uhrzeit}:00`;
+
+        // Schema.org Event-Objekt erstellen
+        schemaEvents.push({
+          "@type": "Event",
+          "name": termin.titel,
+          "description": termin.beschreibung,
+          "startDate": startDateTime,
+          "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+          "eventStatus": "https://schema.org/EventScheduled",
+          "location": {
+            "@type": "Place",
+            "name": termin.ort,
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Straubing",
+              "addressRegion": "Bayern",
+              "addressCountry": "DE"
+            }
+          },
+          "organizer": {
+            "@type": "Person",
+            "name": "Julian Guggeis",
+            "url": "https://guggeis.org"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR",
+            "availability": "https://schema.org/InStock",
+            "url": "https://guggeis.org/#termine"
+          }
+        });
 
         const card = document.createElement('article');
         card.className = 'bg-white/10 backdrop-blur-sm p-6 hover:bg-white/20 transition-colors';
@@ -120,6 +158,18 @@ const API_URL = "https://supshadow.github.io/spd-straubing-kampagne-termine/api/
         `;
         grid?.appendChild(card);
       });
+
+      // JSON-LD Script in Head einfügen
+      if (schemaEvents.length > 0) {
+        const schema = {
+          "@context": "https://schema.org",
+          "@graph": schemaEvents
+        };
+        const script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.textContent = JSON.stringify(schema);
+        document.head.appendChild(script);
+      }
 
     } catch (error) {
       console.warn('Termine konnten nicht geladen werden:', error);

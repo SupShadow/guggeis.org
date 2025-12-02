@@ -1,0 +1,67 @@
+---
+// FAQ Sektion - Häufig gestellte Fragen
+// Hilft besonders Persona B (Detail-Sucher) mit konkreten Informationen
+
+const faqs = [
+  {
+    frage: "Wann ist die Kommunalwahl?",
+    antwort: "Die Kommunalwahl in Bayern findet am <strong>8. März 2026</strong> statt. An diesem Tag wählen die Straubinger:innen den Oberbürgermeister und den Stadtrat."
+  },
+  {
+    frage: "Für welche Partei kandidierst du?",
+    antwort: "Ich kandidiere für die <strong>SPD</strong> auf <strong>Listenplatz 11</strong> für den Stadtrat Straubing. Die SPD steht für soziale Gerechtigkeit, bezahlbares Wohnen und eine starke kommunale Daseinsvorsorge."
+  },
+  {
+    frage: "Was ist Kumulieren und Panaschieren?",
+    antwort: "Bei der Kommunalwahl in Bayern hast du <strong>50 Stimmen</strong>. Du kannst einzelnen Kandidaten bis zu 3 Stimmen geben (kumulieren) und Kandidaten verschiedener Parteien wählen (panaschieren). So kannst du mir gezielt Stimmen geben – auch wenn du sonst andere Parteien wählst."
+  },
+  {
+    frage: "Was ist das Teisnacher Modell?",
+    antwort: "Beim <strong>Teisnacher Modell</strong> kauft die Stadt Grundstücke und gibt sie vergünstigt an Bauwillige ab, unter der Bedingung, dass diese selbst dort wohnen. Das verhindert Bodenspekulation und macht Bauen für Familien erschwinglich."
+  },
+  {
+    frage: "Was bedeutet Straubing-Zulage?",
+    antwort: "Die <strong>Straubing-Zulage</strong> ist meine Idee für einen Wohnkostenzuschuss für Pflegekräfte, Erzieher:innen und andere Fachkräfte in systemrelevanten Berufen. Damit machen wir Straubing als Arbeitsort attraktiver."
+  },
+  {
+    frage: "Wie kann ich dich unterstützen?",
+    antwort: "Es gibt viele Möglichkeiten: <strong>Teile diese Seite</strong> mit Freunden und Familie, <strong>folge mir auf Instagram</strong> (@jguggeis), <strong>komm zu einer Veranstaltung</strong>, oder <strong>schreib mir</strong> deine Ideen für Straubing. Jede Stimme und jedes Gespräch zählt!"
+  }
+];
+---
+
+<section id="faq" class="py-16 lg:py-24 bg-sand">
+  <div class="max-w-4xl mx-auto px-6 lg:px-12">
+    <span class="inline-block text-primary font-headline text-sm uppercase tracking-widest mb-4">
+      Gut zu wissen
+    </span>
+    <h2 class="text-3xl sm:text-4xl text-dark mb-8 lg:mb-12">
+      Häufige Fragen
+    </h2>
+
+    <div class="space-y-4" data-animate-stagger>
+      {faqs.map((faq, index) => (
+        <details class="group bg-white shadow-sm">
+          <summary class="flex items-center justify-between cursor-pointer p-5 lg:p-6 font-medium text-dark hover:text-primary transition-colors">
+            <span class="pr-4">{faq.frage}</span>
+            <span class="flex-shrink-0 w-6 h-6 flex items-center justify-center text-primary transition-transform group-open:rotate-45">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v12m6-6H6" />
+              </svg>
+            </span>
+          </summary>
+          <div class="px-5 lg:px-6 pb-5 lg:pb-6 text-gray leading-relaxed border-t border-gray/10 pt-4">
+            <p set:html={faq.antwort} />
+          </div>
+        </details>
+      ))}
+    </div>
+
+    <div class="mt-10 text-center">
+      <p class="text-gray mb-4">Noch Fragen? Schreib mir einfach!</p>
+      <a href="#kontakt" class="btn btn-outline">
+        Kontakt aufnehmen
+      </a>
+    </div>
+  </div>
+</section>

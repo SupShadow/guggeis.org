@@ -1,0 +1,377 @@
+---
+// Themen-Navigator Quiz
+// Hilft Besuchern, ihre relevantesten Themen zu finden
+// Rein Client-side, speichert Ergebnis in LocalStorage
+
+const themenData = [
+  { id: "wohnen", icon: "🏠", label: "Wohnen" },
+  { id: "bildung", icon: "👨‍👩‍👧", label: "Bildung & Betreuung" },
+  { id: "mobilitaet", icon: "🚌", label: "Mobilität & Umwelt" },
+  { id: "wirtschaft", icon: "💼", label: "Arbeit & Wirtschaft" },
+  { id: "soziales", icon: "❤️", label: "Soziales" },
+  { id: "kultur", icon: "⚽", label: "Kultur & Sport" },
+  { id: "demokratie", icon: "🗳️", label: "Demokratie" },
+];
+---
+
+<div id="themen-quiz" class="bg-secondary/5 p-6 lg:p-8 mb-12" data-themen={JSON.stringify(themenData)}>
+  <!-- Quiz Start / Saved Result View -->
+  <div id="quiz-start" class="text-center">
+    <span class="inline-block text-4xl mb-4">🎯</span>
+    <h3 class="text-2xl font-headline text-dark uppercase mb-3">
+      Was ist dir wichtig?
+    </h3>
+    <p class="text-gray mb-6 max-w-md mx-auto">
+      Finde in 30 Sekunden heraus, welche Themen für dich am relevantesten sind.
+    </p>
+    <button
+      id="start-quiz-btn"
+      class="btn btn-primary"
+    >
+      Quiz starten
+    </button>
+    <button
+      id="skip-quiz-btn"
+      class="block mx-auto mt-3 text-sm text-gray/60 hover:text-gray transition-colors"
+    >
+      Quiz überspringen
+    </button>
+  </div>
+
+  <!-- Quiz Questions -->
+  <div id="quiz-questions" class="hidden">
+    <!-- Progress Bar -->
+    <div class="mb-6">
+      <div class="flex justify-between text-sm text-gray mb-2">
+        <span>Frage <span id="current-question">1</span> von 5</span>
+        <button id="quit-quiz" class="text-gray/50 hover:text-gray">Abbrechen</button>
+      </div>
+      <div class="h-2 bg-gray/20 overflow-hidden">
+        <div id="progress-bar" class="h-full bg-primary transition-all duration-300" style="width: 20%"></div>
+      </div>
+    </div>
+
+    <!-- Question Container -->
+    <div id="question-container" class="min-h-[200px]">
+      <!-- Questions will be rendered here by JS -->
+    </div>
+  </div>
+
+  <!-- Quiz Results -->
+  <div id="quiz-results" class="hidden">
+    <div class="text-center mb-6">
+      <span class="inline-block text-4xl mb-3">🎯</span>
+      <h3 class="text-2xl font-headline text-dark uppercase mb-2">
+        Dein Ergebnis
+      </h3>
+      <p class="text-gray">
+        Basierend auf deinen Antworten sind diese Themen besonders relevant für dich:
+      </p>
+    </div>
+
+    <!-- Results List -->
+    <div id="results-list" class="space-y-4 mb-8">
+      <!-- Results will be rendered here by JS -->
+    </div>
+
+    <!-- Actions -->
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <button
+        id="share-result-btn"
+        class="btn btn-outline inline-flex items-center justify-center gap-2"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+        </svg>
+        Ergebnis teilen
+      </button>
+      <button
+        id="view-all-themes-btn"
+        class="btn btn-primary"
+      >
+        Alle Themen ansehen
+      </button>
+    </div>
+
+    <button
+      id="retake-quiz-btn"
+      class="block mx-auto mt-4 text-sm text-gray/60 hover:text-gray transition-colors"
+    >
+      Quiz wiederholen
+    </button>
+  </div>
+</div>
+
+<script>
+  // Quiz Data
+  const questions = [
+    {
+      id: 1,
+      text: "Wohnst du zur Miete, im Eigentum, oder bist du auf der Suche?",
+      answers: [
+        { text: "🏠 Zur Miete", scores: { wohnen: 2, soziales: 1 } },
+        { text: "🔑 Im Eigentum", scores: { wirtschaft: 1 } },
+        { text: "🔍 Auf der Suche", scores: { wohnen: 3, soziales: 1 } },
+      ]
+    },
+    {
+      id: 2,
+      text: "Hast du Kinder unter 18 Jahren?",
+      answers: [
+        { text: "👶 Ja", scores: { bildung: 3, soziales: 1 } },
+        { text: "❌ Nein", scores: { wirtschaft: 1, kultur: 1 } },
+        { text: "💭 In Planung", scores: { bildung: 2, wohnen: 1 } },
+      ]
+    },
+    {
+      id: 3,
+      text: "Wie kommst du in Straubing meistens voran?",
+      answers: [
+        { text: "🚗 Auto", scores: { wirtschaft: 1 } },
+        { text: "🚌 Bus/Bahn", scores: { mobilitaet: 3 } },
+        { text: "🚲 Fahrrad", scores: { mobilitaet: 2, kultur: 1 } },
+        { text: "🚶 Zu Fuß", scores: { kultur: 1, soziales: 1 } },
+      ]
+    },
+    {
+      id: 4,
+      text: "Wie oft bist du in der Innenstadt?",
+      answers: [
+        { text: "📅 Täglich", scores: { kultur: 2, wirtschaft: 2 } },
+        { text: "📆 Wöchentlich", scores: { kultur: 1, wirtschaft: 1 } },
+        { text: "🗓️ Selten", scores: { mobilitaet: 1 } },
+        { text: "❌ Nie", scores: { mobilitaet: 2 } },
+      ]
+    },
+    {
+      id: 5,
+      text: "Was nervt dich am meisten in Straubing?",
+      answers: [
+        { text: "💰 Hohe Mieten", scores: { wohnen: 3 } },
+        { text: "🚗 Verkehr & Staus", scores: { mobilitaet: 3 } },
+        { text: "🏚️ Leere Läden", scores: { wirtschaft: 2, kultur: 1 } },
+        { text: "🔒 Sicherheit", scores: { soziales: 2, demokratie: 1 } },
+        { text: "📋 Bürokratie", scores: { demokratie: 3 } },
+      ]
+    }
+  ];
+
+  // State
+  let currentQuestion = 0;
+  let scores: Record<string, number> = {
+    wohnen: 0,
+    bildung: 0,
+    mobilitaet: 0,
+    wirtschaft: 0,
+    soziales: 0,
+    kultur: 0,
+    demokratie: 0
+  };
+
+  // DOM Elements
+  const quizContainer = document.getElementById('themen-quiz');
+  const startView = document.getElementById('quiz-start');
+  const questionsView = document.getElementById('quiz-questions');
+  const resultsView = document.getElementById('quiz-results');
+  const questionContainer = document.getElementById('question-container');
+  const progressBar = document.getElementById('progress-bar');
+  const currentQuestionSpan = document.getElementById('current-question');
+  const resultsList = document.getElementById('results-list');
+
+  // Buttons
+  const startBtn = document.getElementById('start-quiz-btn');
+  const skipBtn = document.getElementById('skip-quiz-btn');
+  const quitBtn = document.getElementById('quit-quiz');
+  const shareBtn = document.getElementById('share-result-btn');
+  const viewAllBtn = document.getElementById('view-all-themes-btn');
+  const retakeBtn = document.getElementById('retake-quiz-btn');
+
+  // Theme data from Astro
+  const themenData = JSON.parse(quizContainer?.getAttribute('data-themen') || '[]');
+
+  // Check for saved result
+  const savedResult = localStorage.getItem('themen_quiz_result');
+  if (savedResult) {
+    try {
+      const parsed = JSON.parse(savedResult);
+      scores = parsed.scores;
+      showResults();
+    } catch (e) {
+      localStorage.removeItem('themen_quiz_result');
+    }
+  }
+
+  // Event Listeners
+  startBtn?.addEventListener('click', startQuiz);
+  skipBtn?.addEventListener('click', skipQuiz);
+  quitBtn?.addEventListener('click', resetQuiz);
+  shareBtn?.addEventListener('click', shareResult);
+  viewAllBtn?.addEventListener('click', scrollToThemes);
+  retakeBtn?.addEventListener('click', () => {
+    localStorage.removeItem('themen_quiz_result');
+    resetQuiz();
+    startQuiz();
+  });
+
+  function startQuiz() {
+    currentQuestion = 0;
+    scores = { wohnen: 0, bildung: 0, mobilitaet: 0, wirtschaft: 0, soziales: 0, kultur: 0, demokratie: 0 };
+    startView?.classList.add('hidden');
+    questionsView?.classList.remove('hidden');
+    resultsView?.classList.add('hidden');
+    renderQuestion();
+  }
+
+  function skipQuiz() {
+    startView?.classList.add('hidden');
+    quizContainer?.classList.add('hidden');
+  }
+
+  function resetQuiz() {
+    currentQuestion = 0;
+    scores = { wohnen: 0, bildung: 0, mobilitaet: 0, wirtschaft: 0, soziales: 0, kultur: 0, demokratie: 0 };
+    startView?.classList.remove('hidden');
+    questionsView?.classList.add('hidden');
+    resultsView?.classList.add('hidden');
+  }
+
+  function renderQuestion() {
+    const q = questions[currentQuestion];
+    if (!q || !questionContainer) return;
+
+    // Update progress
+    const progress = ((currentQuestion + 1) / questions.length) * 100;
+    if (progressBar) progressBar.style.width = `${progress}%`;
+    if (currentQuestionSpan) currentQuestionSpan.textContent = String(currentQuestion + 1);
+
+    // Render question
+    questionContainer.innerHTML = `
+      <p class="text-lg text-dark font-medium text-center mb-6">${q.text}</p>
+      <div class="flex flex-wrap justify-center gap-3">
+        ${q.answers.map((a, i) => `
+          <button
+            class="quiz-answer px-4 py-3 bg-white text-dark border-2 border-transparent hover:border-primary transition-colors text-sm sm:text-base"
+            data-index="${i}"
+          >
+            ${a.text}
+          </button>
+        `).join('')}
+      </div>
+    `;
+
+    // Add click handlers
+    document.querySelectorAll('.quiz-answer').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const target = e.currentTarget as HTMLElement;
+        const index = parseInt(target.getAttribute('data-index') || '0');
+        selectAnswer(index);
+      });
+    });
+  }
+
+  function selectAnswer(answerIndex: number) {
+    const q = questions[currentQuestion];
+    if (!q) return;
+
+    const answer = q.answers[answerIndex];
+    if (!answer) return;
+
+    // Add scores
+    Object.entries(answer.scores).forEach(([theme, score]) => {
+      scores[theme] = (scores[theme] || 0) + score;
+    });
+
+    // Next question or show results
+    currentQuestion++;
+    if (currentQuestion < questions.length) {
+      renderQuestion();
+    } else {
+      showResults();
+      // Save result
+      localStorage.setItem('themen_quiz_result', JSON.stringify({
+        scores,
+        date: new Date().toISOString()
+      }));
+    }
+  }
+
+  function showResults() {
+    startView?.classList.add('hidden');
+    questionsView?.classList.add('hidden');
+    resultsView?.classList.remove('hidden');
+
+    // Sort themes by score
+    const sortedThemes = Object.entries(scores)
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 3); // Top 3
+
+    const maxScore = Math.max(...Object.values(scores), 1);
+
+    // Render results
+    if (resultsList) {
+      resultsList.innerHTML = sortedThemes.map(([themeId, score], index) => {
+        const theme = themenData.find((t: {id: string}) => t.id === themeId);
+        const percentage = Math.round((score / maxScore) * 100);
+        return `
+          <div class="flex items-center gap-4">
+            <span class="text-2xl flex-shrink-0 w-10 text-center">${index + 1}.</span>
+            <span class="text-2xl flex-shrink-0">${theme?.icon || '📌'}</span>
+            <div class="flex-grow">
+              <div class="flex justify-between mb-1">
+                <span class="font-medium text-dark">${theme?.label || themeId}</span>
+                <span class="text-sm text-gray">${percentage}%</span>
+              </div>
+              <div class="h-2 bg-gray/20 overflow-hidden">
+                <div class="h-full bg-primary transition-all duration-500" style="width: ${percentage}%"></div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+
+  function shareResult() {
+    const sortedThemes = Object.entries(scores)
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 3);
+
+    const themeNames = sortedThemes.map(([id]) => {
+      const theme = themenData.find((t: {id: string}) => t.id === id);
+      return theme?.label || id;
+    });
+
+    const text = `Meine Top-Themen für Straubing: ${themeNames.join(', ')}. Finde heraus, was dir wichtig ist! guggeis.org`;
+
+    if (navigator.share) {
+      navigator.share({
+        title: 'Mein Themen-Ergebnis',
+        text: text,
+        url: window.location.href
+      }).catch(() => {});
+    } else {
+      // Fallback: WhatsApp
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    }
+  }
+
+  function scrollToThemes() {
+    const themesSection = document.querySelector('.border-t.border-dark\\/10');
+    if (themesSection) {
+      themesSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+</script>
+
+<style>
+  .quiz-answer:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .quiz-answer:hover {
+      transform: none;
+    }
+  }
+</style>

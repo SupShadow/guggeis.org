@@ -83,6 +83,49 @@ import Footer from '../components/Footer.astro';
         </button>
       </section>
 
+      <!-- Ausführliche Biografie -->
+      <section class="mb-16">
+        <h2 class="text-2xl font-headline text-dark uppercase mb-6">
+          Ausführliche Biografie
+        </h2>
+        <div class="prose prose-lg max-w-none text-gray">
+          <p class="mb-4">
+            <strong class="text-dark">Julian Guggeis</strong> wurde 1993 in Straubing geboren und ist
+            hier aufgewachsen. Nach seinem Abitur am Johannes-Turmair-Gymnasium studierte er
+            Wirtschaftsinformatik und sammelte erste Berufserfahrung in verschiedenen IT-Projekten.
+          </p>
+          <p class="mb-4">
+            <strong class="text-dark">2018 wagte er den Schritt in die Selbstständigkeit</strong> und
+            gründete sein eigenes IT-Unternehmen in Straubing. Seitdem unterstützt er lokale Unternehmen
+            und Organisationen bei der Digitalisierung. Diese Erfahrung als Unternehmer in einer
+            Mittelstadt hat seinen Blick für die Herausforderungen der lokalen Wirtschaft geschärft.
+          </p>
+          <p class="mb-4">
+            <strong class="text-dark">Politik bedeutet für Julian Guggeis:</strong> Zuhören, verstehen,
+            handeln. Er ist überzeugt, dass Straubing enormes Potenzial hat, das noch nicht ausgeschöpft
+            wird. Ob bei der Wohnraumfrage, beim öffentlichen Nahverkehr oder bei der Attraktivität der
+            Innenstadt – er sieht Handlungsbedarf und bringt konkrete Ideen mit.
+          </p>
+          <p class="mb-4">
+            <strong class="text-dark">Als junger Kandidat</strong> will er eine Brücke schlagen zwischen
+            den Generationen. Er kennt die Sorgen junger Familien bei der Wohnungssuche ebenso wie die
+            Wünsche älterer Mitbürger nach besserer Anbindung und lebendigen Begegnungsorten.
+          </p>
+          <p>
+            Julian Guggeis lebt und arbeitet in Straubing. In seiner Freizeit engagiert er sich für
+            lokale Initiativen und ist leidenschaftlicher Verfechter einer offenen, zukunftsorientierten
+            Kommunalpolitik.
+          </p>
+        </div>
+        <button
+          id="copy-long-bio"
+          class="btn btn-outline text-sm mt-6"
+          data-text="Julian Guggeis wurde 1993 in Straubing geboren und ist hier aufgewachsen. Nach seinem Abitur am Johannes-Turmair-Gymnasium studierte er Wirtschaftsinformatik und sammelte erste Berufserfahrung in verschiedenen IT-Projekten. 2018 wagte er den Schritt in die Selbstständigkeit und gründete sein eigenes IT-Unternehmen in Straubing. Seitdem unterstützt er lokale Unternehmen und Organisationen bei der Digitalisierung. Diese Erfahrung als Unternehmer in einer Mittelstadt hat seinen Blick für die Herausforderungen der lokalen Wirtschaft geschärft. Politik bedeutet für Julian Guggeis: Zuhören, verstehen, handeln. Er ist überzeugt, dass Straubing enormes Potenzial hat, das noch nicht ausgeschöpft wird. Ob bei der Wohnraumfrage, beim öffentlichen Nahverkehr oder bei der Attraktivität der Innenstadt – er sieht Handlungsbedarf und bringt konkrete Ideen mit. Als junger Kandidat will er eine Brücke schlagen zwischen den Generationen. Er kennt die Sorgen junger Familien bei der Wohnungssuche ebenso wie die Wünsche älterer Mitbürger nach besserer Anbindung und lebendigen Begegnungsorten. Julian Guggeis lebt und arbeitet in Straubing. In seiner Freizeit engagiert er sich für lokale Initiativen und ist leidenschaftlicher Verfechter einer offenen, zukunftsorientierten Kommunalpolitik."
+        >
+          Text kopieren
+        </button>
+      </section>
+
       <!-- Fotos -->
       <section class="mb-16">
         <h2 class="text-2xl font-headline text-dark uppercase mb-6">
@@ -199,21 +242,27 @@ import Footer from '../components/Footer.astro';
 </Layout>
 
 <script>
-  // Copy bio to clipboard
-  const copyBtn = document.getElementById('copy-bio');
-  if (copyBtn) {
-    copyBtn.addEventListener('click', async () => {
-      const text = copyBtn.getAttribute('data-text') || '';
-      try {
-        await navigator.clipboard.writeText(text);
-        const originalText = copyBtn.textContent;
-        copyBtn.textContent = 'Kopiert!';
-        setTimeout(() => {
-          copyBtn.textContent = originalText;
-        }, 2000);
-      } catch (err) {
-        console.error('Copy failed:', err);
-      }
-    });
+  // Generic copy function for bio buttons
+  function setupCopyButton(buttonId: string) {
+    const copyBtn = document.getElementById(buttonId);
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        const text = copyBtn.getAttribute('data-text') || '';
+        try {
+          await navigator.clipboard.writeText(text);
+          const originalText = copyBtn.textContent;
+          copyBtn.textContent = 'Kopiert!';
+          setTimeout(() => {
+            copyBtn.textContent = originalText;
+          }, 2000);
+        } catch (err) {
+          console.error('Copy failed:', err);
+        }
+      });
+    }
   }
+
+  // Setup both copy buttons
+  setupCopyButton('copy-bio');
+  setupCopyButton('copy-long-bio');
 </script>

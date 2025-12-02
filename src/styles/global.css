@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* Inter Font: Lokal via @fontsource (DSGVO-konform, kein Google-Request) */
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+
 /* =====================================================
    MUTIG FÜR STRAUBING - Design System
    Corporate Design Tokens & Utilities

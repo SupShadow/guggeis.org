@@ -19,13 +19,23 @@
       oder schreib mir einfach, was dich bewegt. <strong class="text-white">Jeder Beitrag zählt.</strong>
     </p>
 
-    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center flex-wrap">
       <a
         href="#kontakt"
         class="btn bg-white text-primary hover:bg-sand"
       >
         Schreib mir
       </a>
+      <button
+        type="button"
+        class="btn border-2 border-white text-white hover:bg-white hover:text-primary"
+        onclick="navigator.share ? navigator.share({title: 'Julian Guggeis - Mutig für Straubing', url: window.location.href}) : window.open('https://wa.me/?text=' + encodeURIComponent('Schau dir das an: Julian Guggeis kandidiert für den Stadtrat 2026 in Straubing! ' + window.location.href), '_blank')"
+      >
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+        </svg>
+        Seite teilen
+      </button>
       <a
         href="https://www.spd.de/unterstuetzen/mitglied-werden/"
         target="_blank"

@@ -113,25 +113,20 @@
     document.body.style.overflow = '';
   }
 
-  // Exit Intent Detection (Desktop)
+  // Exit Intent Detection (nur Desktop - auf Mobile deaktiviert)
+  // Exit-Intent funktioniert nur mit Maus, daher auf Mobile nicht sinnvoll
   let exitIntentTriggered = false;
 
-  document.addEventListener('mouseout', (e) => {
-    // Nur wenn Maus den Viewport nach oben verlässt
-    if (e.clientY <= 0 && !exitIntentTriggered) {
-      exitIntentTriggered = true;
-      // Kleine Verzögerung für bessere UX
-      setTimeout(showPopup, 100);
-    }
-  });
-
-  // Mobile: Nach 30 Sekunden zeigen (wenn User noch da ist)
-  if (window.innerWidth < 1024) {
-    setTimeout(() => {
-      if (!sessionStorage.getItem(STORAGE_KEY)) {
-        showPopup();
+  // Nur auf Desktop aktivieren (Touch-Geräte haben kein mouseout)
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    document.addEventListener('mouseout', (e) => {
+      // Nur wenn Maus den Viewport nach oben verlässt
+      if (e.clientY <= 0 && !exitIntentTriggered) {
+        exitIntentTriggered = true;
+        // Kleine Verzögerung für bessere UX
+        setTimeout(showPopup, 100);
       }
-    }, 30000);
+    });
   }
 
   // Close handlers

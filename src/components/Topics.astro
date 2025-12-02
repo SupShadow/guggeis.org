@@ -34,43 +34,71 @@ const themen = [
     icon: "🏠",
     iconLabel: "Haus",
     titel: "Wohnen",
-    punkte: ["Teisnacher Modell", "30%-Sozialgarantie", "Erbbaurecht für Familien"]
+    punkte: [
+      { name: "Teisnacher Modell", erklaerung: "Soziale Bodennutzung: Stadt kauft Grundstücke und gibt sie günstig an Bauherren ab" },
+      { name: "30%-Sozialgarantie" },
+      { name: "Erbbaurecht für Familien", erklaerung: "Grundstück pachten statt kaufen – spart bis zu 30% der Baukosten" }
+    ]
   },
   {
     icon: "👨‍👩‍👧",
     iconLabel: "Familie",
     titel: "Bildung & Betreuung",
-    punkte: ["Straubing-Zulage", "Jugendzentrum Resi", "Schulsanierung"]
+    punkte: [
+      { name: "Straubing-Zulage", erklaerung: "500€ monatlicher Bonus für Erzieher:innen in städtischen Kitas" },
+      { name: "Jugendzentrum Resi" },
+      { name: "Schulsanierung" }
+    ]
   },
   {
     icon: "🚌",
     iconLabel: "Bus",
     titel: "Mobilität & Umwelt",
-    punkte: ["Unterführung bauen", "Bustakt verdichten", "Entsiegelung"]
+    punkte: [
+      { name: "Unterführung bauen", erklaerung: "Otto-von-Dandl-Ring endlich entlasten" },
+      { name: "Bustakt verdichten" },
+      { name: "Entsiegelung" }
+    ]
   },
   {
     icon: "💼",
     iconLabel: "Aktentasche",
     titel: "Arbeit & Wirtschaft",
-    punkte: ["Beschäftigungs-GmbH", "Silicon Valley an der Donau", "Handwerkerhöfe"]
+    punkte: [
+      { name: "Beschäftigungs-GmbH" },
+      { name: "Innovationsstandort Straubing", erklaerung: "Start-up-Förderung & Hochschul-Kooperationen ausbauen" },
+      { name: "Handwerkerhöfe" }
+    ]
   },
   {
     icon: "❤️",
     iconLabel: "Herz",
     titel: "Soziales",
-    punkte: ["St.-Nikola-Heim", "Safe-Taxi", "Frauenhaus stärken"]
+    punkte: [
+      { name: "St.-Nikola-Heim" },
+      { name: "Safe-Taxi", erklaerung: "Sicherer Heimweg für Frauen nachts" },
+      { name: "Frauenhaus stärken" }
+    ]
   },
   {
     icon: "⚽",
     iconLabel: "Fußball",
     titel: "Kultur & Sport",
-    punkte: ["Donaustrand", "Sport-/Rehazentrum", "Ehrenamt fördern"]
+    punkte: [
+      { name: "Donaustrand", erklaerung: "Öffentlicher Zugang zur Donau für alle" },
+      { name: "Sport-/Rehazentrum" },
+      { name: "Ehrenamt fördern" }
+    ]
   },
   {
     icon: "🗳️",
     iconLabel: "Wahlurne",
     titel: "Demokratie",
-    punkte: ["Bürgerhaushalt", "Digitales Rathaus", "Stadtrat-Livestream"]
+    punkte: [
+      { name: "Bürgerhaushalt", erklaerung: "Bürger:innen entscheiden über Teil des Budgets" },
+      { name: "Digitales Rathaus" },
+      { name: "Stadtrat-Livestream" }
+    ]
   }
 ];
 ---
@@ -132,7 +160,16 @@ const themen = [
               {thema.punkte.map((punkt) => (
                 <li class="flex items-start gap-2">
                   <span class="text-primary mt-1">•</span>
-                  <span>{punkt}</span>
+                  {punkt.erklaerung ? (
+                    <span class="group/tooltip relative cursor-help border-b border-dotted border-gray/50">
+                      {punkt.name}
+                      <span class="invisible group-hover/tooltip:visible absolute left-0 top-full mt-1 z-10 w-48 p-2 text-xs bg-dark text-white shadow-lg">
+                        {punkt.erklaerung}
+                      </span>
+                    </span>
+                  ) : (
+                    <span>{punkt.name}</span>
+                  )}
                 </li>
               ))}
             </ul>

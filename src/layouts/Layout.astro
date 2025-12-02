@@ -37,13 +37,7 @@ const ogImageURL = new URL(image, Astro.site);
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
-    <!-- Google Fonts: Inter (Body) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Inter Font: Lokal via @fontsource (kein externer Request, DSGVO-konform) -->
 
     <!-- Open Graph / Social Media -->
     <meta property="og:title" content={title} />
@@ -128,8 +122,8 @@ const ogImageURL = new URL(image, Astro.site);
       class="fixed bottom-0 left-0 right-0 p-4 bg-sand/95 backdrop-blur-sm border-t border-dark/10 lg:hidden z-30"
       style="padding-bottom: calc(1rem + env(safe-area-inset-bottom))"
     >
-      <a href="#mitmachen" class="btn btn-primary w-full text-center justify-center">
-        Jetzt mitmachen
+      <a href="#kontakt" class="btn btn-primary w-full text-center justify-center">
+        Schreib mir
       </a>
     </div>
 

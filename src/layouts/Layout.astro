@@ -170,14 +170,11 @@ const ogImageURL = new URL(image, Astro.site);
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               const id = entry.target.getAttribute('id');
-              navLinks.forEach(link => {
-                const href = link.getAttribute('href');
-                if (href === `#${id}`) {
-                  link.classList.add('nav-active');
-                } else {
-                  link.classList.remove('nav-active');
-                }
-              });
+              const matchingLink = Array.from(navLinks).find(link => link.getAttribute('href') === `#${id}`);
+              if (matchingLink) {
+                navLinks.forEach(link => link.classList.remove('nav-active'));
+                matchingLink.classList.add('nav-active');
+              }
             }
           });
         }, {

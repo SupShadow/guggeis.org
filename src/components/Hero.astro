@@ -1,116 +1,30 @@
 ---
-import Button from './Button.astro';
-import SupporterCount from './SupporterCount.astro';
-import { Image } from 'astro:assets';
+import HeroMotion from './hero/HeroMotion';
+import { getImage } from 'astro:assets';
 import julianRede from '../assets/julian-rede.jpg';
+
+// Optimize image at build time
+const optimizedImage = await getImage({
+  src: julianRede,
+  width: 1200,
+  format: 'webp'
+});
 ---
 
-<section class="relative bg-sand overflow-hidden">
-  <div class="max-w-7xl mx-auto">
-    <div class="grid lg:grid-cols-2 min-h-[calc(100vh-5rem)]">
-      <!-- Text Content -->
-      <div class="flex flex-col justify-center px-6 py-8 lg:py-20 lg:px-12 order-2 lg:order-1">
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-primary mb-3 lg:mb-4 leading-none">
-          <span class="sr-only">Julian Guggeis: </span>Straubing<br />kann mehr.
-        </h1>
-        <p class="text-sm sm:text-base text-dark/80 font-medium mb-4 lg:mb-5">
-          <span class="text-primary">Julian Guggeis</span> · Kandidat für den Stadtrat 2026<br class="sm:hidden" />
-          <span class="hidden sm:inline"> · </span>SPD Listenplatz 11
-        </p>
-        <p class="text-base sm:text-lg lg:text-xl text-gray max-w-lg mb-3 lg:mb-4 leading-relaxed">
-          Ich kämpfe für bezahlbare Wohnungen, Busse die auch abends fahren,
-          und eine Innenstadt, die wieder lebt. <strong class="text-dark">Dafür trete ich an.</strong>
-        </p>
-        <p class="text-sm sm:text-base text-primary font-headline uppercase tracking-wide mb-4">
-          Bereit für den Wandel. Bereit für 2026.
-        </p>
-
-        <!-- Countdown zur Kommunalwahl -->
-        <div class="mb-4 lg:mb-8 p-3 lg:p-4 bg-white/80 backdrop-blur-sm inline-block">
-          <p class="text-xs lg:text-sm text-gray mb-1">Noch</p>
-          <p class="text-xl lg:text-2xl font-headline text-primary" id="countdown">
-            <span id="countdown-days">---</span> Tage bis zur Wahl
-          </p>
-          <p class="text-xs text-gray/70 mt-1">8. März 2026</p>
-        </div>
-
-        <script>
-          // Live-Countdown zur Kommunalwahl
-          function updateCountdown() {
-            const wahltermin = new Date('2026-03-08T00:00:00');
-            const jetzt = new Date();
-            const diff = wahltermin.getTime() - jetzt.getTime();
-            const tage = Math.ceil(diff / (1000 * 60 * 60 * 24));
-            const el = document.getElementById('countdown-days');
-            if (el && tage > 0) {
-              el.textContent = tage.toString();
-            }
-          }
-          // Initial update
-          updateCountdown();
-          // Update every minute
-          setInterval(updateCountdown, 60000);
-        </script>
-
-        <!-- Social Proof: Unterstützer-Zähler -->
-        <div class="mb-4">
-          <SupporterCount count={50} />
-        </div>
-
-        <div class="flex flex-wrap gap-4 pb-4">
-          <Button href="#kontakt" variant="primary">
-            Schreib mir
-          </Button>
-          <Button href="#themen" variant="outline">
-            Meine 5 Versprechen
-          </Button>
-        </div>
-      </div>
-
-      <!-- Image with Mutig-Winkel -->
-      <div class="relative order-1 lg:order-2 h-[35vh] sm:h-[40vh] lg:h-auto">
-        <!-- Diagonal clip-path for the "Mutig-Winkel" effect -->
-        <div class="absolute inset-0 hero-image-clip">
-          <Image
-            src={julianRede}
-            alt="Julian Guggeis spricht vor Publikum – Kandidat für den Stadtrat Straubing 2026"
-            widths={[400, 800, 1200]}
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            class="w-full h-full object-cover object-[center_30%] lg:object-center"
-            loading="eager"
-            decoding="async"
-          />
-          <!-- Overlay gradient -->
-          <div class="absolute inset-0 bg-gradient-to-t from-sand/30 via-transparent to-transparent lg:bg-gradient-to-l"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Scroll-Down Indicator -->
-  <a
-    href="#manifest"
-    class="absolute bottom-24 left-1/2 animate-bounce-scroll hidden lg:flex flex-col items-center text-dark/80 hover:text-primary transition-colors bg-white/50 backdrop-blur-sm px-4 py-2 rounded-full"
-    aria-label="Zum nächsten Abschnitt scrollen"
-  >
-    <span class="text-xs uppercase tracking-widest mb-2">Mehr erfahren</span>
-    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-    </svg>
-  </a>
-
-  <!-- Angled bottom edge -->
-  <div class="absolute bottom-0 left-0 right-0 h-16 bg-white transform -skew-y-2 origin-bottom-left translate-y-8"></div>
-</section>
+<HeroMotion
+  client:load
+  candidateImageSrc={optimizedImage.src}
+  supporterCount={50}
+/>
 
 <style>
   /* Mobile diagonal clip for hero image */
-  .hero-image-clip {
+  :global(.hero-image-clip) {
     clip-path: polygon(0 0, 100% 0, 100% calc(100% - 4vw), 0 100%);
   }
 
   @media (min-width: 1024px) {
-    .hero-image-clip {
+    :global(.hero-image-clip) {
       clip-path: polygon(15% 0, 100% 0, 100% 100%, 0 100%);
     }
   }

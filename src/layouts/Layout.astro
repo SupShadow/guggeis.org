@@ -131,15 +131,20 @@ const ogImageURL = new URL(image, Astro.site);
 
     <!-- Scroll Animation Script -->
     <script>
+      // AbortController für Event-Listener Cleanup (bei View Transitions)
+      const controller = new AbortController();
+      const signal = controller.signal;
+
       // Intersection Observer für Scroll-Animationen
       const animateElements = document.querySelectorAll('[data-animate], [data-animate-stagger]');
+      let animationObserver: IntersectionObserver | null = null;
 
       if (animateElements.length > 0) {
-        const observer = new IntersectionObserver((entries) => {
+        animationObserver = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               entry.target.classList.add('animate-in');
-              observer.unobserve(entry.target);
+              animationObserver?.unobserve(entry.target);
             }
           });
         }, {
@@ -147,7 +152,7 @@ const ogImageURL = new URL(image, Astro.site);
           rootMargin: '0px 0px -50px 0px'
         });
 
-        animateElements.forEach(el => observer.observe(el));
+        animateElements.forEach(el => animationObserver?.observe(el));
       }
 
       // Scroll Progress Bar
@@ -158,15 +163,16 @@ const ogImageURL = new URL(image, Astro.site);
           const docHeight = document.documentElement.scrollHeight - window.innerHeight;
           const progress = (scrollTop / docHeight) * 100;
           scrollProgress.style.width = `${Math.min(progress, 100)}%`;
-        }, { passive: true });
+        }, { passive: true, signal });
       }
 
       // Active Nav State
       const sections = document.querySelectorAll('section[id]');
       const navLinks = document.querySelectorAll('.nav-link');
+      let navObserver: IntersectionObserver | null = null;
 
       if (sections.length > 0 && navLinks.length > 0) {
-        const navObserver = new IntersectionObserver((entries) => {
+        navObserver = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               const id = entry.target.getAttribute('id');
@@ -182,8 +188,15 @@ const ogImageURL = new URL(image, Astro.site);
           rootMargin: '-20% 0px -60% 0px'
         });
 
-        sections.forEach(section => navObserver.observe(section));
+        sections.forEach(section => navObserver?.observe(section));
       }
+
+      // Cleanup bei Astro View Transitions (astro:before-swap Event)
+      document.addEventListener('astro:before-swap', () => {
+        controller.abort();
+        animationObserver?.disconnect();
+        navObserver?.disconnect();
+      }, { once: true });
     </script>
   </body>
 </html>

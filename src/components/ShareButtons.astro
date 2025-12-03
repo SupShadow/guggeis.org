@@ -78,6 +78,11 @@ const shareText = "Straubing kann mehr. Julian Guggeis - Mutig für Straubing.";
   Link kopiert!
 </div>
 
+<!-- Error Toast -->
+<div id="copy-error-toast" class="fixed right-6 bg-red-600 text-white px-4 py-2 rounded shadow-lg opacity-0 transition-opacity pointer-events-none z-50 toast-position">
+  Kopieren fehlgeschlagen
+</div>
+
 <style>
   /* Position oberhalb des Sticky CTA auf Mobile */
   #share-container {
@@ -119,6 +124,7 @@ const shareText = "Straubing kann mehr. Julian Guggeis - Mutig für Straubing.";
   const options = document.getElementById('share-options');
   const copyBtn = document.getElementById('copy-link');
   const toast = document.getElementById('copy-toast');
+  const errorToast = document.getElementById('copy-error-toast');
 
   // Toggle share options
   toggle?.addEventListener('click', () => {
@@ -135,7 +141,9 @@ const shareText = "Straubing kann mehr. Julian Guggeis - Mutig für Straubing.";
       toast?.classList.remove('opacity-0');
       setTimeout(() => toast?.classList.add('opacity-0'), 2000);
     } catch (err) {
-      console.error('Kopieren fehlgeschlagen:', err);
+      // Fehler-Toast anzeigen
+      errorToast?.classList.remove('opacity-0');
+      setTimeout(() => errorToast?.classList.add('opacity-0'), 2000);
     }
   });
 

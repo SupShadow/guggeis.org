@@ -69,6 +69,14 @@ const API_URL = "https://supshadow.github.io/spd-straubing-kampagne-termine/api/
 </section>
 
 <script define:vars={{ API_URL }}>
+  // HTML-Escaping zum Schutz vor XSS bei API-Daten
+  function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
   async function loadTermine() {
     const loading = document.getElementById('termine-loading');
     const grid = document.getElementById('termine-grid');
@@ -82,7 +90,7 @@ const API_URL = "https://supshadow.github.io/spd-straubing-kampagne-termine/api/
       }
 
       const data = await response.json();
-      const termine = data.termine || [];
+      const termine = data?.termine || [];
 
       loading?.classList.add('hidden');
 
@@ -98,11 +106,22 @@ const API_URL = "https://supshadow.github.io/spd-straubing-kampagne-termine/api/
       const schemaEvents = [];
 
       termine.forEach(termin => {
-        // Datum parsen (Format: "2026-01-15")
-        const dateParts = termin.datum.split('-');
+        // Datum parsen (Format: "2026-01-15") mit Validierung
+        const dateParts = termin.datum?.split('-') || [];
+        if (dateParts.length !== 3) {
+          console.warn('Ungültiges Datumsformat:', termin.datum);
+          return; // Termin überspringen
+        }
+
+        const monthIndex = parseInt(dateParts[1]) - 1;
+        if (isNaN(monthIndex) || monthIndex < 0 || monthIndex > 11) {
+          console.warn('Ungültiger Monat:', termin.datum);
+          return; // Termin überspringen
+        }
+
         const day = dateParts[2];
         const monthNames = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
-        const month = monthNames[parseInt(dateParts[1]) - 1];
+        const month = monthNames[monthIndex];
         const year = dateParts[0];
 
         // ISO 8601 Datum für Schema.org (z.B. "2026-01-15T18:00:00")
@@ -146,13 +165,13 @@ const API_URL = "https://supshadow.github.io/spd-straubing-kampagne-termine/api/
         card.innerHTML = `
           <div class="flex items-start gap-4">
             <div class="flex-shrink-0 text-center">
-              <span class="block text-accent-yellow font-headline text-2xl leading-none">${day}</span>
-              <span class="block text-white/90 text-sm uppercase">${month} ${year}</span>
+              <span class="block text-accent-yellow font-headline text-2xl leading-none">${escapeHtml(day)}</span>
+              <span class="block text-white/90 text-sm uppercase">${escapeHtml(month)} ${escapeHtml(year)}</span>
             </div>
             <div>
-              <h3 class="font-headline text-white uppercase text-lg mb-1">${termin.titel}</h3>
-              <p class="text-white/90 text-sm mb-2">${termin.uhrzeit} Uhr • ${termin.ort}</p>
-              <p class="text-white/80 text-sm">${termin.beschreibung}</p>
+              <h3 class="font-headline text-white uppercase text-lg mb-1">${escapeHtml(termin.titel)}</h3>
+              <p class="text-white/90 text-sm mb-2">${escapeHtml(termin.uhrzeit)} Uhr • ${escapeHtml(termin.ort)}</p>
+              <p class="text-white/80 text-sm">${escapeHtml(termin.beschreibung)}</p>
             </div>
           </div>
         `;

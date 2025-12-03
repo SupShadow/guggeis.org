@@ -100,16 +100,22 @@
   const form = document.getElementById('popup-newsletter-form');
   const emailInput = document.getElementById('popup-email');
 
+  // AbortController für Event-Listener Cleanup
+  const controller = new AbortController();
+  const signal = controller.signal;
+
   // Fokussierbare Elemente im Popup für Focus-Trap
   const popupContent = popup?.querySelector('.bg-white');
   const focusableElements = popupContent?.querySelectorAll(
     'button, input:not([type="hidden"]), [tabindex]:not([tabindex="-1"])'
   ) as NodeListOf<HTMLElement> | undefined;
   const firstFocusable = focusableElements?.[0];
-  const lastFocusable = focusableElements?.[focusableElements.length - 1];
+  const lastFocusable = focusableElements && focusableElements.length > 0
+    ? focusableElements[focusableElements.length - 1]
+    : undefined;
 
-  // Nur 1x pro Session zeigen
-  const STORAGE_KEY = 'exit_popup_shown';
+  // Nur 1x pro Session zeigen (mit Präfix für eindeutigen Key)
+  const STORAGE_KEY = 'guggeis_exit_popup_shown';
 
   function showPopup() {
     if (sessionStorage.getItem(STORAGE_KEY)) return;
@@ -142,17 +148,17 @@
         // Kleine Verzögerung für bessere UX
         setTimeout(showPopup, 100);
       }
-    });
+    }, { signal });
   }
 
   // Close handlers
-  closeBtn?.addEventListener('click', hidePopup);
-  skipBtn?.addEventListener('click', hidePopup);
+  closeBtn?.addEventListener('click', hidePopup, { signal });
+  skipBtn?.addEventListener('click', hidePopup, { signal });
 
   // Close on backdrop click
   popup?.addEventListener('click', (e) => {
     if (e.target === popup) hidePopup();
-  });
+  }, { signal });
 
   // Close on Escape und Focus-Trap
   document.addEventListener('keydown', (e) => {
@@ -180,11 +186,16 @@
         }
       }
     }
-  });
+  }, { signal });
 
   // Form submit handling
   form?.addEventListener('submit', () => {
     // Nach kurzer Verzögerung schließen
     setTimeout(hidePopup, 500);
-  });
+  }, { signal });
+
+  // Cleanup bei Astro View Transitions
+  document.addEventListener('astro:before-swap', () => {
+    controller.abort();
+  }, { once: true });
 </script>

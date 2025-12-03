@@ -51,16 +51,26 @@ const formspreeId = "meoykgve"; // Gleiche ID wie Kontaktformular
       <p class="font-medium">Danke für deine Anmeldung!</p>
       <p class="text-sm text-white">Du erhältst bald Post von mir.</p>
     </div>
+
+    <!-- Error Message (hidden by default) -->
+    <div id="newsletter-error" class="hidden mt-4 p-4 bg-red-500/20 text-white rounded" role="alert" aria-live="assertive">
+      <p class="font-medium">Anmeldung fehlgeschlagen</p>
+      <p class="text-sm text-white/90">Bitte versuche es erneut oder schreib mir direkt.</p>
+    </div>
   </div>
 </section>
 
 <script>
   const form = document.getElementById('newsletter-form') as HTMLFormElement;
   const success = document.getElementById('newsletter-success');
+  const error = document.getElementById('newsletter-error');
   const status = document.getElementById('newsletter-status');
 
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    // Vorherige Fehlermeldungen ausblenden
+    error?.classList.add('hidden');
 
     const formData = new FormData(form);
 
@@ -75,10 +85,15 @@ const formspreeId = "meoykgve"; // Gleiche ID wie Kontaktformular
         form.style.display = 'none';
         status?.classList.add('hidden');
         success?.classList.remove('hidden');
+      } else {
+        // API-Fehler anzeigen
+        status?.classList.add('hidden');
+        error?.classList.remove('hidden');
       }
-    } catch (error) {
-      // Fallback: Submit normally
-      form.submit();
+    } catch (err) {
+      // Netzwerk-Fehler anzeigen
+      status?.classList.add('hidden');
+      error?.classList.remove('hidden');
     }
   });
 </script>

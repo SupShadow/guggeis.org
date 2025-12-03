@@ -99,31 +99,36 @@
     });
   });
 
-  // Close menu on escape key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && body.classList.contains('menu-open')) {
-      closeMenu();
-      toggle?.focus();
-    }
-  });
-
   // Focus trap: Tab-Navigation im Menü einschließen
   const focusableElements = menu?.querySelectorAll('a, button');
-  const firstFocusable = focusableElements?.[0] as HTMLElement;
-  const lastFocusable = focusableElements?.[focusableElements.length - 1] as HTMLElement;
+  const firstFocusable = focusableElements?.[0] as HTMLElement | undefined;
+  const lastFocusable = focusableElements && focusableElements.length > 0
+    ? focusableElements[focusableElements.length - 1] as HTMLElement
+    : undefined;
 
+  // Kombinierter keydown-Handler für Escape und Focus-Trap
   document.addEventListener('keydown', (e) => {
-    if (!body.classList.contains('menu-open') || e.key !== 'Tab') return;
+    if (!body.classList.contains('menu-open')) return;
 
-    if (e.shiftKey) {
-      if (document.activeElement === firstFocusable || document.activeElement === toggle) {
-        e.preventDefault();
-        lastFocusable?.focus();
-      }
-    } else {
-      if (document.activeElement === lastFocusable) {
-        e.preventDefault();
-        firstFocusable?.focus();
+    // Escape zum Schließen
+    if (e.key === 'Escape') {
+      closeMenu();
+      toggle?.focus();
+      return;
+    }
+
+    // Focus-Trap bei Tab
+    if (e.key === 'Tab') {
+      if (e.shiftKey) {
+        if (document.activeElement === firstFocusable || document.activeElement === toggle) {
+          e.preventDefault();
+          lastFocusable?.focus();
+        }
+      } else {
+        if (document.activeElement === lastFocusable) {
+          e.preventDefault();
+          firstFocusable?.focus();
+        }
       }
     }
   });

@@ -42,11 +42,14 @@
         id="popup-newsletter-form"
       >
         <input type="hidden" name="_subject" value="Newsletter-Anmeldung (Exit-Popup)" />
+        <label for="popup-email" class="sr-only">E-Mail-Adresse für Newsletter</label>
         <input
+          id="popup-email"
           type="email"
           name="email"
           placeholder="Deine E-Mail-Adresse"
           required
+          aria-required="true"
           class="w-full px-4 py-3 border-2 border-gray/20 focus:border-primary focus:outline-none text-dark placeholder:text-gray/50 transition-colors"
         />
         <button
@@ -60,7 +63,7 @@
       <!-- Skip Link -->
       <button
         id="popup-skip"
-        class="mt-4 text-sm text-gray/60 hover:text-gray transition-colors"
+        class="mt-4 text-sm text-gray hover:text-dark underline transition-colors"
       >
         Nein danke, ich schaue mich nur um
       </button>
@@ -94,6 +97,15 @@
   const closeBtn = document.getElementById('popup-close');
   const skipBtn = document.getElementById('popup-skip');
   const form = document.getElementById('popup-newsletter-form');
+  const emailInput = document.getElementById('popup-email');
+
+  // Fokussierbare Elemente im Popup für Focus-Trap
+  const popupContent = popup?.querySelector('.bg-white');
+  const focusableElements = popupContent?.querySelectorAll(
+    'button, input:not([type="hidden"]), [tabindex]:not([tabindex="-1"])'
+  ) as NodeListOf<HTMLElement> | undefined;
+  const firstFocusable = focusableElements?.[0];
+  const lastFocusable = focusableElements?.[focusableElements.length - 1];
 
   // Nur 1x pro Session zeigen
   const STORAGE_KEY = 'exit_popup_shown';
@@ -105,6 +117,9 @@
     popup.classList.add('show');
     sessionStorage.setItem(STORAGE_KEY, 'true');
     document.body.style.overflow = 'hidden';
+
+    // Fokus ins Modal setzen (nach Animation)
+    setTimeout(() => emailInput?.focus(), 150);
   }
 
   function hidePopup() {
@@ -138,9 +153,32 @@
     if (e.target === popup) hidePopup();
   });
 
-  // Close on Escape
+  // Close on Escape und Focus-Trap
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') hidePopup();
+    if (!popup?.classList.contains('show')) return;
+
+    // Escape zum Schließen
+    if (e.key === 'Escape') {
+      hidePopup();
+      return;
+    }
+
+    // Focus-Trap: Tab-Navigation im Modal einschließen
+    if (e.key === 'Tab' && focusableElements && focusableElements.length > 0) {
+      if (e.shiftKey) {
+        // Shift+Tab: Wenn am Anfang, zum Ende springen
+        if (document.activeElement === firstFocusable) {
+          e.preventDefault();
+          lastFocusable?.focus();
+        }
+      } else {
+        // Tab: Wenn am Ende, zum Anfang springen
+        if (document.activeElement === lastFocusable) {
+          e.preventDefault();
+          firstFocusable?.focus();
+        }
+      }
+    }
   });
 
   // Form submit handling

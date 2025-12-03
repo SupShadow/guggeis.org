@@ -161,13 +161,21 @@ const themen = [
               {thema.titel}
             </h4>
             <ul class="text-sm text-gray space-y-1">
-              {thema.punkte.map((punkt) => (
+              {thema.punkte.map((punkt, punktIndex) => (
                 <li class="flex items-start gap-2">
                   <span class="text-primary mt-1">•</span>
                   {punkt.erklaerung ? (
-                    <span class="group/tooltip relative cursor-help border-b border-dotted border-gray/50">
+                    <span
+                      class="group/tooltip relative cursor-help border-b border-dotted border-gray/50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1"
+                      tabindex="0"
+                      aria-describedby={`tooltip-${thema.titel.toLowerCase().replace(/\s+/g, '-')}-${punktIndex}`}
+                    >
                       {punkt.name}
-                      <span class="invisible group-hover/tooltip:visible absolute left-0 top-full mt-1 z-10 w-48 p-2 text-xs bg-dark text-white shadow-lg">
+                      <span
+                        id={`tooltip-${thema.titel.toLowerCase().replace(/\s+/g, '-')}-${punktIndex}`}
+                        role="tooltip"
+                        class="invisible group-hover/tooltip:visible group-focus/tooltip:visible absolute left-0 top-full mt-1 z-10 w-48 p-2 text-xs bg-dark text-white shadow-lg"
+                      >
                         {punkt.erklaerung}
                       </span>
                     </span>

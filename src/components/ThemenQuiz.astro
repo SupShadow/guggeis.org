@@ -17,7 +17,7 @@ const themenData = [
 <div id="themen-quiz" class="bg-secondary/5 p-6 lg:p-8 mb-12" data-themen={JSON.stringify(themenData)}>
   <!-- Quiz Start / Saved Result View -->
   <div id="quiz-start" class="text-center">
-    <span class="inline-block text-4xl mb-4">🎯</span>
+    <span class="inline-block text-4xl mb-4" aria-hidden="true">🎯</span>
     <h3 class="text-2xl font-headline text-dark uppercase mb-3">
       Was ist dir wichtig?
     </h3>
@@ -49,6 +49,10 @@ const themenData = [
       <div class="h-2 bg-gray/20 overflow-hidden">
         <div id="progress-bar" class="h-full bg-primary transition-all duration-300" style="width: 20%"></div>
       </div>
+      <!-- Screenreader-Ankündigung für Fortschritt -->
+      <div id="quiz-progress-sr" class="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        Frage 1 von 5
+      </div>
     </div>
 
     <!-- Question Container -->
@@ -60,7 +64,7 @@ const themenData = [
   <!-- Quiz Results -->
   <div id="quiz-results" class="hidden">
     <div class="text-center mb-6">
-      <span class="inline-block text-4xl mb-3">🎯</span>
+      <span class="inline-block text-4xl mb-3" aria-hidden="true">🎯</span>
       <h3 class="text-2xl font-headline text-dark uppercase mb-2">
         Dein Ergebnis
       </h3>
@@ -177,6 +181,7 @@ const themenData = [
   const progressBar = document.getElementById('progress-bar');
   const currentQuestionSpan = document.getElementById('current-question');
   const resultsList = document.getElementById('results-list');
+  const progressSr = document.getElementById('quiz-progress-sr');
 
   // Buttons
   const startBtn = document.getElementById('start-quiz-btn');
@@ -220,6 +225,11 @@ const themenData = [
     questionsView?.classList.remove('hidden');
     resultsView?.classList.add('hidden');
     renderQuestion();
+    // Fokus auf erste Antwort setzen (nach Render)
+    setTimeout(() => {
+      const firstAnswer = document.querySelector('.quiz-answer') as HTMLElement;
+      firstAnswer?.focus();
+    }, 100);
   }
 
   function skipQuiz() {
@@ -243,6 +253,8 @@ const themenData = [
     const progress = ((currentQuestion + 1) / questions.length) * 100;
     if (progressBar) progressBar.style.width = `${progress}%`;
     if (currentQuestionSpan) currentQuestionSpan.textContent = String(currentQuestion + 1);
+    // Screenreader-Ankündigung aktualisieren
+    if (progressSr) progressSr.textContent = `Frage ${currentQuestion + 1} von ${questions.length}`;
 
     // Render question
     questionContainer.innerHTML = `
@@ -285,6 +297,11 @@ const themenData = [
     currentQuestion++;
     if (currentQuestion < questions.length) {
       renderQuestion();
+      // Fokus auf erste Antwort setzen
+      setTimeout(() => {
+        const firstAnswer = document.querySelector('.quiz-answer') as HTMLElement;
+        firstAnswer?.focus();
+      }, 100);
     } else {
       showResults();
       // Save result
@@ -307,6 +324,15 @@ const themenData = [
 
     const maxScore = Math.max(...Object.values(scores), 1);
 
+    // Screenreader-Ankündigung für Ergebnis
+    const themeNames = sortedThemes.map(([id]) => {
+      const theme = themenData.find((t: {id: string}) => t.id === id);
+      return theme?.label || id;
+    });
+    if (progressSr) {
+      progressSr.textContent = `Quiz abgeschlossen. Deine Top-Themen sind: ${themeNames.join(', ')}.`;
+    }
+
     // Render results
     if (resultsList) {
       resultsList.innerHTML = sortedThemes.map(([themeId, score], index) => {
@@ -314,14 +340,14 @@ const themenData = [
         const percentage = Math.round((score / maxScore) * 100);
         return `
           <div class="flex items-center gap-4">
-            <span class="text-2xl flex-shrink-0 w-10 text-center">${index + 1}.</span>
-            <span class="text-2xl flex-shrink-0">${theme?.icon || '📌'}</span>
+            <span class="text-2xl flex-shrink-0 w-10 text-center" aria-hidden="true">${index + 1}.</span>
+            <span class="text-2xl flex-shrink-0" aria-hidden="true">${theme?.icon || '📌'}</span>
             <div class="flex-grow">
               <div class="flex justify-between mb-1">
                 <span class="font-medium text-dark">${theme?.label || themeId}</span>
                 <span class="text-sm text-gray">${percentage}%</span>
               </div>
-              <div class="h-2 bg-gray/20 overflow-hidden">
+              <div class="h-2 bg-gray/20 overflow-hidden" role="progressbar" aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100" aria-label="${theme?.label || themeId} Relevanz">
                 <div class="h-full bg-primary transition-all duration-500" style="width: ${percentage}%"></div>
               </div>
             </div>
@@ -329,6 +355,13 @@ const themenData = [
         `;
       }).join('');
     }
+
+    // Fokus auf Ergebnis-Überschrift setzen
+    setTimeout(() => {
+      const resultHeading = resultsView?.querySelector('h3');
+      resultHeading?.setAttribute('tabindex', '-1');
+      resultHeading?.focus();
+    }, 100);
   }
 
   function shareResult() {
@@ -369,8 +402,16 @@ const themenData = [
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 
+  .quiz-answer:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .quiz-answer:hover {
+    .quiz-answer:hover,
+    .quiz-answer:focus-visible {
       transform: none;
     }
   }

@@ -88,6 +88,14 @@ const shareText = "Straubing kann mehr. Julian Guggeis - Mutig für Straubing.";
     bottom: calc(8rem + env(safe-area-inset-bottom));
   }
 
+  /* Focus-Styles für runde Share-Buttons */
+  #share-container a:focus-visible,
+  #share-container button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--color-primary), 0 0 0 5px white;
+    transform: scale(1.1);
+  }
+
   @media (min-width: 1024px) {
     #share-container {
       bottom: 1.5rem;
@@ -95,6 +103,13 @@ const shareText = "Straubing kann mehr. Julian Guggeis - Mutig für Straubing.";
 
     .toast-position {
       bottom: 6rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #share-container a:focus-visible,
+    #share-container button:focus-visible {
+      transform: none;
     }
   }
 </style>

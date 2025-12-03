@@ -16,7 +16,7 @@ const API_URL = "https://supshadow.github.io/spd-straubing-kampagne-termine/api/
       <h2 class="text-3xl sm:text-4xl lg:text-5xl text-white mb-6">
         Komm vorbei!
       </h2>
-      <p class="text-lg text-white/80 max-w-2xl mx-auto">
+      <p class="text-lg text-white max-w-2xl mx-auto">
         Persönliche Begegnungen sind mir wichtig. Hier findest du alle kommenden Veranstaltungen.
       </p>
     </div>
@@ -25,7 +25,7 @@ const API_URL = "https://supshadow.github.io/spd-straubing-kampagne-termine/api/
     <div id="termine-container" aria-live="polite" aria-atomic="true">
       <!-- Lade-Indikator -->
       <div id="termine-loading" class="text-center py-8" role="status">
-        <div class="inline-flex items-center gap-3 text-white/70">
+        <div class="inline-flex items-center gap-3 text-white/90">
           <svg class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24" aria-hidden="true">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -47,7 +47,7 @@ const API_URL = "https://supshadow.github.io/spd-straubing-kampagne-termine/api/
         <h3 class="text-xl font-headline text-white uppercase mb-3">
           Termine folgen
         </h3>
-        <p class="text-white/70 max-w-md mx-auto">
+        <p class="text-white max-w-md mx-auto">
           Die Wahlkampf-Termine werden hier veröffentlicht, sobald sie feststehen.
           Folge mir auf Instagram für aktuelle Updates!
         </p>
@@ -147,11 +147,11 @@ const API_URL = "https://supshadow.github.io/spd-straubing-kampagne-termine/api/
           <div class="flex items-start gap-4">
             <div class="flex-shrink-0 text-center">
               <span class="block text-accent-yellow font-headline text-2xl leading-none">${day}</span>
-              <span class="block text-white/60 text-sm uppercase">${month} ${year}</span>
+              <span class="block text-white/90 text-sm uppercase">${month} ${year}</span>
             </div>
             <div>
               <h3 class="font-headline text-white uppercase text-lg mb-1">${termin.titel}</h3>
-              <p class="text-white/60 text-sm mb-2">${termin.uhrzeit} Uhr • ${termin.ort}</p>
+              <p class="text-white/90 text-sm mb-2">${termin.uhrzeit} Uhr • ${termin.ort}</p>
               <p class="text-white/80 text-sm">${termin.beschreibung}</p>
             </div>
           </div>

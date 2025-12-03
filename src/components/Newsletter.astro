@@ -9,7 +9,7 @@ const formspreeId = "meoykgve"; // Gleiche ID wie Kontaktformular
     <h3 class="text-2xl font-headline text-white uppercase mb-3">
       Bleib auf dem Laufenden
     </h3>
-    <p class="text-white/80 mb-6 max-w-lg mx-auto">
+    <p class="text-white mb-6 max-w-lg mx-auto">
       Erhalte Updates zu Veranstaltungen, neuen Ideen und dem Wahlkampf direkt in dein Postfach.
     </p>
 
@@ -31,7 +31,8 @@ const formspreeId = "meoykgve"; // Gleiche ID wie Kontaktformular
         required
         aria-required="true"
         placeholder="Deine E-Mail-Adresse"
-        class="flex-1 px-4 py-3 bg-white/20 text-white placeholder-white/60 border border-white/30 focus:outline-none focus:border-white focus:bg-white/30 transition-colors"
+        class="flex-1 px-4 py-3 bg-white/20 text-white placeholder-white/90 border border-white/30 focus:outline-none focus:border-white focus:bg-white/30 transition-colors"
+        autocomplete="email"
       />
       <button
         type="submit"
@@ -41,14 +42,14 @@ const formspreeId = "meoykgve"; // Gleiche ID wie Kontaktformular
       </button>
     </form>
 
-    <p id="newsletter-status" class="text-white/60 text-sm mt-4">
+    <p id="newsletter-status" class="text-white/90 text-sm mt-4">
       Kein Spam. Abmeldung jederzeit möglich.
     </p>
 
     <!-- Success Message (hidden by default) -->
     <div id="newsletter-success" class="hidden mt-4 p-4 bg-white/20 text-white rounded" role="status" aria-live="polite">
       <p class="font-medium">Danke für deine Anmeldung!</p>
-      <p class="text-sm text-white/80">Du erhältst bald Post von mir.</p>
+      <p class="text-sm text-white">Du erhältst bald Post von mir.</p>
     </div>
   </div>
 </section>

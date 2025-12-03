@@ -69,12 +69,18 @@
   function openMenu() {
     body.classList.add('menu-open', 'overflow-hidden');
     toggle?.setAttribute('aria-expanded', 'true');
+    toggle?.setAttribute('aria-label', 'Menü schließen');
     menu?.setAttribute('aria-hidden', 'false');
+    // Fokus auf erstes Menü-Element setzen (nach Animation)
+    setTimeout(() => {
+      firstFocusable?.focus();
+    }, 50);
   }
 
   function closeMenu() {
     body.classList.remove('menu-open', 'overflow-hidden');
     toggle?.setAttribute('aria-expanded', 'false');
+    toggle?.setAttribute('aria-label', 'Menü öffnen');
     menu?.setAttribute('aria-hidden', 'true');
   }
 

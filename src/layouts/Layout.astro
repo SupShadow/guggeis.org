@@ -108,8 +108,8 @@ const ogImageURL = new URL(image, Astro.site);
       href="https://wa.me/4915146523225?text=Hallo%20Julian%2C%20ich%20interessiere%20mich%20für%20deine%20Kampagne!"
       target="_blank"
       rel="noopener noreferrer"
-      class="fixed bottom-20 right-4 w-14 h-14 bg-[#25D366] text-white flex items-center justify-center shadow-lg hover:bg-[#20bd5a] active:scale-95 transition-all lg:hidden z-40"
-      style="bottom: calc(5rem + env(safe-area-inset-bottom))"
+      class="fixed right-4 w-14 h-14 bg-[#25D366] text-white flex items-center justify-center shadow-lg hover:bg-[#20bd5a] active:scale-95 transition-all lg:hidden z-40"
+      style="bottom: calc(6rem + env(safe-area-inset-bottom))"
       aria-label="Über WhatsApp kontaktieren"
     >
       <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -119,12 +119,17 @@ const ogImageURL = new URL(image, Astro.site);
 
     <!-- Sticky Mobile CTA - nur auf Mobile sichtbar -->
     <div
-      class="fixed bottom-0 left-0 right-0 p-4 bg-sand/95 backdrop-blur-sm border-t border-dark/10 lg:hidden z-30"
-      style="padding-bottom: calc(1rem + env(safe-area-inset-bottom))"
+      class="fixed bottom-0 left-0 right-0 p-3 bg-sand/95 backdrop-blur-sm border-t border-dark/10 lg:hidden z-30"
+      style="padding-bottom: calc(0.75rem + env(safe-area-inset-bottom))"
     >
-      <a href="#kontakt" class="btn btn-primary w-full text-center justify-center">
-        Schreib mir
-      </a>
+      <div class="flex gap-2">
+        <a href="#kontakt" class="btn btn-primary flex-[3] text-center justify-center text-sm">
+          Schreib mir
+        </a>
+        <a href="#themen" class="btn btn-outline flex-[2] text-center justify-center text-sm px-2">
+          5 Versprechen
+        </a>
+      </div>
     </div>
 
     <!-- Back to Top Button - entfernt wegen UI-Problemen -->

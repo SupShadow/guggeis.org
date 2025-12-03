@@ -26,7 +26,7 @@ import julianRede from '../assets/julian-rede.jpg';
         </p>
 
         <!-- Countdown zur Kommunalwahl -->
-        <div class="mb-6 lg:mb-8 p-3 lg:p-4 bg-white/80 backdrop-blur-sm inline-block">
+        <div class="mb-4 lg:mb-8 p-3 lg:p-4 bg-white/80 backdrop-blur-sm inline-block">
           <p class="text-xs lg:text-sm text-gray mb-1">Noch</p>
           <p class="text-xl lg:text-2xl font-headline text-primary" id="countdown">
             <span id="countdown-days">---</span> Tage bis zur Wahl
@@ -53,7 +53,7 @@ import julianRede from '../assets/julian-rede.jpg';
         </script>
 
         <!-- Social Proof: Unterstützer-Zähler -->
-        <div class="mb-6">
+        <div class="mb-4">
           <SupporterCount count={50} />
         </div>
 
@@ -68,15 +68,15 @@ import julianRede from '../assets/julian-rede.jpg';
       </div>
 
       <!-- Image with Mutig-Winkel -->
-      <div class="relative order-1 lg:order-2 h-[45vh] sm:h-[50vh] lg:h-auto">
+      <div class="relative order-1 lg:order-2 h-[35vh] sm:h-[40vh] lg:h-auto">
         <!-- Diagonal clip-path for the "Mutig-Winkel" effect -->
-        <div class="absolute inset-0 lg:clip-path-angle">
+        <div class="absolute inset-0 hero-image-clip">
           <Image
             src={julianRede}
             alt="Julian Guggeis spricht vor Publikum – Kandidat für den Stadtrat Straubing 2026"
             widths={[400, 800, 1200]}
             sizes="(max-width: 1024px) 100vw, 50vw"
-            class="w-full h-full object-cover"
+            class="w-full h-full object-cover object-[center_30%] lg:object-center"
             loading="eager"
             decoding="async"
           />
@@ -104,8 +104,13 @@ import julianRede from '../assets/julian-rede.jpg';
 </section>
 
 <style>
+  /* Mobile diagonal clip for hero image */
+  .hero-image-clip {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 4vw), 0 100%);
+  }
+
   @media (min-width: 1024px) {
-    .lg\:clip-path-angle {
+    .hero-image-clip {
       clip-path: polygon(15% 0, 100% 0, 100% 100%, 0 100%);
     }
   }

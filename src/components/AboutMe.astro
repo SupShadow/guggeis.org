@@ -25,7 +25,7 @@ import julianPortrait from '../assets/julian-portrait.jpg';
       </div>
 
       <!-- Text -->
-      <div class="space-y-6">
+      <div class="space-y-5 sm:space-y-6">
         <div>
           <span class="inline-block text-primary font-headline text-sm uppercase tracking-widest mb-4">
             Über mich
@@ -33,7 +33,7 @@ import julianPortrait from '../assets/julian-portrait.jpg';
           <h2 class="text-3xl sm:text-4xl lg:text-5xl text-dark mb-5">
             Einer von hier.<br />Mit einer Vision für morgen.
           </h2>
-          <p class="text-lg text-gray leading-relaxed">
+          <p class="text-base sm:text-lg text-gray leading-relaxed">
             <strong class="text-dark">Ich bin Julian, 31, Straubinger.</strong> Hier bin ich zur Schule
             gegangen, habe meine ersten Jobs gemacht, hier sind meine Familie und meine Freund:innen.
             Straubing ist mein Zuhause - und ich will, dass es eine starke Zukunft hat. Als
@@ -70,7 +70,7 @@ import julianPortrait from '../assets/julian-portrait.jpg';
         </div>
 
         <details id="about-more" class="about-more">
-          <summary class="about-toggle">
+          <summary class="about-toggle text-sm sm:text-base">
             <span class="about-more-closed">Mehr über mich</span>
             <span class="about-more-open">Weniger anzeigen</span>
           </summary>
@@ -94,7 +94,7 @@ import julianPortrait from '../assets/julian-portrait.jpg';
           </div>
         </details>
 
-        <a href="#kontakt" class="inline-flex items-center gap-2 text-primary font-medium underline underline-offset-4">
+        <a href="#kontakt" class="inline-flex items-center gap-2 text-primary font-medium underline underline-offset-4 text-sm sm:text-base">
           Frage stellen
         </a>
       </div>
@@ -120,6 +120,15 @@ import julianPortrait from '../assets/julian-portrait.jpg';
     text-decoration: underline;
     text-underline-offset: 4px;
     cursor: pointer;
+  }
+
+  @media (max-width: 640px) {
+    .about-toggle {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--color-primary);
+      background: rgba(227, 0, 27, 0.08);
+      text-decoration: none;
+    }
   }
 
   .about-more-open {

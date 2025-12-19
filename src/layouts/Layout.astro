@@ -5,16 +5,23 @@ interface Props {
   title: string;
   description?: string;
   image?: string;
+  ogType?: string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const {
   title,
   description = "Julian Guggeis - Mutig für Straubing. SPD Kandidat für die Kommunalwahl 2026.",
-  image = "/og-image.jpg"
+  image = "/og-image.jpg",
+  ogType = "website"
 } = Astro.props;
 
 const ogImageURL = new URL(image, Astro.site);
+const ogImageType = image.endsWith('.png')
+  ? 'image/png'
+  : image.endsWith('.svg')
+    ? 'image/svg+xml'
+    : 'image/jpeg';
 const siteBase = Astro.site?.toString().replace(/\/$/, '') ?? 'https://guggeis.org';
 const personId = `${siteBase}/#person`;
 const webSiteId = `${siteBase}/#website`;
@@ -31,9 +38,12 @@ const ogImageAlt = "Julian Guggeis - Mutig für Straubing";
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
     <meta name="author" content="Julian Guggeis" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="geo.region" content="DE-BY" />
+    <meta name="geo.placename" content="Straubing" />
 
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
+    <link rel="alternate" href={canonicalURL} hreflang="de-DE" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -48,9 +58,11 @@ const ogImageAlt = "Julian Guggeis - Mutig für Straubing";
     <!-- Open Graph / Social Media -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:secure_url" content={ogImageURL} />
+    <meta property="og:image:type" content={ogImageType} />
     <meta property="og:image:alt" content={ogImageAlt} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -59,6 +71,8 @@ const ogImageAlt = "Julian Guggeis - Mutig für Straubing";
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@jguggeis" />
+    <meta name="twitter:creator" content="@jguggeis" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageURL} />

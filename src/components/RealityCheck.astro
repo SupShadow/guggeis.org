@@ -1,16 +1,31 @@
 ---
-const pains = [
+const concerns = [
   {
-    titel: "Wohnen wird unbezahlbar.",
+    titel: "Wohnen frisst das Einkommen.",
     text: "Junge Familien und Azubis finden kaum noch bezahlbare Wohnungen."
   },
   {
-    titel: "Mobilität endet zu früh.",
-    text: "Wer abends arbeitet oder ausgeht, kommt oft nicht mehr zuverlässig heim."
+    titel: "Abends kommst du nicht mehr heim.",
+    text: "Wer arbeitet oder unterwegs ist, steht ohne verlässlichen Takt da."
   },
   {
-    titel: "Innenstadt verliert Leben.",
+    titel: "Innenstadt verliert Herzschlag.",
     text: "Leerstände und fehlende Aufenthaltsorte bremsen Straubings Mitte aus."
+  }
+];
+
+const responses = [
+  {
+    titel: "Wohnen sichern",
+    text: "Teisnacher Modell, 30% Sozialquote bei Neubauten und Wohnbauoffensive."
+  },
+  {
+    titel: "Mobil sein",
+    text: "Busse auch abends und am Wochenende plus On-Demand-Shuttle."
+  },
+  {
+    titel: "Mitte beleben",
+    text: "Pop-up-Stores, Donaustrand und mehr Grün statt grauer Flächen."
   }
 ];
 ---
@@ -19,42 +34,72 @@ const pains = [
   <div class="max-w-7xl mx-auto px-6 lg:px-12">
     <div class="text-center mb-10">
       <span class="inline-block text-primary font-headline text-sm uppercase tracking-widest mb-4">
-        Warum jetzt
+        Was ich höre
       </span>
       <h2 class="text-3xl sm:text-4xl lg:text-5xl text-dark mb-5">
-        Straubing steht an einem Wendepunkt.
+        Straubing ist besser als seine Stimmung.
       </h2>
       <p class="text-base sm:text-lg text-gray max-w-2xl mx-auto">
-        Ich höre in Gesprächen immer wieder die gleichen Sorgen. Genau dort setze ich an.
+        Wir drehen den Blick nach vorne: Klar sehen, mutig handeln und gemeinsam wieder gestalten.
       </p>
     </div>
 
-    <div class="grid gap-4 sm:gap-6 md:grid-cols-3" data-animate-stagger>
-      {pains.map((pain) => (
-        <div class="bg-sand p-5 sm:p-6 border-l-4 border-primary shadow-sm">
-          <h3 class="font-headline text-dark uppercase text-sm mb-2">
-            {pain.titel}
-          </h3>
-          <p class="text-gray text-sm leading-relaxed">
-            {pain.text}
-          </p>
-        </div>
-      ))}
+    <div class="grid gap-6 lg:grid-cols-2" data-animate-stagger>
+      <div class="space-y-4">
+        <p class="text-xs text-primary font-headline uppercase tracking-widest">
+          Was ich höre
+        </p>
+        {concerns.map((concern) => (
+          <div class="bg-sand p-5 sm:p-6 border-l-4 border-primary shadow-sm">
+            <h3 class="font-headline text-dark uppercase text-sm mb-2">
+              {concern.titel}
+            </h3>
+            <p class="text-gray text-sm leading-relaxed">
+              {concern.text}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <div class="space-y-4">
+        <p class="text-xs text-primary font-headline uppercase tracking-widest">
+          Was wir daraus machen
+        </p>
+        {responses.map((response) => (
+          <div class="bg-white p-5 sm:p-6 border-l-4 border-accent-teal shadow-sm">
+            <div class="flex items-start gap-3">
+              <span class="w-8 h-8 inline-flex items-center justify-center rounded-full bg-accent-teal/15 text-accent-teal flex-none">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                </svg>
+              </span>
+              <div>
+                <h3 class="font-headline text-dark uppercase text-sm mb-2">
+                  {response.titel}
+                </h3>
+                <p class="text-gray text-sm leading-relaxed">
+                  {response.text}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
 
     <div class="mt-8 max-w-3xl mx-auto bg-sand/70 p-5 border-l-4 border-primary">
       <p class="text-xs text-primary font-headline uppercase tracking-widest mb-2">
-        Ehrlich gesagt
+        Mutig heißt
       </p>
       <p class="text-sm text-gray leading-relaxed">
-        Jede Maßnahme steht unter Finanzierungsvorbehalt: Wir setzen nur um, was finanzierbar ist - aber das ist
-        keine Ausrede für Stillstand.
+        Realistisch bleiben - und trotzdem gestalten. Jede Maßnahme steht unter Finanzierungsvorbehalt, aber
+        das ist keine Ausrede für Stillstand in Straubing.
       </p>
     </div>
 
     <div class="text-center mt-10">
-      <a href="#themen" class="btn btn-outline">
-        Meine Prioritäten
+      <a href="#fahrplan" class="btn btn-primary">
+        Zum 100-Tage-Fahrplan
       </a>
     </div>
   </div>

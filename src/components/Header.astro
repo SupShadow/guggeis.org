@@ -4,14 +4,14 @@ import MobileMenu from './MobileMenu.astro';
 
 <header class="fixed top-0 left-0 right-0 z-50 bg-sand/95 backdrop-blur-sm" style="padding-top: env(safe-area-inset-top)">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style="padding-left: max(1rem, env(safe-area-inset-left)); padding-right: max(1rem, env(safe-area-inset-right))">
-    <div class="flex items-center justify-between h-16 lg:h-20">
+    <div class="flex items-center justify-between h-14 sm:h-16 lg:h-20">
       <!-- Logo -->
       <a href="/" class="flex items-center gap-2">
-        <span class="font-headline text-xl lg:text-2xl text-dark uppercase tracking-tight">
+        <span class="font-headline text-lg sm:text-xl lg:text-2xl text-dark uppercase tracking-tight">
           Guggeis
         </span>
-        <span class="text-primary font-headline text-xl lg:text-2xl">|</span>
-        <span class="font-headline text-xl lg:text-2xl text-primary uppercase tracking-tight">
+        <span class="text-primary font-headline text-lg sm:text-xl lg:text-2xl">|</span>
+        <span class="font-headline text-lg sm:text-xl lg:text-2xl text-primary uppercase tracking-tight">
           SPD
         </span>
       </a>
@@ -42,7 +42,7 @@ import MobileMenu from './MobileMenu.astro';
 </header>
 
 <!-- Spacer to prevent content from going under fixed header -->
-<div class="h-16 lg:h-20"></div>
+<div class="h-14 sm:h-16 lg:h-20"></div>
 
 <style>
   .nav-link {

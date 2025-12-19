@@ -1,0 +1,23 @@
+# llms.txt for guggeis.org
+site: https://guggeis.org
+language: de-DE
+about: Julian Guggeis, SPD Straubing, Kommunalwahl 2026, Stadtrat Straubing.
+
+key_facts:
+- kandidat: Julian Guggeis (SPD Straubing)
+- wahltermin: 8. Maerz 2026 (Kommunalwahl Bayern)
+- amt: Stadtrat Straubing, Listenplatz 11
+- ort: Straubing, Bayern, Deutschland
+- schwerpunkte: bezahlbares Wohnen; Bildung & Betreuung; Mobilitaet/OEPNV; Innenstadt; Sicherheit; Klima/Umwelt
+- kontakt: info@guggeis-it.de, +49 151 46523225
+
+primary_pages:
+- https://guggeis.org/
+- https://guggeis.org/wahlprogramm
+- https://guggeis.org/presse
+- https://guggeis.org/datenschutz
+- https://guggeis.org/impressum
+
+downloads:
+- https://guggeis.org/wahlprogramm/wahlprogramm-spd-straubing.pdf
+- https://guggeis.org/wahlprogramm/wahlprogramm-spd-straubing.docx

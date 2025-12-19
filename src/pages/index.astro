@@ -27,6 +27,24 @@ import ShareButtons from '../components/ShareButtons.astro';
   <Header />
   <main id="main-content">
     <Hero />
+    <section id="fakten" class="bg-white py-10 sm:py-12" data-animate>
+      <div class="max-w-5xl mx-auto px-6 lg:px-12">
+        <div class="bg-sand/70 border-l-4 border-primary p-5 sm:p-6">
+          <h2 class="sr-only">Fakten kurz & klar</h2>
+          <p class="text-xs text-primary font-headline uppercase tracking-widest mb-3">
+            Fakten kurz & klar
+          </p>
+          <ul class="text-sm sm:text-base text-gray grid gap-3 sm:grid-cols-2">
+            <li><strong class="text-dark">Wahltermin:</strong> 8. M&#228;rz 2026 (Kommunalwahl Bayern)</li>
+            <li><strong class="text-dark">Kandidat:</strong> Julian Guggeis, SPD Straubing</li>
+            <li><strong class="text-dark">Listenplatz:</strong> 11 (Stadtrat Straubing)</li>
+            <li><strong class="text-dark">Wahlhilfe:</strong> Kumulieren &amp; Panaschieren m&#246;glich (1&#8211;3 Stimmen)</li>
+            <li><strong class="text-dark">Schwerpunkte:</strong> Wohnen, Bildung, Mobilit&#228;t, Innenstadt, Sicherheit, Klima</li>
+            <li><strong class="text-dark">Wahlprogramm:</strong> <a href="/wahlprogramm" class="text-primary hover:underline">Kurzfassung &amp; Downloads</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
     <RealityCheck />
     <Wahlhilfe />
     <Fahrplan />

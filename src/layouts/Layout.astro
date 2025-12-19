@@ -85,14 +85,23 @@ const ogImageAlt = "Julian Guggeis - Mutig für Straubing";
       "@context": "https://schema.org",
       "@graph": [
         {
-          "@type": "Person",
+          "@type": "PoliticalCandidate",
           "@id": personId,
           "name": "Julian Guggeis",
-          "jobTitle": "SPD Kandidat Kommunalwahl 2026",
+          "jobTitle": "Stadtratskandidat 2026 (SPD Straubing)",
           "url": siteBase,
           "image": ogImageURL,
           "email": "mailto:info@guggeis-it.de",
           "telephone": "+49 151 46523225",
+          "knowsAbout": [
+            "Bezahlbares Wohnen",
+            "Bildung und Betreuung",
+            "Mobilitaet und OePNV",
+            "Innenstadt",
+            "Sicherheit",
+            "Klima und Umwelt",
+            "Soziale Gerechtigkeit"
+          ],
           "sameAs": [
             "https://instagram.com/jguggeis"
           ],
@@ -106,6 +115,10 @@ const ogImageAlt = "Julian Guggeis - Mutig für Straubing";
             "@type": "PoliticalParty",
             "name": "SPD",
             "url": "https://www.spd.de"
+          },
+          "memberOf": {
+            "@type": "Organization",
+            "name": "SPD Straubing"
           }
         },
         {

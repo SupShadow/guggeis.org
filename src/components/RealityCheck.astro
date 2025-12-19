@@ -24,14 +24,14 @@ const pains = [
       <h2 class="text-3xl sm:text-4xl lg:text-5xl text-dark mb-5">
         Straubing steht an einem Wendepunkt.
       </h2>
-      <p class="text-lg text-gray max-w-2xl mx-auto">
+      <p class="text-base sm:text-lg text-gray max-w-2xl mx-auto">
         Ich höre in Gesprächen immer wieder die gleichen Sorgen. Genau dort setze ich an.
       </p>
     </div>
 
-    <div class="grid md:grid-cols-3 gap-6" data-animate-stagger>
+    <div class="grid gap-4 sm:gap-6 md:grid-cols-3" data-animate-stagger>
       {pains.map((pain) => (
-        <div class="bg-sand p-6 border-l-4 border-primary shadow-sm">
+        <div class="bg-sand p-5 sm:p-6 border-l-4 border-primary shadow-sm">
           <h3 class="font-headline text-dark uppercase text-sm mb-2">
             {pain.titel}
           </h3>
@@ -46,7 +46,7 @@ const pains = [
       <p class="text-xs text-primary font-headline uppercase tracking-widest mb-2">
         Ehrlich gesagt
       </p>
-      <p class="text-sm text-gray">
+      <p class="text-sm text-gray leading-relaxed">
         Jede Maßnahme steht unter Finanzierungsvorbehalt: Wir setzen nur um, was finanzierbar ist - aber das ist
         keine Ausrede für Stillstand.
       </p>

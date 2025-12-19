@@ -64,7 +64,7 @@ export const HeroMotion: React.FC<HeroProps> = ({ candidateImageSrc }) => {
         <div className="grid lg:grid-cols-2 min-h-[calc(100vh-5rem)]">
           {/* Text Content */}
           <motion.div
-            className="flex flex-col justify-center px-6 py-8 lg:py-20 lg:px-12 order-2 lg:order-1 relative z-10"
+            className="flex flex-col justify-center px-6 pt-6 pb-4 sm:pt-10 sm:pb-8 lg:py-20 lg:px-12 order-2 lg:order-1 relative z-10"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
@@ -83,20 +83,20 @@ export const HeroMotion: React.FC<HeroProps> = ({ candidateImageSrc }) => {
               <span className="text-dark">kann mehr.</span>
             </motion.h1>
 
-            <motion.p variants={itemVariants} className="text-sm sm:text-base text-dark/80 font-medium mb-4 lg:mb-5">
+            <motion.p variants={itemVariants} className="text-sm sm:text-base text-dark/80 font-medium mb-3 lg:mb-5">
               <span className="text-primary">Julian Guggeis</span> · Kandidat für den Stadtrat 2026<br className="sm:hidden" />
               <span className="hidden sm:inline"> · </span>SPD Listenplatz 11
             </motion.p>
 
             <motion.p
               variants={itemVariants}
-              className="text-base sm:text-lg lg:text-xl text-gray max-w-lg mb-3 lg:mb-4 leading-relaxed border-l-4 border-primary pl-6"
+              className="text-sm sm:text-base lg:text-lg text-gray max-w-lg mb-3 lg:mb-4 leading-relaxed border-l-4 border-primary pl-5 sm:pl-6"
             >
               Ich kämpfe für bezahlbare Wohnungen, Busse die auch abends fahren,
               und eine Innenstadt, die wieder lebt. <strong className="text-dark">Dafür trete ich an.</strong>
             </motion.p>
 
-            <motion.p variants={itemVariants} className="text-sm sm:text-base text-primary font-headline uppercase tracking-wide mb-4">
+            <motion.p variants={itemVariants} className="text-xs sm:text-sm text-primary font-headline uppercase tracking-wide mb-4">
               Bereit für den Wandel. Bereit für 2026.
             </motion.p>
 
@@ -118,17 +118,17 @@ export const HeroMotion: React.FC<HeroProps> = ({ candidateImageSrc }) => {
             </motion.div>
 
             {/* CTAs */}
-            <motion.div variants={itemVariants} className="flex flex-wrap gap-4 pb-4">
+            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-3 sm:gap-4 pb-4">
               <a
                 href="#kontakt"
-                className="group relative px-8 py-4 bg-primary text-white font-headline uppercase tracking-wider overflow-hidden min-h-[44px] inline-flex items-center justify-center transition-transform hover:-translate-y-0.5 hover:shadow-lg"
+                className="group relative px-8 py-4 bg-primary text-white font-headline uppercase tracking-wider overflow-hidden min-h-[48px] inline-flex items-center justify-center transition-transform hover:-translate-y-0.5 hover:shadow-lg"
               >
                 <span className="relative z-10 group-hover:text-primary transition-colors duration-300">Schreib mir</span>
                 <div className="absolute inset-0 bg-white transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out skew-x-12 origin-left" />
               </a>
               <a
                 href="#wahlhilfe"
-                className="px-8 py-4 border-2 border-primary text-primary font-headline uppercase tracking-wider hover:bg-primary hover:text-white transition-colors duration-300 min-h-[44px] inline-flex items-center justify-center"
+                className="px-8 py-4 border-2 border-primary text-primary font-headline uppercase tracking-wider hover:bg-primary hover:text-white transition-colors duration-300 min-h-[48px] inline-flex items-center justify-center"
               >
                 So wählst du mich
               </a>
@@ -137,7 +137,7 @@ export const HeroMotion: React.FC<HeroProps> = ({ candidateImageSrc }) => {
 
           {/* Image with Mutig-Winkel */}
           <motion.div
-            className="relative order-1 lg:order-2 h-[35vh] sm:h-[40vh] lg:h-auto"
+            className="relative order-1 lg:order-2 h-[32vh] sm:h-[40vh] lg:h-auto"
             style={{ y: yImage }}
           >
             <div className="absolute inset-0 hero-image-clip">
@@ -152,13 +152,13 @@ export const HeroMotion: React.FC<HeroProps> = ({ candidateImageSrc }) => {
 
             {/* Floating Date Badge */}
             <motion.div
-              className="absolute bottom-4 left-4 lg:bottom-8 lg:left-8 z-30 bg-white p-4 lg:p-6 shadow-xl"
+              className="absolute bottom-4 left-4 lg:bottom-8 lg:left-8 z-30 bg-white p-3 sm:p-4 lg:p-6 shadow-xl"
               initial={{ scale: 0, rotate: -10 }}
               animate={{ scale: 1, rotate: -3 }}
               transition={{ delay: 0.8, type: "spring", stiffness: 150 }}
             >
-              <p className="font-headline font-black text-3xl lg:text-4xl text-primary leading-none">08.03.</p>
-              <p className="font-body font-bold text-dark text-xs lg:text-sm uppercase mt-1">Stadtratswahl</p>
+              <p className="font-headline font-black text-2xl sm:text-3xl lg:text-4xl text-primary leading-none">08.03.</p>
+              <p className="font-body font-bold text-dark text-[10px] sm:text-xs lg:text-sm uppercase mt-1">Stadtratswahl</p>
             </motion.div>
           </motion.div>
         </div>

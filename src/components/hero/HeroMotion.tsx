@@ -92,7 +92,7 @@ export const HeroMotion: React.FC<HeroProps> = ({ candidateImageSrc }) => {
               variants={itemVariants}
               className="text-sm sm:text-base lg:text-lg text-gray max-w-lg mb-3 lg:mb-4 leading-relaxed border-l-4 border-primary pl-5 sm:pl-6"
             >
-              Ich kämpfe für bezahlbare Wohnungen, Busse die auch abends fahren,
+              Straubing kann mehr – und wir fangen jetzt an: bezahlbares Wohnen, Busse die auch abends fahren
               und eine Innenstadt, die wieder lebt. <strong className="text-dark">Dafür trete ich an.</strong>
             </motion.p>
 

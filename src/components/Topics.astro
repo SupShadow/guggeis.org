@@ -223,9 +223,9 @@ const themen = [
       <div class="relative">
         <div class="topics-carousel flex gap-4 overflow-x-auto pb-5 -mx-6 px-6 snap-x snap-mandatory scroll-pl-6 sm:grid sm:overflow-visible sm:pb-0 sm:mx-0 sm:px-0 sm:grid-cols-2 lg:grid-cols-4">
         {themen.map((thema) => (
-          <div class="bg-white p-5 border border-dark/10 shadow-sm hover:shadow-md transition-shadow group flex-none min-w-[88%] snap-start sm:min-w-0">
-            <div class="flex items-center gap-3 mb-3">
-              <span class="w-10 h-10 inline-flex items-center justify-center bg-sand border border-dark/10 text-primary">
+          <div class="bg-white p-5 sm:p-6 border border-dark/10 border-t-4 border-t-primary/20 shadow-sm hover:shadow-md transition-shadow group flex-none min-w-[88%] snap-start sm:min-w-0">
+            <div class="flex items-start gap-3 mb-4">
+              <span class="w-10 h-10 inline-flex items-center justify-center bg-sand/80 border border-dark/10 text-primary">
                 <svg
                   class="w-6 h-6"
                   viewBox="0 0 24 24"
@@ -244,11 +244,11 @@ const themen = [
                   ))}
                 </svg>
               </span>
-              <h4 class="font-headline text-dark uppercase text-sm group-hover:text-primary transition-colors">
+              <h4 class="font-headline text-dark uppercase text-sm group-hover:text-primary transition-colors mt-1">
                 {thema.titel}
               </h4>
             </div>
-            <ul class="text-sm text-gray space-y-2">
+            <ul class="text-sm text-gray space-y-2 leading-relaxed">
               {thema.punkte.map((punkt, punktIndex) => (
                 <li class="flex items-start gap-2">
                   <span class="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary flex-none"></span>

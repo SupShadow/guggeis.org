@@ -1,0 +1,255 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const description =
+  "Das Wahlprogramm von Julian Guggeis und der SPD Straubing zur Kommunalwahl 2026 - kompakte Zusammenfassung und Downloads.";
+const pdfUrl = "/wahlprogramm/wahlprogramm-spd-straubing.pdf";
+const docxUrl = "/wahlprogramm/wahlprogramm-spd-straubing.docx";
+const pageUrl = new URL(Astro.url.pathname, Astro.site);
+const pdfAbs = new URL(pdfUrl, Astro.site);
+const docxAbs = new URL(docxUrl, Astro.site);
+
+const topGarantien = [
+  {
+    nummer: "1",
+    titel: "Wohnen muss leistbarer werden",
+    text: "Teisnacher Modell, 30% Sozialquote bei Großprojekten und Wohnbauoffensive gegen Leerstand."
+  },
+  {
+    nummer: "2",
+    titel: "Vorfahrt für Familien & Bildung",
+    text: "Jugendzentrum Resi sichern, Straubing-Zulage für Kitas, Schulsanierung und Digitalisierung."
+  },
+  {
+    nummer: "3",
+    titel: "Straubing bewegt sich besser",
+    text: "Unterführung Otto-von-Dandl-Ring, Busse dichter takten - auch abends und am Wochenende."
+  },
+  {
+    nummer: "4",
+    titel: "(Innen-)Stadt neu erleben",
+    text: "Mehr Grün, Donaustrand, Pop-up-Stores und weniger Leerstand in der Innenstadt."
+  },
+  {
+    nummer: "5",
+    titel: "Sicherheit & Sauberkeit",
+    text: "Kümmerer vor Ort, Strategie gegen Vandalismus und Müll-Hotspots, gut beleuchtete Wege."
+  }
+];
+
+const themen = [
+  {
+    titel: "Wohnen",
+    punkte: [
+      "Teisnacher Modell: Leerstand anmieten und günstig weitergeben",
+      "30% Sozialbindung bei neuen Geschosswohnungen",
+      "Erbbaurecht für Familien"
+    ]
+  },
+  {
+    titel: "Bildung & Betreuung",
+    punkte: [
+      "Straubing-Zulage für Kinderpfleger:innen und Erzieher:innen",
+      "Jugendzentrum in der Innenstadt",
+      "Schulen sanieren und digitalisieren"
+    ]
+  },
+  {
+    titel: "Mobilität, Klima & Umwelt",
+    punkte: [
+      "Busse öfter, auch abends und am Wochenende",
+      "On-Demand-Sammeltaxi als Ergänzung",
+      "Unterführung Otto-von-Dandl-Ring"
+    ]
+  },
+  {
+    titel: "Arbeit & Wirtschaft",
+    punkte: [
+      "Kommunale Beschäftigungs-GmbH",
+      "Tariftreue und kommunaler Mindestlohn",
+      "Handwerkerhöfe und Start-up-Förderung"
+    ]
+  },
+  {
+    titel: "Soziales & Zusammenhalt",
+    punkte: [
+      "St.-Nikola-Heim modernisieren",
+      "Barrierefreiheit - auch digital",
+      "Gleichstellung und Schutz vor Gewalt"
+    ]
+  },
+  {
+    titel: "Kultur & Sport",
+    punkte: [
+      "Sport- und Rehazentrum",
+      "Donaustrand mit attraktiven Angeboten",
+      "Ehrenamt stärken"
+    ]
+  },
+  {
+    titel: "Demokratie & Finanzen",
+    punkte: [
+      "Transparenter Haushalt",
+      "Straubing-App für Anliegen und Mängel",
+      "Stadtratssitzungen online"
+    ]
+  }
+];
+
+const programSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CreativeWork",
+      "name": "Kommunalwahlprogramm 2026 – Mutig für Straubing",
+      "description": description,
+      "inLanguage": "de-DE",
+      "url": pageUrl.toString(),
+      "author": {
+        "@type": "Organization",
+        "name": "SPD Straubing"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "SPD Straubing"
+      },
+      "about": {
+        "@type": "Place",
+        "name": "Straubing"
+      }
+    },
+    {
+      "@type": "MediaObject",
+      "name": "Wahlprogramm SPD Straubing (PDF)",
+      "contentUrl": pdfAbs.toString(),
+      "fileFormat": "application/pdf",
+      "encodingFormat": "application/pdf",
+      "inLanguage": "de-DE",
+      "isPartOf": {
+        "@type": "CreativeWork",
+        "name": "Kommunalwahlprogramm 2026 – Mutig für Straubing",
+        "url": pageUrl.toString()
+      }
+    },
+    {
+      "@type": "MediaObject",
+      "name": "Wahlprogramm SPD Straubing (DOCX)",
+      "contentUrl": docxAbs.toString(),
+      "fileFormat": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "encodingFormat": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "inLanguage": "de-DE",
+      "isPartOf": {
+        "@type": "CreativeWork",
+        "name": "Kommunalwahlprogramm 2026 – Mutig für Straubing",
+        "url": pageUrl.toString()
+      }
+    }
+  ]
+};
+---
+
+<Layout
+  title="Wahlprogramm 2026 | Julian Guggeis | SPD Straubing"
+  description={description}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(programSchema)} />
+  <Header />
+  <main class="bg-white py-20 lg:py-32">
+    <div class="max-w-5xl mx-auto px-6 lg:px-12">
+      <section class="mb-12">
+        <span class="inline-block text-primary font-headline text-sm uppercase tracking-widest mb-4">
+          Wahlprogramm 2026
+        </span>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl text-dark mb-5">
+          Mutig für Straubing.
+        </h1>
+        <p class="text-base sm:text-lg text-gray max-w-2xl leading-relaxed">
+          Hier findest du die wichtigsten Schwerpunkte kompakt zusammengefasst - und das vollständige
+          Wahlprogramm als PDF oder DOCX zum Download.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-3 mt-6">
+          <a href={pdfUrl} class="btn btn-primary" download>
+            PDF herunterladen
+          </a>
+          <a href={docxUrl} class="btn btn-outline" download>
+            DOCX herunterladen
+          </a>
+        </div>
+      </section>
+
+      <section class="mb-12 bg-sand/70 p-6 border-l-4 border-primary">
+        <p class="text-xs text-primary font-headline uppercase tracking-widest mb-2">
+          Finanzierungsvorbehalt
+        </p>
+        <p class="text-sm text-gray leading-relaxed">
+          Jede Maßnahme steht unter Finanzierungsvorbehalt. Wir setzen nur um, was finanzierbar ist -
+          und bleiben trotzdem mutig in den Prioritäten.
+        </p>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="text-2xl sm:text-3xl text-dark mb-6">
+          Top-5-Garantien
+        </h2>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {topGarantien.map((garantie) => (
+            <div class="bg-sand p-5 border-l-4 border-primary shadow-sm">
+              <span class="text-xs text-primary font-headline uppercase tracking-widest">
+                Garantie {garantie.nummer}
+              </span>
+              <h3 class="text-lg font-headline text-dark uppercase mt-2 mb-2">
+                {garantie.titel}
+              </h3>
+              <p class="text-sm text-gray leading-relaxed">
+                {garantie.text}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="mb-12">
+        <h2 class="text-2xl sm:text-3xl text-dark mb-6">
+          Themen im Überblick
+        </h2>
+        <div class="grid sm:grid-cols-2 gap-6">
+          {themen.map((thema) => (
+            <div class="bg-white border border-dark/10 p-5 shadow-sm">
+              <h3 class="font-headline text-dark uppercase text-sm mb-3">
+                {thema.titel}
+              </h3>
+              <ul class="text-sm text-gray space-y-2 leading-relaxed">
+                {thema.punkte.map((punkt) => (
+                  <li class="flex items-start gap-2">
+                    <span class="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary flex-none"></span>
+                    <span>{punkt}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section class="bg-sand/70 p-6 border-l-4 border-primary">
+        <h2 class="text-xl font-headline text-dark uppercase mb-2">
+          Fragen zum Programm?
+        </h2>
+        <p class="text-sm text-gray leading-relaxed mb-4">
+          Schreib mir deine Fragen oder sag mir, welche Themen dir in Straubing besonders wichtig sind.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-3">
+          <a href="/#kontakt" class="btn btn-primary">
+            Kontakt aufnehmen
+          </a>
+          <a href="/#themen" class="btn btn-outline">
+            Themen-Überblick
+          </a>
+        </div>
+      </section>
+    </div>
+  </main>
+  <Footer />
+</Layout>

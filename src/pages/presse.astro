@@ -2,12 +2,43 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+
+const description =
+  "Pressebereich mit Pressefotos, Kurzbiografie und Wahlprogramm-Downloads von Julian Guggeis, SPD Straubing.";
+const pageUrl = new URL(Astro.url.pathname, Astro.site);
+const ogImageUrl = new URL('/og-image.jpg', Astro.site);
+const buildDate = new Date().toISOString();
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Presse-Kit: Julian Guggeis | SPD Straubing",
+  "description": description,
+  "image": ogImageUrl.toString(),
+  "author": {
+    "@type": "Person",
+    "name": "Julian Guggeis",
+    "url": "https://guggeis.org"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "SPD Straubing",
+    "url": "https://guggeis.org"
+  },
+  "datePublished": buildDate,
+  "dateModified": buildDate,
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": pageUrl.toString()
+  }
+};
 ---
 
 <Layout
-  title="Presse & Materialien | Julian Guggeis | SPD"
-  description="Pressebereich mit Pressefotos, Kurzbiografie und Wahlprogramm-Downloads von Julian Guggeis, SPD Straubing."
+  title="Presse | Julian Guggeis | SPD Straubing"
+  description={description}
 >
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
   <Header />
   <main class="bg-white py-20 lg:py-32">
     <div class="max-w-4xl mx-auto px-6 lg:px-12">

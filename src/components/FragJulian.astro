@@ -5,19 +5,68 @@
 
 const formspreeId = "xlddegqe"; // Gleiche ID wie Newsletter oder neue erstellen
 
+const iconShapes = {
+  wohnen: {
+    paths: [
+      "M3 10l9-7 9 7",
+      "M5 10v9h5v-5h4v5h5v-9"
+    ]
+  },
+  mobilitaet: {
+    paths: [
+      "M4 6h16v9a2 2 0 01-2 2H6a2 2 0 01-2-2V6z",
+      "M4 10h16",
+      "M7 6v-2h10v2"
+    ],
+    circles: [
+      { cx: 7.5, cy: 17, r: 1.5 },
+      { cx: 16.5, cy: 17, r: 1.5 }
+    ]
+  },
+  familie: {
+    paths: [
+      "M7 12a3 3 0 100-6 3 3 0 000 6z",
+      "M17 12a3 3 0 100-6 3 3 0 000 6z",
+      "M3 20a6 6 0 0112 0",
+      "M9 20a6 6 0 0112 0"
+    ]
+  },
+  innenstadt: {
+    paths: [
+      "M4 20h16",
+      "M6 20V6h6v14",
+      "M12 20V10h6v10",
+      "M8 9h2",
+      "M8 12h2",
+      "M14 13h2",
+      "M14 16h2"
+    ]
+  },
+  verwaltung: {
+    paths: [
+      "M9 4h6v2H9z",
+      "M6 6h12v14H6z",
+      "M9 10h6",
+      "M9 14h6"
+    ]
+  }
+};
+
 const kategorien = [
-  { id: "wohnen", icon: "🏠", label: "Wohnen" },
-  { id: "mobilitaet", icon: "🚌", label: "Mobilität" },
-  { id: "familie", icon: "👨‍👩‍👧", label: "Familie" },
-  { id: "innenstadt", icon: "🏛️", label: "Innenstadt" },
-  { id: "verwaltung", icon: "📋", label: "Verwaltung" },
+  { id: "wohnen", iconKey: "wohnen", label: "Wohnen" },
+  { id: "mobilitaet", iconKey: "mobilitaet", label: "Mobilität" },
+  { id: "familie", iconKey: "familie", label: "Familie" },
+  { id: "innenstadt", iconKey: "innenstadt", label: "Innenstadt" },
+  { id: "verwaltung", iconKey: "verwaltung", label: "Verwaltung" },
 ];
 ---
 
 <section id="frag-julian" class="py-16 lg:py-24 bg-white">
   <div class="max-w-3xl mx-auto px-6 lg:px-12">
     <div class="text-center mb-8">
-      <span class="inline-block text-4xl mb-4">💬</span>
+      <svg class="w-12 h-12 text-primary mx-auto mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 15a4 4 0 01-4 4H8l-5 3V7a4 4 0 014-4h10a4 4 0 014 4z" />
+      </svg>
       <h2 class="text-3xl sm:text-4xl text-dark mb-4">
         Frag Julian
       </h2>
@@ -74,8 +123,25 @@ const kategorien = [
                 value={kat.id}
                 class="sr-only peer"
               />
-              <span class="inline-flex items-center gap-1.5 px-3 py-2 bg-white text-gray text-sm border-2 border-transparent peer-checked:border-primary peer-checked:text-primary transition-colors hover:bg-gray/5">
-                <span>{kat.icon}</span>
+              <span class="inline-flex items-center gap-2 px-3 py-2 bg-white text-gray text-sm border-2 border-transparent peer-checked:border-primary peer-checked:text-primary transition-colors hover:bg-gray/5">
+                <span class="inline-flex items-center justify-center w-5 h-5 text-primary" aria-hidden="true">
+                  <svg
+                    class="w-4 h-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    {iconShapes[kat.iconKey].paths.map((path) => (
+                      <path d={path} />
+                    ))}
+                    {iconShapes[kat.iconKey].circles?.map((circle) => (
+                      <circle cx={circle.cx} cy={circle.cy} r={circle.r} />
+                    ))}
+                  </svg>
+                </span>
                 <span>{kat.label}</span>
               </span>
             </label>
@@ -131,7 +197,9 @@ const kategorien = [
       id="success-message"
       class="hidden bg-accent-teal/10 border-2 border-accent-teal p-6 text-center"
     >
-      <span class="inline-block text-4xl mb-3">✅</span>
+      <svg class="w-10 h-10 text-accent-teal mx-auto mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20 6L9 17l-5-5" />
+      </svg>
       <h3 class="text-xl font-headline text-dark uppercase mb-2">
         Danke für deine Frage!
       </h3>

@@ -1,83 +1,63 @@
 ---
-// Unterstützer-Stimmen
-// Platzhalter mit Shimmer-Animation bis echte Zitate verfügbar sind
+import { voices, supporterCount } from '../data/voices';
+import SupporterCount from './SupporterCount.astro';
 
-const placeholderQuotes = [
-  {
-    text: "Straubing braucht jemanden, der die Stadt wirklich kennt und nicht nur Versprechungen macht.",
-    context: "Bürger:in aus Straubing"
-  },
-  {
-    text: "Endlich jemand, der das Wohnungsproblem ernst nimmt. Meine Kinder sollen hier bleiben können.",
-    context: "Junge Familie"
-  },
-  {
-    text: "Ich wünsche mir mehr Leben in der Innenstadt. Es ist Zeit für neue Ideen.",
-    context: "Einzelhändler:in"
-  }
-];
+const hasVoices = voices.length > 0;
+const hasCount = typeof supporterCount === 'number';
 ---
 
-<section class="relative bg-white py-20 lg:py-28" data-animate>
+<section class="relative bg-white py-16 lg:py-28" data-animate>
   <!-- Angled top edge -->
   <div class="absolute top-0 left-0 right-0 h-16 bg-sand transform -skew-y-2 origin-top-right -translate-y-8"></div>
 
   <div class="max-w-7xl mx-auto px-6 lg:px-12">
-    <div class="text-center mb-12">
+    <div class="text-center mb-10">
       <span class="inline-block text-primary font-headline text-sm uppercase tracking-widest mb-4">
-        Stimmen
+        Stimmen & Feedback
       </span>
-      <h2 class="text-3xl sm:text-4xl lg:text-5xl text-dark mb-6">
-        Was Straubinger bewegt
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl text-dark mb-5">
+        Was Straubing bewegt
       </h2>
-      <p class="text-lg text-gray max-w-2xl mx-auto">
-        Echte Stimmen und Wünsche von Menschen aus unserer Stadt.
+      <p class="text-base sm:text-lg text-gray max-w-2xl mx-auto">
+        Die besten Stimmen aus Gesprächen und Begegnungen veröffentliche ich hier.
       </p>
     </div>
 
-    <!-- Platzhalter-Karten mit Shimmer -->
-    <div class="grid md:grid-cols-3 gap-6" data-animate-stagger>
-      {placeholderQuotes.map((quote) => (
-        <div class="bg-sand p-6 relative overflow-hidden">
-          <!-- Quote Icon -->
-          <svg class="w-8 h-8 text-primary/20 mb-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-          </svg>
+    {hasCount && (
+      <div class="flex justify-center mb-8">
+        <SupporterCount count={supporterCount} />
+      </div>
+    )}
 
-          <!-- Quote Text -->
-          <p class="text-gray italic mb-4 leading-relaxed">
-            "{quote.text}"
-          </p>
-
-          <!-- Placeholder Avatar + Name -->
-          <div class="flex items-center gap-3 mt-6 pt-4 border-t border-gray/10">
-            <div class="w-10 h-10 rounded-full skeleton-shimmer"></div>
-            <div class="flex-1">
-              <div class="h-3 w-24 skeleton-shimmer rounded mb-1"></div>
-              <p class="text-xs text-gray/60">{quote.context}</p>
-            </div>
-          </div>
-
-          <!-- Coming Soon Badge -->
-          <div class="absolute top-4 right-4">
-            <span class="text-xs text-gray/40 bg-gray/10 px-2 py-1 rounded">
-              Bald mit Namen
-            </span>
-          </div>
-        </div>
-      ))}
-    </div>
-
-    <div class="text-center mt-10 p-6 bg-sand/50 max-w-xl mx-auto">
-      <p class="text-gray mb-3">
-        <strong class="text-dark">Deine Stimme fehlt noch!</strong>
-      </p>
-      <p class="text-gray text-sm mb-4">
-        Was wünschst du dir für Straubing? Teile deine Gedanken und werde Teil der Bewegung.
-      </p>
-      <a href="#kontakt" class="btn btn-outline text-sm">
-        Jetzt Stimme teilen
-      </a>
-    </div>
+    {hasVoices ? (
+      <div class="grid md:grid-cols-3 gap-4 sm:gap-6" data-animate-stagger>
+        {voices.map((voice) => (
+          <figure class="bg-sand p-5 sm:p-6 border-l-4 border-primary shadow-sm">
+            <svg class="w-8 h-8 text-primary/20 mb-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+            </svg>
+            <blockquote class="text-gray italic leading-relaxed">
+              "{voice.quote}"
+            </blockquote>
+            <figcaption class="mt-4 text-sm text-gray/80">
+              <strong class="text-dark">{voice.name}</strong>
+              {voice.role ? ` · ${voice.role}` : ""}
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    ) : (
+      <div class="text-center mt-6 p-6 bg-sand/60 max-w-xl mx-auto border-l-4 border-primary">
+        <p class="text-gray mb-3">
+          <strong class="text-dark">Deine Stimme fehlt noch.</strong>
+        </p>
+        <p class="text-gray text-sm mb-4">
+          Was wünschst du dir für Straubing? Teile deine Gedanken und werde Teil der Bewegung.
+        </p>
+        <a href="#kontakt" class="btn btn-outline text-sm">
+          Jetzt Stimme teilen
+        </a>
+      </div>
+    )}
   </div>
 </section>

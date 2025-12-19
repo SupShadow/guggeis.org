@@ -4,7 +4,7 @@
 const formspreeId = "meoykgve";
 ---
 
-<section id="kontakt" class="relative bg-white py-20 lg:py-28" data-animate>
+<section id="kontakt" class="relative bg-white py-16 lg:py-28" data-animate>
   <!-- Angled top edge -->
   <div class="absolute top-0 left-0 right-0 h-16 bg-sand transform -skew-y-2 origin-top-right -translate-y-8"></div>
 
@@ -18,7 +18,7 @@ const formspreeId = "meoykgve";
         <h2 class="text-3xl sm:text-4xl lg:text-5xl text-dark mb-6">
           Lass uns reden.
         </h2>
-        <p class="text-lg text-gray mb-8 leading-relaxed">
+        <p class="text-base sm:text-lg text-gray mb-8 leading-relaxed">
           Was beschäftigt dich in Straubing? Was läuft gut, was muss sich ändern?
           Ich lese jede Nachricht persönlich – und melde mich so schnell wie möglich.
         </p>
@@ -27,7 +27,7 @@ const formspreeId = "meoykgve";
         <div class="space-y-4">
           <a
             href="mailto:info@guggeis-it.de"
-            class="flex items-center gap-4 text-gray hover:text-primary transition-colors group"
+            class="flex items-center gap-4 text-sm sm:text-base text-gray hover:text-primary transition-colors group"
           >
             <span class="w-12 h-12 bg-sand group-hover:bg-primary/10 flex items-center justify-center transition-colors">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -39,7 +39,7 @@ const formspreeId = "meoykgve";
 
           <a
             href="tel:+4915146523225"
-            class="flex items-center gap-4 text-gray hover:text-primary transition-colors group"
+            class="flex items-center gap-4 text-sm sm:text-base text-gray hover:text-primary transition-colors group"
           >
             <span class="w-12 h-12 bg-sand group-hover:bg-primary/10 flex items-center justify-center transition-colors">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -53,7 +53,7 @@ const formspreeId = "meoykgve";
             href="https://instagram.com/jguggeis"
             target="_blank"
             rel="noopener noreferrer"
-            class="flex items-center gap-4 text-gray hover:text-primary transition-colors group"
+            class="flex items-center gap-4 text-sm sm:text-base text-gray hover:text-primary transition-colors group"
             aria-label="@jguggeis auf Instagram"
           >
             <span class="w-12 h-12 bg-sand group-hover:bg-primary/10 flex items-center justify-center transition-colors">
@@ -67,7 +67,7 @@ const formspreeId = "meoykgve";
       </div>
 
       <!-- Formular -->
-      <div class="bg-sand p-6 lg:p-8">
+      <div class="bg-sand p-5 sm:p-6 lg:p-8">
         <form
           action={`https://formspree.io/f/${formspreeId}`}
           method="POST"

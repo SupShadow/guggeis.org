@@ -23,7 +23,7 @@ const milestones = [
 ];
 ---
 
-<section id="fahrplan" class="relative bg-white py-20 lg:py-28" data-animate>
+<section id="fahrplan" class="relative bg-white py-16 lg:py-28" data-animate>
   <!-- Angled top edge -->
   <div class="absolute top-0 left-0 right-0 h-16 bg-sand transform -skew-y-2 origin-top-right -translate-y-8"></div>
 
@@ -35,14 +35,14 @@ const milestones = [
       <h2 class="text-3xl sm:text-4xl lg:text-5xl text-dark mb-5">
         Die ersten 100 Tage.
       </h2>
-      <p class="text-lg text-gray max-w-2xl mx-auto">
+      <p class="text-base sm:text-lg text-gray max-w-2xl mx-auto">
         Konkrete Anträge, die ich im Stadtrat einbringe - daran kannst du mich messen.
       </p>
     </div>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" data-animate-stagger>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6" data-animate-stagger>
       {milestones.map((milestone, index) => (
-        <div class="bg-sand p-6 border-t-4 border-primary shadow-sm hover:shadow-md transition-shadow">
+        <div class="bg-sand p-5 sm:p-6 border-t-4 border-primary shadow-sm hover:shadow-md transition-shadow">
           <div class="flex items-center justify-between mb-3">
             <span class="text-xs text-primary font-headline uppercase tracking-widest">
               {milestone.bereich}
@@ -61,8 +61,8 @@ const milestones = [
       ))}
     </div>
 
-    <div class="mt-10 bg-sand/70 p-6 border-l-4 border-primary flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-      <p class="text-sm text-gray">
+    <div class="mt-10 bg-sand/70 p-5 sm:p-6 border-l-4 border-primary flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <p class="text-sm sm:text-base text-gray">
         Transparenz ist Pflicht: Ich berichte regelmäßig über Fortschritte und Blockaden - öffentlich und nachvollziehbar.
       </p>
       <a href="#frag-julian" class="btn btn-outline">

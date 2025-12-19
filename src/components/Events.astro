@@ -4,7 +4,7 @@
 const API_URL = "https://supshadow.github.io/spd-straubing-kampagne-termine/api/termine.json";
 ---
 
-<section id="termine" class="relative bg-secondary py-20 lg:py-28" data-animate>
+<section id="termine" class="relative bg-secondary py-16 lg:py-28" data-animate>
   <!-- Angled top edge -->
   <div class="absolute top-0 left-0 right-0 h-16 bg-white transform -skew-y-2 origin-top-right -translate-y-8"></div>
 
@@ -16,7 +16,7 @@ const API_URL = "https://supshadow.github.io/spd-straubing-kampagne-termine/api/
       <h2 class="text-3xl sm:text-4xl lg:text-5xl text-white mb-6">
         Alle Termine
       </h2>
-      <p class="text-lg text-white max-w-2xl mx-auto">
+      <p class="text-base sm:text-lg text-white max-w-2xl mx-auto">
         Persönliche Begegnungen sind mir wichtig. Hier findest du alle kommenden Veranstaltungen im Überblick.
       </p>
     </div>
@@ -35,7 +35,7 @@ const API_URL = "https://supshadow.github.io/spd-straubing-kampagne-termine/api/
       </div>
 
       <!-- Termine Grid (initial versteckt) -->
-      <div id="termine-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 hidden" role="list" aria-label="Veranstaltungen"></div>
+      <div id="termine-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 hidden" role="list" aria-label="Veranstaltungen"></div>
 
       <!-- Fallback wenn keine Termine -->
       <div id="termine-fallback" class="text-center py-12 hidden">

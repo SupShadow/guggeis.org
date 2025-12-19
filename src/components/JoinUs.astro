@@ -2,7 +2,7 @@
 // Mitmachen-Sektion - SPD Mitglied werden
 ---
 
-<section id="mitmachen" class="relative bg-primary py-20 lg:py-28" data-animate>
+<section id="mitmachen" class="relative bg-primary py-16 lg:py-28" data-animate>
   <!-- Angled top edge -->
   <div class="absolute top-0 left-0 right-0 h-16 bg-white transform -skew-y-2 origin-top-right -translate-y-8"></div>
 
@@ -13,7 +13,7 @@
     <h2 class="text-3xl sm:text-4xl lg:text-5xl text-white mb-6">
       Das schaffe ich nicht allein.
     </h2>
-    <p class="text-lg lg:text-xl text-white/90 max-w-2xl mx-auto mb-10 leading-relaxed">
+    <p class="text-base sm:text-lg lg:text-xl text-white/90 max-w-2xl mx-auto mb-10 leading-relaxed">
       Straubing zu verändern braucht mehr als eine Stimme. Es braucht eine Bewegung.
       Du musst kein Parteimitglied sein, um mitzumachen. Teile meine Ideen, komm zu Veranstaltungen,
       oder schreib mir einfach, was dich bewegt. <strong class="text-white">Jeder Beitrag zählt.</strong>
@@ -22,13 +22,13 @@
     <div class="flex flex-col sm:flex-row gap-4 justify-center items-center flex-wrap">
       <a
         href="#kontakt"
-        class="btn bg-white text-primary hover:bg-sand"
+        class="btn bg-white text-primary hover:bg-sand w-full sm:w-auto"
       >
         Schreib mir
       </a>
       <button
         type="button"
-        class="btn border-2 border-white text-white hover:bg-white hover:text-primary"
+        class="btn border-2 border-white text-white hover:bg-white hover:text-primary w-full sm:w-auto"
         onclick="navigator.share ? navigator.share({title: 'Julian Guggeis - Mutig für Straubing', url: window.location.href}) : window.open('https://wa.me/?text=' + encodeURIComponent('Schau dir das an: Julian Guggeis kandidiert für den Stadtrat 2026 in Straubing! ' + window.location.href), '_blank')"
       >
         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -40,7 +40,7 @@
         href="https://www.spd.de/unterstuetzen/mitglied-werden/"
         target="_blank"
         rel="noopener noreferrer"
-        class="btn border-2 border-white text-white hover:bg-white hover:text-primary"
+        class="btn border-2 border-white text-white hover:bg-white hover:text-primary w-full sm:w-auto"
       >
         SPD Mitglied werden
       </a>

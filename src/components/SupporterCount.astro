@@ -4,10 +4,13 @@ interface Props {
   count?: number;
 }
 
-const { count = 50 } = Astro.props;
+const { count } = Astro.props;
 ---
 
-<div class="supporter-count flex items-center gap-3 text-dark/80" data-count={count}>
+<div
+  class="supporter-count flex items-center gap-3 text-dark/80"
+  data-count={typeof count === 'number' ? count : undefined}
+>
   <div class="flex -space-x-2">
     <!-- Stilisierte Avatar-Gruppe -->
     <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold border-2 border-sand">
@@ -27,9 +30,15 @@ const { count = 50 } = Astro.props;
     </div>
   </div>
   <p class="text-sm">
-    <span class="text-dark/70">Feedback von </span>
-    <span class="font-headline text-primary text-lg counter-number">{count}</span>
-    <span class="text-dark/70">+ Straubingern eingeflossen</span>
+    {typeof count === 'number' ? (
+      <>
+        <span class="text-dark/70">Feedback von </span>
+        <span class="font-headline text-primary text-lg counter-number">{count}</span>
+        <span class="text-dark/70">+ Straubingern eingeflossen</span>
+      </>
+    ) : (
+      <span class="text-dark/70">Feedback aus Straubing eingeflossen</span>
+    )}
   </p>
 </div>
 
@@ -38,7 +47,10 @@ const { count = 50 } = Astro.props;
   const counters = document.querySelectorAll('.supporter-count');
 
   const animateCounter = (element: Element) => {
-    const target = parseInt(element.getAttribute('data-count') || '50');
+    const countAttr = element.getAttribute('data-count');
+    if (!countAttr) return;
+    const target = parseInt(countAttr, 10);
+    if (Number.isNaN(target)) return;
     const numberEl = element.querySelector('.counter-number');
     if (!numberEl) return;
 

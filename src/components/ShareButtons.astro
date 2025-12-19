@@ -5,7 +5,7 @@ const shareUrl = "https://guggeis.org";
 const shareText = "Straubing kann mehr. Julian Guggeis - Mutig für Straubing.";
 ---
 
-<div id="share-container" class="fixed right-6 z-40 flex flex-col gap-2">
+<div id="share-container" class="fixed right-6 z-40 hidden lg:flex flex-col gap-2">
   <!-- Toggle Button -->
   <button
     id="share-toggle"
@@ -74,12 +74,12 @@ const shareText = "Straubing kann mehr. Julian Guggeis - Mutig für Straubing.";
 </div>
 
 <!-- Toast für Feedback -->
-<div id="copy-toast" class="fixed right-6 bg-dark text-white px-4 py-2 rounded shadow-lg opacity-0 transition-opacity pointer-events-none z-50 toast-position">
+<div id="copy-toast" class="fixed right-6 hidden lg:block bg-dark text-white px-4 py-2 rounded shadow-lg opacity-0 transition-opacity pointer-events-none z-50 toast-position">
   Link kopiert!
 </div>
 
 <!-- Error Toast -->
-<div id="copy-error-toast" class="fixed right-6 bg-red-600 text-white px-4 py-2 rounded shadow-lg opacity-0 transition-opacity pointer-events-none z-50 toast-position">
+<div id="copy-error-toast" class="fixed right-6 hidden lg:block bg-red-600 text-white px-4 py-2 rounded shadow-lg opacity-0 transition-opacity pointer-events-none z-50 toast-position">
   Kopieren fehlgeschlagen
 </div>
 

@@ -1,0 +1,90 @@
+---
+const steps = [
+  {
+    nummer: "1",
+    titel: "Wahlbenachrichtigung checken",
+    text: "Am 8. März 2026 ist Kommunalwahl. Wenn du an dem Tag nicht kannst, nutze die Briefwahl über deine Wahlbenachrichtigung oder direkt im Rathaus."
+  },
+  {
+    nummer: "2",
+    titel: "Julian Guggeis finden",
+    text: "Du findest mich auf der SPD-Liste auf Listenplatz 11. Der Name steht im SPD-Block des Stimmzettels."
+  },
+  {
+    nummer: "3",
+    titel: "1 bis 3 Stimmen geben",
+    text: "Du darfst mir bis zu drei Stimmen geben (kumulieren) und trotzdem Kandidat:innen anderer Parteien wählen (panaschieren)."
+  }
+];
+---
+
+<section id="wahlhilfe" class="relative bg-sand py-20 lg:py-28" data-animate>
+  <!-- Angled top edge -->
+  <div class="absolute top-0 left-0 right-0 h-16 bg-white transform -skew-y-2 origin-top-right -translate-y-8"></div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <div class="text-center mb-12">
+      <span class="inline-block text-primary font-headline text-sm uppercase tracking-widest mb-4">
+        Wahlhilfe
+      </span>
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl text-dark mb-5">
+        So wählst du mich.
+      </h2>
+      <p class="text-lg text-gray max-w-2xl mx-auto">
+        Du hast 40 Stimmen. Du kannst mir 1 bis 3 geben - auch wenn du sonst anders wählst.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6" data-animate-stagger>
+      {steps.map((step) => (
+        <div class="bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
+          <div class="flex items-center gap-3 mb-3">
+            <span class="w-10 h-10 bg-primary text-white font-headline text-lg flex items-center justify-center">
+              {step.nummer}
+            </span>
+            <h3 class="font-headline text-dark uppercase text-sm">
+              {step.titel}
+            </h3>
+          </div>
+          <p class="text-gray text-sm leading-relaxed">
+            {step.text}
+          </p>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-10 grid lg:grid-cols-[2fr,1fr] gap-6 items-start">
+      <div class="bg-white p-6 border-l-4 border-primary">
+        <p class="text-xs text-primary font-headline uppercase tracking-widest mb-2">
+          Merksatz
+        </p>
+        <p class="text-lg text-dark font-medium">
+          Julian Guggeis - SPD - Liste 11 - bis zu 3 Stimmen.
+        </p>
+        <p class="text-sm text-gray mt-2">
+          Kumulieren und Panaschieren sind erlaubt.
+        </p>
+      </div>
+      <div class="bg-white p-6 border border-dark/10">
+        <p class="text-xs text-primary font-headline uppercase tracking-widest mb-2">
+          Wichtig
+        </p>
+        <p class="text-sm text-gray leading-relaxed">
+          Du kannst mich auch gezielt unterstützen, ohne dich fest an eine Partei zu binden.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+      <a href="#faq" class="btn btn-outline">
+        FAQ zur Wahl
+      </a>
+      <a href="#kontakt" class="btn btn-primary">
+        Schreib mir deine Frage
+      </a>
+    </div>
+  </div>
+
+  <!-- Angled bottom edge -->
+  <div class="absolute bottom-0 left-0 right-0 h-16 bg-white transform -skew-y-2 origin-bottom-left translate-y-8"></div>
+</section>

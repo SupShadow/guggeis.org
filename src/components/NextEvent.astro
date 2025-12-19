@@ -1,0 +1,150 @@
+---
+const API_URL = "https://supshadow.github.io/spd-straubing-kampagne-termine/api/termine.json";
+---
+
+<section id="naechster-termin" class="relative bg-secondary py-12 lg:py-16" data-animate>
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <div class="grid lg:grid-cols-[1.1fr,1fr] gap-8 items-center">
+      <div>
+        <span class="inline-block text-accent-yellow font-headline text-xs uppercase tracking-widest mb-3">
+          Nächstes Treffen
+        </span>
+        <h2 class="text-3xl sm:text-4xl text-white mb-4">
+          Komm vorbei und sag mir, was zählt.
+        </h2>
+        <p class="text-white/90 text-base sm:text-lg max-w-xl">
+          Persönliche Gespräche machen den Unterschied. Ich freue mich auf dich.
+        </p>
+        <div class="mt-6 flex flex-col sm:flex-row gap-3">
+          <a href="#termine" class="btn bg-white text-secondary hover:bg-sand">
+            Alle Termine
+          </a>
+          <a href="#kontakt" class="btn border-2 border-white text-white hover:bg-white hover:text-secondary">
+            Frage stellen
+          </a>
+        </div>
+      </div>
+
+      <div class="bg-white/10 backdrop-blur-sm p-6 lg:p-8 border border-white/10">
+        <div id="next-event-loading" class="text-white/90 flex items-center gap-3" role="status">
+          <svg class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span>Termine werden geladen...</span>
+        </div>
+
+        <div id="next-event-card" class="hidden">
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 bg-white text-dark px-3 py-2 text-center">
+              <span id="next-event-day" class="block text-2xl font-headline leading-none">--</span>
+              <span id="next-event-month" class="block text-xs uppercase tracking-widest">---</span>
+            </div>
+            <div>
+              <h3 id="next-event-title" class="font-headline text-white uppercase text-lg mb-1"></h3>
+              <p id="next-event-meta" class="text-white/90 text-sm mb-2"></p>
+              <p id="next-event-desc" class="text-white/80 text-sm"></p>
+            </div>
+          </div>
+          <div class="mt-4">
+            <a href="#termine" class="text-accent-yellow hover:text-white transition-colors text-sm font-medium">
+              Alle Termine ansehen
+            </a>
+          </div>
+        </div>
+
+        <div id="next-event-fallback" class="hidden text-white/90">
+          <p class="mb-3">
+            Termine folgen. Ich halte dich auf dem Laufenden.
+          </p>
+          <a
+            href="https://instagram.com/jguggeis"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-accent-yellow hover:text-white transition-colors text-sm font-medium"
+          >
+            @jguggeis auf Instagram
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ API_URL }}>
+  const loading = document.getElementById('next-event-loading');
+  const card = document.getElementById('next-event-card');
+  const fallback = document.getElementById('next-event-fallback');
+  const dayEl = document.getElementById('next-event-day');
+  const monthEl = document.getElementById('next-event-month');
+  const titleEl = document.getElementById('next-event-title');
+  const metaEl = document.getElementById('next-event-meta');
+  const descEl = document.getElementById('next-event-desc');
+
+  const monthNames = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+
+  const showFallback = () => {
+    loading?.classList.add('hidden');
+    fallback?.classList.remove('hidden');
+  };
+
+  const showCard = (termin) => {
+    const dateParts = termin.datum?.split('-') || [];
+    if (dateParts.length !== 3) return false;
+
+    const monthIndex = parseInt(dateParts[1], 10) - 1;
+    if (isNaN(monthIndex) || monthIndex < 0 || monthIndex > 11) return false;
+
+    const day = dateParts[2];
+    const month = monthNames[monthIndex];
+
+    if (dayEl) dayEl.textContent = day;
+    if (monthEl) monthEl.textContent = month;
+    if (titleEl) titleEl.textContent = termin.titel || 'Treffen vor Ort';
+    if (metaEl) metaEl.textContent = `${termin.uhrzeit || 'Uhrzeit folgt'} Uhr - ${termin.ort || 'Ort folgt'}`;
+    if (descEl) descEl.textContent = termin.beschreibung || '';
+
+    loading?.classList.add('hidden');
+    card?.classList.remove('hidden');
+    return true;
+  };
+
+  async function loadNextEvent() {
+    try {
+      const response = await fetch(API_URL);
+      if (!response.ok) throw new Error('API nicht erreichbar');
+
+      const data = await response.json();
+      const termine = data?.termine || [];
+
+      const now = new Date();
+      const parsed = termine
+        .map((termin) => {
+          const date = new Date(`${termin.datum}T${termin.uhrzeit || '00:00'}:00`);
+          return Number.isNaN(date.getTime()) ? null : { ...termin, date };
+        })
+        .filter(Boolean)
+        .sort((a, b) => a.date - b.date);
+
+      const upcoming = parsed.find((termin) => termin.date >= now);
+
+      if (!upcoming) {
+        showFallback();
+        return;
+      }
+
+      if (!showCard(upcoming)) {
+        showFallback();
+      }
+    } catch (error) {
+      console.warn('Nächster Termin konnte nicht geladen werden:', error);
+      showFallback();
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadNextEvent);
+  } else {
+    loadNextEvent();
+  }
+</script>

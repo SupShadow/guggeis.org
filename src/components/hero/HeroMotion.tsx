@@ -3,10 +3,9 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 
 interface HeroProps {
   candidateImageSrc: string;
-  supporterCount: number;
 }
 
-export const HeroMotion: React.FC<HeroProps> = ({ candidateImageSrc, supporterCount }) => {
+export const HeroMotion: React.FC<HeroProps> = ({ candidateImageSrc }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [daysUntilElection, setDaysUntilElection] = useState<number | null>(null);
 
@@ -108,21 +107,13 @@ export const HeroMotion: React.FC<HeroProps> = ({ candidateImageSrc, supporterCo
                 {daysUntilElection ?? '---'} Tage bis zur Wahl
               </p>
               <p className="text-xs text-gray/70 mt-1">8. März 2026</p>
-            </motion.div>
-
-            {/* Supporter Count */}
-            <motion.div variants={itemVariants} className="mb-4">
-              <div className="flex items-center gap-3 text-dark">
-                <div className="flex -space-x-2">
-                  {[...Array(3)].map((_, i) => (
-                    <div key={i} className="w-8 h-8 rounded-full bg-primary/20 border-2 border-sand flex items-center justify-center">
-                      <span className="text-xs" aria-hidden="true">&#x1F464;</span>
-                    </div>
-                  ))}
-                </div>
-                <p className="text-sm">
-                  <strong className="text-primary">{supporterCount}+</strong> Unterstützer:innen
-                </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <span className="px-2 py-1 text-[11px] uppercase tracking-widest bg-sand text-dark font-headline">
+                  SPD Liste 11
+                </span>
+                <span className="px-2 py-1 text-[11px] uppercase tracking-widest bg-sand text-dark font-headline">
+                  1-3 Stimmen
+                </span>
               </div>
             </motion.div>
 
@@ -136,10 +127,10 @@ export const HeroMotion: React.FC<HeroProps> = ({ candidateImageSrc, supporterCo
                 <div className="absolute inset-0 bg-white transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out skew-x-12 origin-left" />
               </a>
               <a
-                href="#themen"
+                href="#wahlhilfe"
                 className="px-8 py-4 border-2 border-primary text-primary font-headline uppercase tracking-wider hover:bg-primary hover:text-white transition-colors duration-300 min-h-[44px] inline-flex items-center justify-center"
               >
-                Meine 5 Versprechen
+                So wählst du mich
               </a>
             </motion.div>
           </motion.div>

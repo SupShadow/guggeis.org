@@ -160,7 +160,7 @@ const themen = [
       <h2 class="text-3xl sm:text-4xl lg:text-5xl text-dark mb-6">
         Das packe ich zuerst an.
       </h2>
-      <p class="text-lg text-gray max-w-2xl mx-auto">
+      <p class="text-base sm:text-lg text-gray max-w-2xl mx-auto">
         Meine drei wichtigsten Prioritäten zuerst - und alle weiteren Themen im Überblick.
       </p>
     </div>
@@ -172,7 +172,7 @@ const themen = [
       </p>
       <div class="space-y-4">
         {prioritaeten.map((garantie) => (
-          <div class="bg-white p-5 shadow-sm">
+          <div class="bg-white p-5 shadow-sm border-l-4 border-primary/20">
             <div class="flex items-start gap-3">
               <span class="flex-shrink-0 w-9 h-9 bg-primary text-white font-headline text-sm flex items-center justify-center">
                 {garantie.nummer}
@@ -220,9 +220,10 @@ const themen = [
       <p class="text-center text-sm text-gray/80 mb-6">
         Details zu jedem Bereich, kompakt zusammengefasst.
       </p>
-      <div class="flex gap-4 overflow-x-auto pb-4 -mx-6 px-6 snap-x snap-mandatory sm:grid sm:overflow-visible sm:pb-0 sm:mx-0 sm:px-0 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="relative">
+        <div class="flex gap-4 overflow-x-auto pb-4 -mx-6 px-6 snap-x snap-mandatory sm:grid sm:overflow-visible sm:pb-0 sm:mx-0 sm:px-0 sm:grid-cols-2 lg:grid-cols-4">
         {themen.map((thema) => (
-          <div class="bg-white p-5 border border-dark/10 shadow-sm hover:shadow-md transition-shadow group flex-none min-w-[75%] snap-start sm:min-w-0">
+          <div class="bg-white p-5 border border-dark/10 shadow-sm hover:shadow-md transition-shadow group flex-none min-w-[82%] snap-start sm:min-w-0">
             <div class="flex items-center gap-3 mb-3">
               <span class="w-10 h-10 inline-flex items-center justify-center bg-sand border border-dark/10 text-primary">
                 <svg
@@ -274,6 +275,9 @@ const themen = [
             </ul>
           </div>
         ))}
+        </div>
+        <div class="pointer-events-none absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-sand via-sand/80 to-transparent sm:hidden"></div>
+        <div class="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-sand via-sand/80 to-transparent sm:hidden"></div>
       </div>
       <p class="text-xs text-gray/70 mt-2 sm:hidden">
         Wische nach rechts, um mehr Themen zu sehen.

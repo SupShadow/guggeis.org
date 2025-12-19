@@ -21,6 +21,50 @@ const API_URL = "https://supshadow.github.io/spd-straubing-kampagne-termine/api/
       </p>
     </div>
 
+    <!-- Nächstes Treffen (nur Mobile) -->
+    <div class="md:hidden mb-10">
+      <div class="bg-white/10 backdrop-blur-sm p-5 border border-white/10">
+        <p class="text-accent-yellow font-headline text-xs uppercase tracking-widest mb-3">
+          Nächstes Treffen
+        </p>
+        <div id="next-event-mobile-loading" class="text-white/90 flex items-center gap-3" role="status">
+          <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span>Termine werden geladen...</span>
+        </div>
+
+        <div id="next-event-mobile-card" class="hidden">
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 bg-white text-dark px-3 py-2 text-center">
+              <span id="next-event-mobile-day" class="block text-2xl font-headline leading-none">--</span>
+              <span id="next-event-mobile-month" class="block text-[10px] uppercase tracking-widest">---</span>
+            </div>
+            <div>
+              <h3 id="next-event-mobile-title" class="font-headline text-white uppercase text-lg mb-1"></h3>
+              <p id="next-event-mobile-meta" class="text-white/90 text-sm mb-2"></p>
+              <p id="next-event-mobile-desc" class="text-white/80 text-sm"></p>
+            </div>
+          </div>
+        </div>
+
+        <div id="next-event-mobile-fallback" class="hidden text-white/90">
+          <p class="mb-3">
+            Termine folgen. Ich halte dich auf dem Laufenden.
+          </p>
+          <a
+            href="https://instagram.com/jguggeis"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-accent-yellow hover:text-white transition-colors text-sm font-medium"
+          >
+            @jguggeis auf Instagram
+          </a>
+        </div>
+      </div>
+    </div>
+
     <!-- Termine Container - wird via JavaScript gefüllt -->
     <div id="termine-container" aria-live="polite" aria-atomic="true">
       <!-- Lade-Indikator -->
@@ -81,6 +125,42 @@ const API_URL = "https://supshadow.github.io/spd-straubing-kampagne-termine/api/
     const loading = document.getElementById('termine-loading');
     const grid = document.getElementById('termine-grid');
     const fallback = document.getElementById('termine-fallback');
+    const mobileLoading = document.getElementById('next-event-mobile-loading');
+    const mobileCard = document.getElementById('next-event-mobile-card');
+    const mobileFallback = document.getElementById('next-event-mobile-fallback');
+    const mobileDay = document.getElementById('next-event-mobile-day');
+    const mobileMonth = document.getElementById('next-event-mobile-month');
+    const mobileTitle = document.getElementById('next-event-mobile-title');
+    const mobileMeta = document.getElementById('next-event-mobile-meta');
+    const mobileDesc = document.getElementById('next-event-mobile-desc');
+
+    const monthNames = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+
+    const showMobileFallback = () => {
+      mobileLoading?.classList.add('hidden');
+      mobileFallback?.classList.remove('hidden');
+    };
+
+    const showMobileCard = (termin) => {
+      const dateParts = termin.datum?.split('-') || [];
+      if (dateParts.length !== 3) return false;
+
+      const monthIndex = parseInt(dateParts[1], 10) - 1;
+      if (isNaN(monthIndex) || monthIndex < 0 || monthIndex > 11) return false;
+
+      const day = dateParts[2];
+      const month = monthNames[monthIndex];
+
+      if (mobileDay) mobileDay.textContent = day;
+      if (mobileMonth) mobileMonth.textContent = month;
+      if (mobileTitle) mobileTitle.textContent = termin.titel || 'Treffen vor Ort';
+      if (mobileMeta) mobileMeta.textContent = `${termin.uhrzeit || 'Uhrzeit folgt'} Uhr - ${termin.ort || 'Ort folgt'}`;
+      if (mobileDesc) mobileDesc.textContent = termin.beschreibung || '';
+
+      mobileLoading?.classList.add('hidden');
+      mobileCard?.classList.remove('hidden');
+      return true;
+    };
 
     try {
       const response = await fetch(API_URL);
@@ -96,7 +176,22 @@ const API_URL = "https://supshadow.github.io/spd-straubing-kampagne-termine/api/
 
       if (termine.length === 0) {
         fallback?.classList.remove('hidden');
+        showMobileFallback();
         return;
+      }
+
+      const now = new Date();
+      const upcoming = termine
+        .map((termin) => {
+          const date = new Date(`${termin.datum}T${termin.uhrzeit || '00:00'}:00`);
+          return Number.isNaN(date.getTime()) ? null : { ...termin, date };
+        })
+        .filter(Boolean)
+        .sort((a, b) => a.date - b.date)
+        .find((termin) => termin.date >= now);
+
+      if (!upcoming || !showMobileCard(upcoming)) {
+        showMobileFallback();
       }
 
       // Termine anzeigen
@@ -120,7 +215,6 @@ const API_URL = "https://supshadow.github.io/spd-straubing-kampagne-termine/api/
         }
 
         const day = dateParts[2];
-        const monthNames = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
         const month = monthNames[monthIndex];
         const year = dateParts[0];
 
@@ -194,6 +288,7 @@ const API_URL = "https://supshadow.github.io/spd-straubing-kampagne-termine/api/
       console.warn('Termine konnten nicht geladen werden:', error);
       loading?.classList.add('hidden');
       fallback?.classList.remove('hidden');
+      showMobileFallback();
     }
   }
 

@@ -28,3 +28,4 @@ pnpm-debug.log*
 
 # PDF documents (internal)
 *.pdf
+!public/wahlprogramm/*.pdf

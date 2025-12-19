@@ -283,26 +283,30 @@ const themen = [
     <!-- CTA -->
     <div class="text-center mt-12 p-8 bg-white" data-animate>
       <p class="text-lg text-dark font-medium mb-2">
-        Das vollständige Wahlprogramm wird gerade finalisiert.
+        Das Wahlprogramm ist fertig und steht zum Download bereit.
       </p>
       <p class="text-gray mb-6" id="program-status">
-        Melde dich für den Newsletter an, um als Erste:r informiert zu werden.
+        PDF für die schnelle Übersicht oder DOCX für alle, die Details brauchen.
       </p>
       <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
         <a
-          href="#kontakt"
+          href="/wahlprogramm/wahlprogramm-spd-straubing.pdf"
           class="btn btn-primary inline-flex items-center gap-2"
+          download
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v12m0 0l4-4m-4 4l-4-4m-4 7h16" />
           </svg>
-          Benachrichtigt werden
+          PDF herunterladen
         </a>
-        <span class="text-gray/60 text-sm">oder</span>
-        <a href="#themen" class="text-primary hover:underline text-sm font-medium">
-          Themen im Detail lesen
+        <a href="/wahlprogramm/wahlprogramm-spd-straubing.docx" class="btn btn-outline" download>
+          DOCX herunterladen
         </a>
       </div>
+      <p class="text-xs text-gray/60 mt-4">
+        Oder lies zuerst die Prioritäten oben und schreib mir deine Fragen.
+      </p>
+    </div>
     </div>
   </div>
 </section>

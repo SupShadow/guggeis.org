@@ -13,6 +13,7 @@ key_facts:
 
 primary_pages:
 - https://guggeis.org/
+- https://guggeis.org/facts
 - https://guggeis.org/wahlprogramm
 - https://guggeis.org/presse
 - https://guggeis.org/datenschutz

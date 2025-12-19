@@ -1,0 +1,66 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const description =
+  "Fakten zu Julian Guggeis, SPD Straubing und der Kommunalwahl 2026 in Kurzform.";
+---
+
+<Layout
+  title="Fakten | Julian Guggeis | SPD Straubing"
+  description={description}
+  ogType="article"
+>
+  <Header />
+  <main class="bg-white py-20 lg:py-32">
+    <div class="max-w-3xl mx-auto px-6 lg:px-12">
+      <span class="inline-block text-primary font-headline text-sm uppercase tracking-widest mb-4">
+        Fakten
+      </span>
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl text-dark mb-5">
+        Fakten auf einen Blick
+      </h1>
+      <p class="text-base sm:text-lg text-gray mb-10">
+        Kurz, klar, teilbar. Die wichtigsten Angaben zur Kommunalwahl 2026 in Straubing.
+      </p>
+
+      <section class="bg-sand/70 border-l-4 border-primary p-6">
+        <h2 class="sr-only">Faktenliste</h2>
+        <ul class="text-sm sm:text-base text-gray space-y-3">
+          <li><strong class="text-dark">Kandidat:</strong> Julian Guggeis (SPD Straubing)</li>
+          <li><strong class="text-dark">Wahltermin:</strong> 8. M&auml;rz 2026 (Kommunalwahl Bayern)</li>
+          <li><strong class="text-dark">Listenplatz:</strong> 11 (Stadtrat Straubing)</li>
+          <li><strong class="text-dark">Ort:</strong> Straubing, Bayern, Deutschland</li>
+          <li><strong class="text-dark">Stimmen:</strong> 40 gesamt, kumulieren und panaschieren m&ouml;glich</li>
+          <li><strong class="text-dark">Kontakt:</strong> info@guggeis-it.de, +49 151 46523225</li>
+          <li><strong class="text-dark">Schwerpunkte:</strong> Wohnen, Bildung, Mobilitaet, Innenstadt, Sicherheit, Klima</li>
+        </ul>
+      </section>
+
+      <section class="mt-10">
+        <h2 class="text-xl font-headline text-dark uppercase mb-3">
+          Wichtige Links
+        </h2>
+        <ul class="text-sm sm:text-base text-gray space-y-2">
+          <li>
+            <a href="/wahlprogramm" class="text-primary hover:underline">
+              Wahlprogramm (Kurzfassung)
+            </a>
+          </li>
+          <li>
+            <a href="/wahlprogramm/wahlprogramm-spd-straubing.pdf" class="text-primary hover:underline">
+              Wahlprogramm (PDF)
+            </a>
+          </li>
+          <li>
+            <a href="/presse" class="text-primary hover:underline">
+              Presse
+            </a>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </main>
+  <Footer />
+</Layout>

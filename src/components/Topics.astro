@@ -221,9 +221,9 @@ const themen = [
         Details zu jedem Bereich, kompakt zusammengefasst.
       </p>
       <div class="relative">
-        <div class="flex gap-4 overflow-x-auto pb-4 -mx-6 px-6 snap-x snap-mandatory sm:grid sm:overflow-visible sm:pb-0 sm:mx-0 sm:px-0 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="topics-carousel flex gap-4 overflow-x-auto pb-5 -mx-6 px-6 snap-x snap-mandatory scroll-pl-6 sm:grid sm:overflow-visible sm:pb-0 sm:mx-0 sm:px-0 sm:grid-cols-2 lg:grid-cols-4">
         {themen.map((thema) => (
-          <div class="bg-white p-5 border border-dark/10 shadow-sm hover:shadow-md transition-shadow group flex-none min-w-[82%] snap-start sm:min-w-0">
+          <div class="bg-white p-5 border border-dark/10 shadow-sm hover:shadow-md transition-shadow group flex-none min-w-[88%] snap-start sm:min-w-0">
             <div class="flex items-center gap-3 mb-3">
               <span class="w-10 h-10 inline-flex items-center justify-center bg-sand border border-dark/10 text-primary">
                 <svg
@@ -276,8 +276,6 @@ const themen = [
           </div>
         ))}
         </div>
-        <div class="pointer-events-none absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-sand via-sand/80 to-transparent sm:hidden"></div>
-        <div class="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-sand via-sand/80 to-transparent sm:hidden"></div>
       </div>
       <p class="text-xs text-gray/70 mt-2 sm:hidden">
         Wische nach rechts, um mehr Themen zu sehen.
@@ -314,3 +312,14 @@ const themen = [
     </div>
   </div>
 </section>
+
+<style>
+  .topics-carousel {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .topics-carousel::-webkit-scrollbar {
+    display: none;
+  }
+</style>

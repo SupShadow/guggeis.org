@@ -6,7 +6,7 @@ import julianPortrait from '../assets/julian-portrait.jpg';
 
 <section id="ueber-mich" class="relative bg-white py-20 lg:py-28" data-animate>
   <div class="max-w-7xl mx-auto px-6 lg:px-12">
-    <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
       <!-- Bild -->
       <div class="relative">
         <div class="aspect-[4/5] bg-sand overflow-hidden">
@@ -25,67 +25,78 @@ import julianPortrait from '../assets/julian-portrait.jpg';
       </div>
 
       <!-- Text -->
-      <div>
-        <span class="inline-block text-primary font-headline text-sm uppercase tracking-widest mb-4">
-          Über mich
-        </span>
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl text-dark mb-6">
-          Einer von hier.<br />Mit einer Vision für morgen.
-        </h2>
-
-        <div class="space-y-4 text-gray leading-relaxed">
-          <p>
+      <div class="space-y-6">
+        <div>
+          <span class="inline-block text-primary font-headline text-sm uppercase tracking-widest mb-4">
+            Über mich
+          </span>
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl text-dark mb-5">
+            Einer von hier.<br />Mit einer Vision für morgen.
+          </h2>
+          <p class="text-lg text-gray leading-relaxed">
             <strong class="text-dark">Ich bin Julian, 31, Straubinger.</strong> Hier bin ich zur Schule
             gegangen, habe meine ersten Jobs gemacht, hier sind meine Familie und meine Freund:innen.
             Straubing ist mein Zuhause - und ich will, dass es eine starke Zukunft hat. Als
             <strong class="text-dark">stellvertretender Vorsitzender der SPD Straubing</strong> arbeite
             ich bereits aktiv daran.
           </p>
-          <details id="about-more" class="about-more" open>
-            <summary class="btn btn-outline mt-4 lg:hidden">
-              <span class="about-more-closed">Mehr lesen</span>
-              <span class="about-more-open">Weniger anzeigen</span>
-            </summary>
-            <div class="about-more-content space-y-4 mt-4">
-              <p>
-                Mit 23 habe ich mein IT-Unternehmen gegründet. Seitdem helfe ich Firmen und Organisationen
-                dabei, digital besser zu werden: Prozesse vereinfachen, Zusammenarbeit modernisieren,
-                KI sinnvoll nutzen.
-              </p>
-              <p>
-                <strong class="text-dark">Was mich antreibt?</strong> Ich sehe jeden Tag, wie Ineffizienz
-                Menschen ausbremst. Der Kitaplatz-Antrag, der Wochen dauert. Die Baugenehmigung, die im Amt
-                verschwindet. Der Bus, der nicht fährt, wenn man ihn braucht. Das sind keine Kleinigkeiten -
-                das sind verpasste Chancen, verlorene Zeit, frustrierte Menschen.
-              </p>
-              <p>
-                Ich bin überzeugt: <strong class="text-dark">Wir könnten so viel mehr sein. Gemeinsam. Füreinander.</strong>
-                Nicht durch große Reden, sondern durch Abläufe, die funktionieren. Durch eine Verwaltung,
-                die für die Menschen arbeitet, nicht umgekehrt.
-              </p>
-            </div>
-          </details>
         </div>
 
         <!-- Quick Facts -->
-        <div class="mt-8 pt-8 border-t border-gray/20 grid grid-cols-2 gap-4">
-          <div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="bg-sand/70 p-3 border-l-4 border-primary">
             <span class="block text-primary font-headline text-2xl">31</span>
-            <span class="text-sm text-gray">Jahre alt</span>
+            <span class="text-xs text-gray uppercase tracking-wide">Jahre</span>
           </div>
-          <div>
+          <div class="bg-sand/70 p-3 border-l-4 border-primary">
             <span class="block text-primary font-headline text-2xl">2018</span>
-            <span class="text-sm text-gray">Unternehmer</span>
+            <span class="text-xs text-gray uppercase tracking-wide">Unternehmer</span>
           </div>
-          <div>
+          <div class="bg-sand/70 p-3 border-l-4 border-primary">
             <span class="block text-primary font-headline text-2xl">100%</span>
-            <span class="text-sm text-gray">Straubinger</span>
+            <span class="text-xs text-gray uppercase tracking-wide">Straubinger</span>
           </div>
-          <div>
+          <div class="bg-sand/70 p-3 border-l-4 border-primary">
             <span class="block text-primary font-headline text-2xl">2026</span>
-            <span class="text-sm text-gray">Mein Ziel</span>
+            <span class="text-xs text-gray uppercase tracking-wide">Kommunalwahl</span>
           </div>
         </div>
+
+        <div class="highlight-box py-4 pr-4">
+          <p class="text-sm text-gray">
+            <strong class="text-dark">Warum Politik?</strong> Ich will, dass Anträge nicht in Akten
+            verschwinden, Busse verlässlich fahren und Straubing wieder mutiger gestaltet wird.
+          </p>
+        </div>
+
+        <details id="about-more" class="about-more">
+          <summary class="about-toggle">
+            <span class="about-more-closed">Mehr über mich</span>
+            <span class="about-more-open">Weniger anzeigen</span>
+          </summary>
+          <div class="about-more-content space-y-4 mt-4 text-gray leading-relaxed">
+            <p>
+              Mit 23 habe ich mein IT-Unternehmen gegründet. Seitdem helfe ich Firmen und Organisationen
+              dabei, digital besser zu werden: Prozesse vereinfachen, Zusammenarbeit modernisieren,
+              KI sinnvoll nutzen.
+            </p>
+            <p>
+              <strong class="text-dark">Was mich antreibt?</strong> Ich sehe jeden Tag, wie Ineffizienz
+              Menschen ausbremst. Der Kitaplatz-Antrag, der Wochen dauert. Die Baugenehmigung, die im Amt
+              verschwindet. Der Bus, der nicht fährt, wenn man ihn braucht. Das sind keine Kleinigkeiten -
+              das sind verpasste Chancen, verlorene Zeit, frustrierte Menschen.
+            </p>
+            <p>
+              Ich bin überzeugt: <strong class="text-dark">Wir könnten so viel mehr sein. Gemeinsam. Füreinander.</strong>
+              Nicht durch große Reden, sondern durch Abläufe, die funktionieren. Durch eine Verwaltung,
+              die für die Menschen arbeitet, nicht umgekehrt.
+            </p>
+          </div>
+        </details>
+
+        <a href="#kontakt" class="inline-flex items-center gap-2 text-primary font-medium underline underline-offset-4">
+          Frage stellen
+        </a>
       </div>
     </div>
   </div>
@@ -100,6 +111,17 @@ import julianPortrait from '../assets/julian-portrait.jpg';
     display: none;
   }
 
+  .about-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    cursor: pointer;
+  }
+
   .about-more-open {
     display: none;
   }
@@ -112,11 +134,3 @@ import julianPortrait from '../assets/julian-portrait.jpg';
     display: none;
   }
 </style>
-
-<script>
-  const aboutDetails = document.getElementById('about-more');
-  const prefersSmallScreen = window.matchMedia('(max-width: 1023px)').matches;
-  if (aboutDetails && prefersSmallScreen) {
-    aboutDetails.removeAttribute('open');
-  }
-</script>

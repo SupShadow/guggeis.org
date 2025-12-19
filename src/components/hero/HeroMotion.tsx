@@ -61,7 +61,7 @@ export const HeroMotion: React.FC<HeroProps> = ({ candidateImageSrc }) => {
       </motion.div>
 
       <div className="max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-2 min-h-[calc(100vh-5rem)]">
+        <div className="grid lg:grid-cols-2 min-h-[calc(100vh-3.5rem)] sm:min-h-[calc(100vh-4rem)] lg:min-h-[calc(100vh-5rem)]">
           {/* Text Content */}
           <motion.div
             className="flex flex-col justify-center px-6 pt-6 pb-4 sm:pt-10 sm:pb-8 lg:py-20 lg:px-12 order-2 lg:order-1 relative z-10"

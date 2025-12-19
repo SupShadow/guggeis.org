@@ -50,7 +50,19 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem; /* Header height offset for anchor links */
+  scroll-padding-top: 3.5rem; /* Header height offset for anchor links */
+}
+
+@media (min-width: 640px) {
+  html {
+    scroll-padding-top: 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  html {
+    scroll-padding-top: 5rem;
+  }
 }
 
 body {

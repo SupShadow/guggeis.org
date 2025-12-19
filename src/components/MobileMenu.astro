@@ -5,6 +5,7 @@
 <!-- Hamburger Button -->
 <button
   id="mobile-menu-toggle"
+  type="button"
   class="lg:hidden flex flex-col justify-center items-center w-11 h-11 gap-1.5 z-50 -mr-1"
   aria-label="Menü öffnen"
   aria-expanded="false"
@@ -64,72 +65,66 @@
   const toggle = document.getElementById('mobile-menu-toggle');
   const menu = document.getElementById('mobile-menu');
   const body = document.body;
-  const navLinks = document.querySelectorAll('.mobile-nav-link');
 
-  function openMenu() {
-    body.classList.add('menu-open', 'overflow-hidden');
-    toggle?.setAttribute('aria-expanded', 'true');
-    toggle?.setAttribute('aria-label', 'Menü schließen');
-    menu?.setAttribute('aria-hidden', 'false');
-    // Fokus auf erstes Menü-Element setzen (nach Animation)
-    setTimeout(() => {
-      firstFocusable?.focus();
-    }, 50);
-  }
+  if (toggle && menu) {
+    const navLinks = menu.querySelectorAll('.mobile-nav-link');
+    const focusableElements = menu.querySelectorAll('a, button');
+    const firstFocusable = focusableElements[0];
+    const lastFocusable = focusableElements[focusableElements.length - 1];
 
-  function closeMenu() {
-    body.classList.remove('menu-open', 'overflow-hidden');
-    toggle?.setAttribute('aria-expanded', 'false');
-    toggle?.setAttribute('aria-label', 'Menü öffnen');
-    menu?.setAttribute('aria-hidden', 'true');
-  }
+    const openMenu = () => {
+      body.classList.add('menu-open', 'overflow-hidden');
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', 'Menü schließen');
+      menu.setAttribute('aria-hidden', 'false');
+      if (firstFocusable) {
+        setTimeout(() => {
+          firstFocusable.focus();
+        }, 50);
+      }
+    };
 
-  toggle?.addEventListener('click', () => {
-    if (body.classList.contains('menu-open')) {
-      closeMenu();
-    } else {
-      openMenu();
-    }
-  });
+    const closeMenu = () => {
+      body.classList.remove('menu-open', 'overflow-hidden');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Menü öffnen');
+      menu.setAttribute('aria-hidden', 'true');
+    };
 
-  // Close menu when clicking a nav link
-  navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      closeMenu();
-    });
-  });
-
-  // Focus trap: Tab-Navigation im Menü einschließen
-  const focusableElements = menu?.querySelectorAll('a, button');
-  const firstFocusable = focusableElements?.[0] as HTMLElement | undefined;
-  const lastFocusable = focusableElements && focusableElements.length > 0
-    ? focusableElements[focusableElements.length - 1] as HTMLElement
-    : undefined;
-
-  // Kombinierter keydown-Handler für Escape und Focus-Trap
-  document.addEventListener('keydown', (e) => {
-    if (!body.classList.contains('menu-open')) return;
-
-    // Escape zum Schließen
-    if (e.key === 'Escape') {
-      closeMenu();
-      toggle?.focus();
-      return;
-    }
-
-    // Focus-Trap bei Tab
-    if (e.key === 'Tab') {
-      if (e.shiftKey) {
-        if (document.activeElement === firstFocusable || document.activeElement === toggle) {
-          e.preventDefault();
-          lastFocusable?.focus();
-        }
+    toggle.addEventListener('click', () => {
+      if (body.classList.contains('menu-open')) {
+        closeMenu();
       } else {
-        if (document.activeElement === lastFocusable) {
-          e.preventDefault();
-          firstFocusable?.focus();
+        openMenu();
+      }
+    });
+
+    navLinks.forEach((link) => {
+      link.addEventListener('click', closeMenu);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!body.classList.contains('menu-open')) return;
+
+      if (e.key === 'Escape') {
+        closeMenu();
+        toggle.focus();
+        return;
+      }
+
+      if (e.key === 'Tab' && focusableElements.length > 0) {
+        if (e.shiftKey) {
+          if (document.activeElement === firstFocusable || document.activeElement === toggle) {
+            e.preventDefault();
+            if (lastFocusable) lastFocusable.focus();
+          }
+        } else {
+          if (document.activeElement === lastFocusable) {
+            e.preventDefault();
+            if (firstFocusable) firstFocusable.focus();
+          }
         }
       }
-    }
-  });
+    });
+  }
 </script>

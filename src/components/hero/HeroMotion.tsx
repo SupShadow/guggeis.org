@@ -166,7 +166,7 @@ export const HeroMotion: React.FC<HeroProps> = ({ candidateImageSrc }) => {
 
       {/* Scroll-Down Indicator */}
       <a
-        href="#manifest"
+        href="#warum-jetzt"
         className="absolute bottom-24 left-1/2 -translate-x-1/2 animate-bounce-scroll hidden lg:flex flex-col items-center text-dark/80 hover:text-primary transition-colors bg-white/50 backdrop-blur-sm px-4 py-2 rounded-full"
         aria-label="Zum nächsten Abschnitt scrollen"
       >

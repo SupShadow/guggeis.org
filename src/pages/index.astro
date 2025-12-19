@@ -2,20 +2,21 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
-import Manifest from '../components/Manifest.astro';
+import RealityCheck from '../components/RealityCheck.astro';
 import Wahlhilfe from '../components/Wahlhilfe.astro';
-import NextEvent from '../components/NextEvent.astro';
-import VideoSection from '../components/VideoSection.astro';
-import AboutMe from '../components/AboutMe.astro';
 import Fahrplan from '../components/Fahrplan.astro';
 import Topics from '../components/Topics.astro';
+import NextEvent from '../components/NextEvent.astro';
+import AboutMe from '../components/AboutMe.astro';
+import VideoSection from '../components/VideoSection.astro';
+import Manifest from '../components/Manifest.astro';
 // import Testimonials from '../components/Testimonials.astro'; // Ausgeblendet bis echte Zitate vorhanden
+import FaqSection from '../components/FaqSection.astro';
+import FragJulian from '../components/FragJulian.astro';
 import Events from '../components/Events.astro';
 import Contact from '../components/Contact.astro';
 import JoinUs from '../components/JoinUs.astro';
 import Newsletter from '../components/Newsletter.astro';
-import FaqSection from '../components/FaqSection.astro';
-import FragJulian from '../components/FragJulian.astro';
 import Footer from '../components/Footer.astro';
 import ShareButtons from '../components/ShareButtons.astro';
 ---
@@ -24,17 +25,18 @@ import ShareButtons from '../components/ShareButtons.astro';
   <Header />
   <main id="main-content">
     <Hero />
-    <Manifest />
+    <RealityCheck />
     <Wahlhilfe />
-    <NextEvent />
-    <VideoSection />
-    <AboutMe />
     <Fahrplan />
     <Topics />
+    <NextEvent />
+    <AboutMe />
+    <VideoSection />
+    <Manifest />
     <!-- <Testimonials /> Ausgeblendet: Platzhalter-Zitate schaden der Glaubwürdigkeit -->
+    <FaqSection />
     <FragJulian />
     <Events />
-    <FaqSection />
     <Contact />
     <JoinUs />
     <Newsletter />

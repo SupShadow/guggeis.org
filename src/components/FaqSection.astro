@@ -28,7 +28,25 @@ const faqs = [
     antwort: "Es gibt viele Möglichkeiten: <strong>Teile diese Seite</strong> mit Freunden und Familie, <strong>folge mir auf Instagram</strong> (@jguggeis), <strong>komm zu einer Veranstaltung</strong>, oder <strong>schreib mir</strong> deine Ideen für Straubing. Jede Stimme und jedes Gespräch zählt!"
   }
 ];
+
+const stripHtml = (html: string) =>
+  html.replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map((faq) => ({
+    "@type": "Question",
+    "name": faq.frage,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": stripHtml(faq.antwort)
+    }
+  }))
+};
 ---
+
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 
 <section id="faq" class="py-16 lg:py-24 bg-sand">
   <div class="max-w-4xl mx-auto px-6 lg:px-12">

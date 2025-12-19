@@ -20,7 +20,7 @@ const topGarantien = [
   {
     nummer: "4",
     titel: "Innenstadt beleben",
-    text: "Für den Einzelhändler mit leerem Nachbargeschäft. Donaustrand, Pop-Up-Stores, Leerstände aktivieren."
+    text: "Für den Einzelhändler mit leerem Nachbargeschäft. Donaustrand, Pop-up-Stores, Leerstände aktivieren."
   },
   {
     nummer: "5",
@@ -31,20 +31,67 @@ const topGarantien = [
 
 const prioritaeten = topGarantien.slice(0, 3);
 
+const iconShapes = {
+  wohnen: {
+    paths: [
+      "M3 10l9-7 9 7",
+      "M5 10v9h5v-5h4v5h5v-9"
+    ]
+  },
+  familie: {
+    paths: [
+      "M5 20a7 7 0 0114 0",
+      "M12 13a4 4 0 100-8 4 4 0 000 8z"
+    ]
+  },
+  mobilitaet: {
+    paths: [
+      "M4 6h16v9a2 2 0 01-2 2H6a2 2 0 01-2-2V6z",
+      "M4 10h16",
+      "M7 6v-2h10v2"
+    ],
+    circles: [
+      { cx: 7.5, cy: 17, r: 1.5 },
+      { cx: 16.5, cy: 17, r: 1.5 }
+    ]
+  },
+  wirtschaft: {
+    paths: [
+      "M8 7h8v3H8z",
+      "M4 10h16v8a2 2 0 01-2 2H6a2 2 0 01-2-2v-8z",
+      "M10 14h4"
+    ]
+  },
+  soziales: {
+    paths: [
+      "M12 20s-7-4.35-7-9a4 4 0 018-1 4 4 0 018 1c0 4.65-7 9-7 9z"
+    ]
+  },
+  kultur: {
+    paths: [
+      "M12 3l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16l-5.2 2.9 1-5.8L3.6 9l5.8-.8L12 3z"
+    ]
+  },
+  demokratie: {
+    paths: [
+      "M4 6h16v12H4z",
+      "M7 12l2 2 4-4"
+    ]
+  }
+};
+
 const themen = [
   {
-    icon: "🏠",
-    iconLabel: "Haus",
+    iconKey: "wohnen",
     titel: "Wohnen",
     punkte: [
       { name: "Teisnacher Modell", erklaerung: "Soziale Bodennutzung: Stadt kauft Grundstücke und gibt sie günstig an Bauherren ab" },
       { name: "30%-Sozialgarantie" },
-      { name: "Erbbaurecht für Familien", erklaerung: "Grundstück pachten statt kaufen – spart bis zu 30% der Baukosten" }
+      { name: "Erbbaurecht für Familien", erklaerung: "Grundstück pachten statt kaufen - spart bis zu 30% der Baukosten" }
     ]
   },
   {
-    icon: "👨‍👩‍👧",
-    iconLabel: "Familie",
+    iconKey: "familie",
     titel: "Bildung & Betreuung",
     punkte: [
       { name: "Straubing-Zulage", erklaerung: "500€ monatlicher Bonus für Erzieher:innen in städtischen Kitas" },
@@ -53,8 +100,7 @@ const themen = [
     ]
   },
   {
-    icon: "🚌",
-    iconLabel: "Bus",
+    iconKey: "mobilitaet",
     titel: "Mobilität & Umwelt",
     punkte: [
       { name: "Unterführung bauen", erklaerung: "Otto-von-Dandl-Ring endlich entlasten" },
@@ -63,18 +109,16 @@ const themen = [
     ]
   },
   {
-    icon: "💼",
-    iconLabel: "Aktentasche",
+    iconKey: "wirtschaft",
     titel: "Arbeit & Wirtschaft",
     punkte: [
       { name: "Beschäftigungs-GmbH" },
-      { name: "Innovationsstandort Straubing", erklaerung: "Start-up-Förderung & Hochschul-Kooperationen ausbauen" },
+      { name: "Innovationsstandort Straubing", erklaerung: "Start-up-Förderung und Hochschul-Kooperationen ausbauen" },
       { name: "Handwerkerhöfe" }
     ]
   },
   {
-    icon: "❤️",
-    iconLabel: "Herz",
+    iconKey: "soziales",
     titel: "Soziales",
     punkte: [
       { name: "St.-Nikola-Heim" },
@@ -83,8 +127,7 @@ const themen = [
     ]
   },
   {
-    icon: "⚽",
-    iconLabel: "Fußball",
+    iconKey: "kultur",
     titel: "Kultur & Sport",
     punkte: [
       { name: "Donaustrand", erklaerung: "Öffentlicher Zugang zur Donau für alle" },
@@ -93,8 +136,7 @@ const themen = [
     ]
   },
   {
-    icon: "🗳️",
-    iconLabel: "Wahlurne",
+    iconKey: "demokratie",
     titel: "Demokratie",
     punkte: [
       { name: "Bürgerhaushalt", erklaerung: "Bürger:innen entscheiden über Teil des Budgets" },
@@ -172,29 +214,47 @@ const themen = [
 
     <!-- Themen-Grid -->
     <div class="border-t border-dark/10 pt-16">
-      <h3 class="text-center text-2xl font-headline text-dark uppercase mb-3">
-        Mehr Themen
+      <h3 class="text-center text-xl font-headline text-dark uppercase mb-2">
+        Alle Themen im Überblick
       </h3>
-      <p class="text-center text-sm text-gray/80 mb-8">
-        Hier findest du alle Themenbereiche im Überblick.
+      <p class="text-center text-sm text-gray/80 mb-6">
+        Details zu jedem Bereich, kompakt zusammengefasst.
       </p>
       <div class="flex gap-4 overflow-x-auto pb-4 -mx-6 px-6 snap-x snap-mandatory sm:grid sm:overflow-visible sm:pb-0 sm:mx-0 sm:px-0 sm:grid-cols-2 lg:grid-cols-4">
         {themen.map((thema) => (
-          <div class="bg-white p-5 shadow-sm hover:shadow-md transition-shadow group flex-none min-w-[75%] snap-start sm:min-w-0">
-            <span class="text-3xl mb-3 block" role="img" aria-label={thema.iconLabel}>
-              {thema.icon}
-            </span>
-            <h4 class="font-headline text-dark uppercase text-sm mb-3 group-hover:text-primary transition-colors">
-              {thema.titel}
-            </h4>
-            <ul class="text-sm text-gray space-y-1">
+          <div class="bg-white p-5 border border-dark/10 shadow-sm hover:shadow-md transition-shadow group flex-none min-w-[75%] snap-start sm:min-w-0">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="w-10 h-10 inline-flex items-center justify-center bg-sand border border-dark/10 text-primary">
+                <svg
+                  class="w-6 h-6"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  {iconShapes[thema.iconKey].paths.map((path) => (
+                    <path d={path} />
+                  ))}
+                  {iconShapes[thema.iconKey].circles?.map((circle) => (
+                    <circle cx={circle.cx} cy={circle.cy} r={circle.r} />
+                  ))}
+                </svg>
+              </span>
+              <h4 class="font-headline text-dark uppercase text-sm group-hover:text-primary transition-colors">
+                {thema.titel}
+              </h4>
+            </div>
+            <ul class="text-sm text-gray space-y-2">
               {thema.punkte.map((punkt, punktIndex) => (
                 <li class="flex items-start gap-2">
-                  <span class="text-primary mt-1">•</span>
+                  <span class="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary flex-none"></span>
                   {punkt.erklaerung ? (
                     <button
                       type="button"
-                      class="group/tooltip relative cursor-help border-b border-dotted border-gray/50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 bg-transparent p-0 text-left text-inherit font-inherit"
+                      class="group/tooltip relative cursor-help underline decoration-dotted decoration-gray/40 underline-offset-4 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 bg-transparent p-0 text-left text-inherit font-inherit"
                       aria-describedby={`tooltip-${thema.titel.toLowerCase().replace(/\s+/g, '-')}-${punktIndex}`}
                     >
                       {punkt.name}

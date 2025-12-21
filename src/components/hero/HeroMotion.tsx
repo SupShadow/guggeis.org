@@ -122,17 +122,17 @@ export const HeroMotion: React.FC<HeroProps> = ({ candidateImageSrc }) => {
             </motion.div>
 
             {/* CTAs */}
-            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-3 sm:gap-4 pb-4">
+            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-2 sm:gap-4 pb-3 sm:pb-4">
               <a
                 href="#kontakt"
-                className="group relative px-8 py-4 bg-primary text-white font-headline uppercase tracking-wider overflow-hidden min-h-[48px] inline-flex items-center justify-center transition-transform hover:-translate-y-0.5 hover:shadow-lg"
+                className="group relative w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-primary text-white font-headline uppercase tracking-wide sm:tracking-wider overflow-hidden min-h-[44px] inline-flex items-center justify-center transition-transform hover:-translate-y-0.5 hover:shadow-lg text-sm sm:text-base"
               >
                 <span className="relative z-10 group-hover:text-primary transition-colors duration-300">Schreib mir</span>
-                <div className="absolute inset-0 bg-white transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out skew-x-12 origin-left" />
+                <div className="absolute inset-0 bg-white transform -translate-x-[120%] group-hover:translate-x-0 transition-transform duration-300 ease-out skew-x-12 origin-left" />
               </a>
               <a
                 href="#wahlhilfe"
-                className="px-8 py-4 border-2 border-primary text-primary font-headline uppercase tracking-wider hover:bg-primary hover:text-white transition-colors duration-300 min-h-[48px] inline-flex items-center justify-center"
+                className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border-2 border-primary text-primary font-headline uppercase tracking-wide sm:tracking-wider hover:bg-primary hover:text-white transition-colors duration-300 min-h-[44px] inline-flex items-center justify-center text-sm sm:text-base"
               >
                 So wählst du mich
               </a>

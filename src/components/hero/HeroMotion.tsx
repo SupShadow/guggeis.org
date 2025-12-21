@@ -85,7 +85,7 @@ export const HeroMotion: React.FC<HeroProps> = ({ candidateImageSrc }) => {
 
             <motion.p variants={itemVariants} className="text-sm sm:text-base text-dark/80 font-medium mb-3 lg:mb-5">
               <span className="text-primary">Julian Guggeis</span> · Kandidat für den Stadtrat 2026<br className="sm:hidden" />
-              <span className="hidden sm:inline"> · </span>SPD Listenplatz 11
+              <span className="hidden sm:inline"> · </span>SPD-Listenplatz 11
             </motion.p>
 
             <motion.p variants={itemVariants} className="text-xs sm:text-sm text-dark/70 font-medium mb-4 lg:mb-5">
@@ -113,7 +113,7 @@ export const HeroMotion: React.FC<HeroProps> = ({ candidateImageSrc }) => {
               <p className="text-xs text-gray/70 mt-1">8. März 2026</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 <span className="px-2 py-1 text-[11px] uppercase tracking-widest bg-sand text-dark font-headline">
-                  SPD Liste 11
+                  SPD-Listenplatz 11
                 </span>
                 <span className="px-2 py-1 text-[11px] uppercase tracking-widest bg-sand text-dark font-headline">
                   1-3 Stimmen

@@ -1,6 +1,6 @@
 # 🗳️ guggeis.org
 
-**Wahlkampf-Website für Julian Guggeis — SPD OB-Kandidat Straubing 2026**
+**Wahlkampf-Website für Julian Guggeis — SPD Kandidat für den Stadtrat Straubing 2026**
 
 [![Deploy](https://github.com/SupShadow/guggeis.org/actions/workflows/deploy.yml/badge.svg)](https://github.com/SupShadow/guggeis.org/actions)
 [![Website](https://img.shields.io/website?url=https%3A%2F%2Fguggeis.org)](https://guggeis.org)

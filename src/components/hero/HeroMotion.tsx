@@ -88,6 +88,10 @@ export const HeroMotion: React.FC<HeroProps> = ({ candidateImageSrc }) => {
               <span className="hidden sm:inline"> · </span>SPD Listenplatz 11
             </motion.p>
 
+            <motion.p variants={itemVariants} className="text-xs sm:text-sm text-dark/70 font-medium mb-4 lg:mb-5">
+              IT-Unternehmer · Heilerziehungspfleger
+            </motion.p>
+
             <motion.p
               variants={itemVariants}
               className="text-sm sm:text-base lg:text-lg text-gray max-w-lg mb-3 lg:mb-4 leading-relaxed border-l-4 border-primary pl-5 sm:pl-6"

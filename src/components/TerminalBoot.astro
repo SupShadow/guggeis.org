@@ -1,0 +1,240 @@
+---
+/**
+ * TerminalBoot.astro
+ * "Holy Shit" moment - Terminal boot sequence that reveals Julian's tech identity
+ * Typewriter effect, glitch transition, then reveals content
+ */
+
+interface Props {
+  skipable?: boolean;
+}
+
+const { skipable = true } = Astro.props;
+
+// Boot sequence lines
+const bootLines = [
+  { text: "GUGGEIS_KERNEL v2.0", delay: 0 },
+  { text: "INIT: SYSTEM_CHECK...", delay: 400 },
+  { text: "LOAD: VISION_2026.dll ████████████ OK", delay: 800 },
+  { text: "LOAD: BUILDER_IDENTITY.exe ████████ OK", delay: 1200 },
+  { text: "CHECK: STRAUBING_CONNECTION... ESTABLISHED", delay: 1600 },
+  { text: "SYNC: WAHLPROGRAMM... 7 THEMEN GELADEN", delay: 2000 },
+  { text: "RUNTIME: 60 TAGE BIS WAHL", delay: 2400 },
+  { text: "", delay: 2800 },
+  { text: "> READY.", delay: 3000 },
+  { text: "> MUTIG FÜR STRAUBING.", delay: 3400 },
+];
+---
+
+<div
+  id="terminal-boot"
+  class="fixed inset-0 z-[9999] bg-black flex items-center justify-center transition-opacity duration-500"
+  data-boot-lines={JSON.stringify(bootLines)}
+>
+  <!-- CRT Scanline Effect -->
+  <div class="absolute inset-0 pointer-events-none crt-lines opacity-20"></div>
+
+  <!-- Terminal Window -->
+  <div class="w-full max-w-2xl mx-4 font-mono text-sm sm:text-base">
+    <!-- Terminal Header -->
+    <div class="bg-gray-800 px-4 py-2 flex items-center gap-2 rounded-t-lg">
+      <span class="w-3 h-3 rounded-full bg-red-500"></span>
+      <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+      <span class="w-3 h-3 rounded-full bg-green-500"></span>
+      <span class="ml-4 text-gray-400 text-xs">julian@straubing ~ boot</span>
+    </div>
+
+    <!-- Terminal Body -->
+    <div class="bg-gray-900 p-4 sm:p-6 rounded-b-lg min-h-[300px] sm:min-h-[400px]">
+      <div id="boot-output" class="space-y-1 text-green-400">
+        <!-- Lines will be rendered here -->
+      </div>
+      <span id="cursor" class="inline-block w-2 h-4 bg-green-400 ml-1 animate-blink"></span>
+    </div>
+  </div>
+
+  <!-- Skip Button -->
+  {skipable && (
+    <button
+      id="skip-boot"
+      class="absolute bottom-8 right-8 text-gray-500 hover:text-gray-300 text-sm font-mono transition-colors"
+      aria-label="Boot-Sequenz überspringen"
+    >
+      [SKIP] oder ENTER drücken
+    </button>
+  )}
+
+  <!-- Glitch Overlay -->
+  <div id="glitch-overlay" class="absolute inset-0 pointer-events-none opacity-0">
+    <div class="glitch-slice glitch-slice-1"></div>
+    <div class="glitch-slice glitch-slice-2"></div>
+    <div class="glitch-slice glitch-slice-3"></div>
+  </div>
+</div>
+
+<style>
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  .animate-blink {
+    animation: blink 1s infinite;
+  }
+
+  .crt-lines {
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 255, 0, 0.03) 2px,
+      rgba(0, 255, 0, 0.03) 4px
+    );
+  }
+
+  @keyframes glitch-1 {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-5px); }
+    40% { transform: translateX(5px); }
+    60% { transform: translateX(-3px); }
+    80% { transform: translateX(3px); }
+  }
+
+  @keyframes glitch-2 {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(5px); }
+    40% { transform: translateX(-5px); }
+    60% { transform: translateX(3px); }
+    80% { transform: translateX(-3px); }
+  }
+
+  .glitch-slice {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 33.33%;
+    background: inherit;
+    overflow: hidden;
+  }
+
+  .glitch-slice-1 {
+    top: 0;
+    animation: glitch-1 0.3s ease-in-out;
+  }
+
+  .glitch-slice-2 {
+    top: 33.33%;
+    animation: glitch-2 0.3s ease-in-out 0.05s;
+  }
+
+  .glitch-slice-3 {
+    top: 66.66%;
+    animation: glitch-1 0.3s ease-in-out 0.1s;
+  }
+
+  .terminal-line {
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .terminal-line.typing {
+    border-right: 2px solid #4ade80;
+    animation: typing 0.5s steps(40, end), blink-caret 0.75s step-end infinite;
+  }
+
+  @keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+</style>
+
+<script>
+  const terminal = document.getElementById('terminal-boot');
+  const output = document.getElementById('boot-output');
+  const cursor = document.getElementById('cursor');
+  const skipBtn = document.getElementById('skip-boot');
+  const glitchOverlay = document.getElementById('glitch-overlay');
+
+  // Check if already seen this session
+  const hasSeenBoot = sessionStorage.getItem('terminal-boot-seen');
+
+  if (hasSeenBoot) {
+    terminal?.remove();
+  } else {
+    const bootLines = JSON.parse(terminal?.dataset.bootLines || '[]');
+    let currentLine = 0;
+    let isSkipping = false;
+
+    function typeNextLine() {
+      if (isSkipping || currentLine >= bootLines.length) {
+        if (!isSkipping) {
+          setTimeout(finishBoot, 800);
+        }
+        return;
+      }
+
+      const line = bootLines[currentLine];
+      const lineEl = document.createElement('div');
+      lineEl.className = 'terminal-line';
+
+      // Color coding
+      if (line.text.includes('OK')) {
+        lineEl.innerHTML = line.text.replace('OK', '<span class="text-green-300">OK</span>');
+      } else if (line.text.includes('ESTABLISHED') || line.text.includes('GELADEN')) {
+        lineEl.innerHTML = `<span class="text-cyan-400">${line.text}</span>`;
+      } else if (line.text.startsWith('>')) {
+        lineEl.innerHTML = `<span class="text-yellow-400 font-bold">${line.text}</span>`;
+      } else {
+        lineEl.textContent = line.text;
+      }
+
+      output?.appendChild(lineEl);
+      currentLine++;
+
+      // Calculate delay for next line
+      const nextLine = bootLines[currentLine];
+      if (nextLine) {
+        setTimeout(typeNextLine, nextLine.delay - line.delay);
+      } else {
+        setTimeout(finishBoot, 800);
+      }
+    }
+
+    function finishBoot() {
+      cursor?.classList.add('hidden');
+
+      // Trigger glitch effect
+      if (glitchOverlay) {
+        glitchOverlay.style.opacity = '1';
+        glitchOverlay.style.background = 'black';
+      }
+
+      setTimeout(() => {
+        // Fade out terminal
+        if (terminal) {
+          terminal.style.opacity = '0';
+          setTimeout(() => {
+            terminal.remove();
+            sessionStorage.setItem('terminal-boot-seen', 'true');
+          }, 500);
+        }
+      }, 300);
+    }
+
+    function skipBoot() {
+      isSkipping = true;
+      finishBoot();
+    }
+
+    // Event listeners
+    skipBtn?.addEventListener('click', skipBoot);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === 'Escape') {
+        skipBoot();
+      }
+    });
+
+    // Start boot sequence after brief delay
+    setTimeout(typeNextLine, 500);
+  }
+</script>

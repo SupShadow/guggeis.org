@@ -1,5 +1,7 @@
 ---
 import ExitIntentPopup from '../components/ExitIntentPopup.astro';
+import TerminalBoot from '../components/TerminalBoot.astro';
+import CommandPalette from '../components/CommandPalette.astro';
 // import ChatWidget from '../components/ChatWidget.astro'; // TODO: Enable when CF Worker deployed
 
 interface Props {
@@ -165,6 +167,12 @@ const bodyClass = isHome
     </style>
   </head>
   <body class={bodyClass}>
+    {/* Terminal Boot Sequence - Holy Shit Moment (only on homepage, first visit) */}
+    {isHome && <TerminalBoot />}
+
+    {/* Command Palette - CMD+K Navigation */}
+    <CommandPalette />
+
     {isHome && (
       <div
         id="scroll-progress"

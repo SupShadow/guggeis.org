@@ -1,0 +1,304 @@
+---
+/**
+ * CommandPalette.astro
+ * Revolutionary CMD+K navigation replacing traditional burger menu
+ * Tech-forward, keyboard-first, accessible
+ */
+
+const commands = [
+  { id: "home", label: "Start", shortcut: "H", href: "/", icon: "🏠" },
+  { id: "story", label: "Meine Geschichte", shortcut: "G", href: "#origin-story", icon: "📖" },
+  { id: "themen", label: "Meine Themen", shortcut: "T", href: "/#themen", icon: "📋" },
+  { id: "programm", label: "Wahlprogramm", shortcut: "P", href: "/wahlprogramm", icon: "📜" },
+  { id: "quiz", label: "Position-Check", shortcut: "Q", href: "/wahlprogramm#quiz", icon: "❓" },
+  { id: "wahlhilfe", label: "So wählst du mich", shortcut: "W", href: "/#wahlhilfe", icon: "✅" },
+  { id: "kontakt", label: "Kontakt", shortcut: "K", href: "/#kontakt", icon: "✉️" },
+  { id: "termine", label: "Termine", shortcut: "E", href: "/#termine", icon: "📅" },
+];
+
+const quickActions = [
+  { id: "whatsapp", label: "WhatsApp öffnen", href: "https://wa.me/4915146523225", icon: "💬", external: true },
+  { id: "instagram", label: "Instagram", href: "https://instagram.com/jguggeis", icon: "📸", external: true },
+];
+---
+
+<!-- Command Palette Trigger Hint -->
+<div
+  id="cmd-hint"
+  class="fixed bottom-4 left-4 z-40 hidden lg:flex items-center gap-2 px-3 py-2 bg-dark/90 text-white text-xs font-mono rounded-lg shadow-lg backdrop-blur-sm opacity-70 hover:opacity-100 transition-opacity cursor-pointer"
+  role="button"
+  tabindex="0"
+  aria-label="Befehlspalette öffnen (Cmd+K)"
+>
+  <kbd class="px-1.5 py-0.5 bg-white/20 rounded text-[10px]">⌘</kbd>
+  <kbd class="px-1.5 py-0.5 bg-white/20 rounded text-[10px]">K</kbd>
+  <span class="ml-1 text-white/70">Schnellnavigation</span>
+</div>
+
+<!-- Command Palette Modal -->
+<div
+  id="command-palette"
+  class="fixed inset-0 z-[9998] hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Befehlspalette"
+>
+  <!-- Backdrop -->
+  <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" id="cmd-backdrop"></div>
+
+  <!-- Palette Container -->
+  <div class="absolute inset-0 flex items-start justify-center pt-[15vh]">
+    <div
+      class="w-full max-w-xl mx-4 bg-white rounded-xl shadow-2xl overflow-hidden transform scale-95 opacity-0 transition-all duration-200"
+      id="cmd-panel"
+    >
+      <!-- Search Input -->
+      <div class="relative border-b border-gray-200">
+        <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input
+          type="text"
+          id="cmd-search"
+          class="w-full pl-12 pr-4 py-4 text-lg text-dark placeholder-gray-400 focus:outline-none"
+          placeholder="Wohin möchtest du?"
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+        />
+        <kbd class="absolute right-4 top-1/2 -translate-y-1/2 px-2 py-1 bg-gray-100 text-gray-500 text-xs rounded">ESC</kbd>
+      </div>
+
+      <!-- Command List -->
+      <div id="cmd-results" class="max-h-[60vh] overflow-y-auto py-2">
+        <div class="px-4 py-2">
+          <p class="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Navigation</p>
+          <div class="space-y-1" id="cmd-nav-list">
+            {commands.map((cmd, index) => (
+              <a
+                href={cmd.href}
+                class="cmd-item flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 focus:bg-primary focus:text-white transition-colors group"
+                data-index={index}
+                data-label={cmd.label.toLowerCase()}
+              >
+                <span class="text-lg">{cmd.icon}</span>
+                <span class="flex-1 font-medium">{cmd.label}</span>
+                <kbd class="px-2 py-0.5 bg-gray-100 group-hover:bg-gray-200 group-focus:bg-white/20 text-gray-500 group-focus:text-white/80 text-xs rounded font-mono">
+                  {cmd.shortcut}
+                </kbd>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <div class="px-4 py-2 border-t border-gray-100 mt-2">
+          <p class="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">Schnellaktionen</p>
+          <div class="space-y-1" id="cmd-actions-list">
+            {quickActions.map((action, index) => (
+              <a
+                href={action.href}
+                target={action.external ? "_blank" : undefined}
+                rel={action.external ? "noopener noreferrer" : undefined}
+                class="cmd-item flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 focus:bg-primary focus:text-white transition-colors"
+                data-index={commands.length + index}
+                data-label={action.label.toLowerCase()}
+              >
+                <span class="text-lg">{action.icon}</span>
+                <span class="flex-1 font-medium">{action.label}</span>
+                {action.external && (
+                  <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                )}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="px-4 py-3 bg-gray-50 border-t border-gray-200 flex items-center justify-between text-xs text-gray-500">
+        <div class="flex items-center gap-4">
+          <span class="flex items-center gap-1">
+            <kbd class="px-1.5 py-0.5 bg-white border rounded shadow-sm">↑</kbd>
+            <kbd class="px-1.5 py-0.5 bg-white border rounded shadow-sm">↓</kbd>
+            navigieren
+          </span>
+          <span class="flex items-center gap-1">
+            <kbd class="px-1.5 py-0.5 bg-white border rounded shadow-sm">↵</kbd>
+            öffnen
+          </span>
+        </div>
+        <span>Julian Guggeis · SPD Straubing</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .cmd-item[data-selected="true"] {
+    background-color: #E3001B;
+    color: white;
+  }
+
+  .cmd-item[data-selected="true"] kbd {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .cmd-item.hidden {
+    display: none;
+  }
+
+  #cmd-panel.open {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  @media (max-width: 640px) {
+    #cmd-hint {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const palette = document.getElementById('command-palette');
+  const panel = document.getElementById('cmd-panel');
+  const backdrop = document.getElementById('cmd-backdrop');
+  const searchInput = document.getElementById('cmd-search') as HTMLInputElement;
+  const hint = document.getElementById('cmd-hint');
+  const items = document.querySelectorAll('.cmd-item');
+
+  let isOpen = false;
+  let selectedIndex = 0;
+
+  function openPalette() {
+    if (isOpen) return;
+    isOpen = true;
+    palette?.classList.remove('hidden');
+    setTimeout(() => {
+      panel?.classList.add('open');
+      searchInput?.focus();
+    }, 10);
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePalette() {
+    if (!isOpen) return;
+    isOpen = false;
+    panel?.classList.remove('open');
+    setTimeout(() => {
+      palette?.classList.add('hidden');
+      if (searchInput) searchInput.value = '';
+      filterItems('');
+    }, 200);
+    document.body.style.overflow = '';
+    selectedIndex = 0;
+    updateSelection();
+  }
+
+  function filterItems(query: string) {
+    const lowerQuery = query.toLowerCase();
+    let visibleCount = 0;
+
+    items.forEach((item, index) => {
+      const label = item.getAttribute('data-label') || '';
+      const matches = label.includes(lowerQuery);
+
+      if (matches) {
+        item.classList.remove('hidden');
+        item.setAttribute('data-visible-index', String(visibleCount));
+        visibleCount++;
+      } else {
+        item.classList.add('hidden');
+        item.removeAttribute('data-visible-index');
+      }
+    });
+
+    selectedIndex = 0;
+    updateSelection();
+  }
+
+  function updateSelection() {
+    const visibleItems = document.querySelectorAll('.cmd-item:not(.hidden)');
+
+    visibleItems.forEach((item, index) => {
+      if (index === selectedIndex) {
+        item.setAttribute('data-selected', 'true');
+        item.scrollIntoView({ block: 'nearest' });
+      } else {
+        item.removeAttribute('data-selected');
+      }
+    });
+  }
+
+  function selectItem() {
+    const visibleItems = document.querySelectorAll('.cmd-item:not(.hidden)');
+    const selected = visibleItems[selectedIndex] as HTMLAnchorElement;
+    if (selected) {
+      closePalette();
+      selected.click();
+    }
+  }
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    // Open with Cmd+K or Ctrl+K
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      if (isOpen) {
+        closePalette();
+      } else {
+        openPalette();
+      }
+      return;
+    }
+
+    // Only handle these when palette is open
+    if (!isOpen) return;
+
+    const visibleItems = document.querySelectorAll('.cmd-item:not(.hidden)');
+    const maxIndex = visibleItems.length - 1;
+
+    switch (e.key) {
+      case 'Escape':
+        closePalette();
+        break;
+      case 'ArrowDown':
+        e.preventDefault();
+        selectedIndex = Math.min(selectedIndex + 1, maxIndex);
+        updateSelection();
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        selectedIndex = Math.max(selectedIndex - 1, 0);
+        updateSelection();
+        break;
+      case 'Enter':
+        e.preventDefault();
+        selectItem();
+        break;
+    }
+  });
+
+  // Search input
+  searchInput?.addEventListener('input', (e) => {
+    const query = (e.target as HTMLInputElement).value;
+    filterItems(query);
+  });
+
+  // Click handlers
+  backdrop?.addEventListener('click', closePalette);
+  hint?.addEventListener('click', openPalette);
+
+  // Item click
+  items.forEach((item) => {
+    item.addEventListener('click', () => {
+      closePalette();
+    });
+  });
+
+  // Initial selection
+  updateSelection();
+</script>

@@ -1,0 +1,362 @@
+---
+/**
+ * OriginStory.astro
+ * Immersive scroll-through story: 09.09.2003 - the day that shaped Julian
+ * 6 minimalist screens with powerful storytelling
+ */
+
+const screens = [
+  {
+    id: 1,
+    date: "09. September 2003",
+    text: "Ich war zehn Jahre alt, als mein Vater Edgar starb.",
+    subtext: null,
+    style: "dramatic" // White text on black
+  },
+  {
+    id: 2,
+    date: null,
+    text: "Die gewohnte Sicherheit war weg.",
+    subtext: "Ich musste früh lernen, Verantwortung für meinen eigenen Weg zu übernehmen.",
+    style: "dark"
+  },
+  {
+    id: 3,
+    date: null,
+    text: "Ich fand Struktur in der Technologie.",
+    subtext: "Programmieren lehrte mich, komplexe Probleme logisch zu lösen und Neues zu erschaffen.",
+    style: "tech" // Code-like styling
+  },
+  {
+    id: 4,
+    date: null,
+    text: "Aus diesem Antrieb wurde ich Unternehmer.",
+    subtext: "Ich warte nicht auf Lösungen von anderen, ich baue sie selbst.",
+    style: "builder"
+  },
+  {
+    id: 5,
+    date: null,
+    text: "Doch individueller Erfolg reicht nicht, wenn das Umfeld stagniert.",
+    subtext: "Echte Veränderung braucht einen politischen Rahmen.",
+    style: "transition"
+  },
+  {
+    id: 6,
+    date: "Heute",
+    text: "Ich kandidiere für den Stadtrat.",
+    subtext: "Wer weiß, wie man bei Null anfängt, kann auch die Zukunft einer Stadt gestalten.",
+    style: "conclusion" // SPD red accent
+  }
+];
+---
+
+<section id="origin-story" class="relative" aria-label="Meine Geschichte">
+  <!-- Scroll Container -->
+  <div class="origin-scroll-container">
+    {screens.map((screen, index) => (
+      <article
+        class:list={[
+          "origin-screen",
+          `origin-screen--${screen.style}`,
+          { "origin-screen--first": index === 0 }
+        ]}
+        data-screen={screen.id}
+      >
+        <div class="origin-content">
+          {screen.date && (
+            <p class="origin-date">{screen.date}</p>
+          )}
+          <h2 class="origin-text">{screen.text}</h2>
+          {screen.subtext && (
+            <p class="origin-subtext">{screen.subtext}</p>
+          )}
+        </div>
+
+        {/* Visual Elements per Style */}
+        {screen.style === "tech" && (
+          <div class="origin-decoration origin-decoration--code" aria-hidden="true">
+            <span class="code-line">{"function buildFuture() {"}</span>
+            <span class="code-line">{"  return solve(problems);"}</span>
+            <span class="code-line">{"}"}</span>
+          </div>
+        )}
+
+        {screen.style === "builder" && (
+          <div class="origin-decoration origin-decoration--builder" aria-hidden="true">
+            <span class="builder-icon">🛠️</span>
+          </div>
+        )}
+
+        {/* Progress Indicator */}
+        <div class="origin-progress">
+          <span class="origin-progress-current">{index + 1}</span>
+          <span class="origin-progress-divider">/</span>
+          <span class="origin-progress-total">{screens.length}</span>
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <!-- Scroll Indicator (first screen only) -->
+  <div class="origin-scroll-hint" aria-hidden="true">
+    <span>Scroll</span>
+    <svg class="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+    </svg>
+  </div>
+</section>
+
+<style>
+  .origin-scroll-container {
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+    height: 100vh;
+    scroll-behavior: smooth;
+  }
+
+  .origin-screen {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 2rem;
+  }
+
+  .origin-content {
+    max-width: 800px;
+    text-align: center;
+    z-index: 10;
+  }
+
+  .origin-date {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.875rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0.7;
+  }
+
+  .origin-text {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: clamp(1.5rem, 5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  .origin-subtext {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    line-height: 1.6;
+    opacity: 0.8;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Style Variants */
+  .origin-screen--dramatic {
+    background: #000;
+    color: #fff;
+  }
+
+  .origin-screen--dramatic .origin-date {
+    color: #E3001B;
+    font-weight: 600;
+  }
+
+  .origin-screen--dark {
+    background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+    color: #fff;
+  }
+
+  .origin-screen--tech {
+    background: #0a0a0a;
+    color: #4ade80;
+  }
+
+  .origin-screen--tech .origin-text {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+  }
+
+  .origin-screen--builder {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    color: #fff;
+  }
+
+  .origin-screen--transition {
+    background: linear-gradient(135deg, #18181b 0%, #27272a 100%);
+    color: #e4e4e7;
+  }
+
+  .origin-screen--conclusion {
+    background: #F5F3EF; /* sand */
+    color: #1a1a1a;
+  }
+
+  .origin-screen--conclusion .origin-date {
+    color: #E3001B;
+  }
+
+  .origin-screen--conclusion .origin-text {
+    color: #E3001B;
+  }
+
+  /* Decorations */
+  .origin-decoration {
+    position: absolute;
+    opacity: 0.1;
+    pointer-events: none;
+  }
+
+  .origin-decoration--code {
+    bottom: 10%;
+    right: 10%;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 1rem;
+    text-align: left;
+  }
+
+  .code-line {
+    display: block;
+    color: #4ade80;
+  }
+
+  .origin-decoration--builder {
+    top: 20%;
+    left: 10%;
+    font-size: 4rem;
+    opacity: 0.2;
+  }
+
+  /* Progress */
+  .origin-progress {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 0.75rem;
+    opacity: 0.5;
+  }
+
+  .origin-progress-current {
+    font-weight: 700;
+  }
+
+  /* Scroll Hint */
+  .origin-scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    color: #fff;
+    z-index: 20;
+    animation: fadeInUp 1s ease-out 2s both;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateX(-50%) translateY(20px);
+    }
+    to {
+      opacity: 0.6;
+      transform: translateX(-50%) translateY(0);
+    }
+  }
+
+  /* Hide scroll hint after first screen */
+  .origin-scroll-container:not(:first-child) .origin-scroll-hint {
+    display: none;
+  }
+
+  /* Animation on scroll */
+  .origin-content {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .origin-screen.visible .origin-content {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Mobile adjustments */
+  @media (max-width: 640px) {
+    .origin-screen {
+      padding: 1.5rem;
+    }
+
+    .origin-progress {
+      bottom: 1rem;
+      right: 1rem;
+    }
+
+    .origin-decoration {
+      display: none;
+    }
+  }
+
+  /* Reduce motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    .origin-scroll-container {
+      scroll-behavior: auto;
+    }
+
+    .origin-content {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    .origin-scroll-hint {
+      animation: none;
+      opacity: 0.6;
+    }
+  }
+</style>
+
+<script>
+  // Intersection Observer for scroll animations
+  const screens = document.querySelectorAll('.origin-screen');
+  const scrollHint = document.querySelector('.origin-scroll-hint');
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+
+          // Hide scroll hint after first screen
+          const screenNum = entry.target.getAttribute('data-screen');
+          if (screenNum && parseInt(screenNum) > 1 && scrollHint) {
+            scrollHint.style.display = 'none';
+          }
+        }
+      });
+    },
+    {
+      threshold: 0.5,
+      rootMargin: '0px'
+    }
+  );
+
+  screens.forEach((screen) => observer.observe(screen));
+
+  // Cleanup
+  document.addEventListener('astro:before-swap', () => {
+    observer.disconnect();
+  });
+</script>

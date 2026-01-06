@@ -68,7 +68,7 @@
     <div class="chat-message chat-message-bot flex gap-2">
       <div class="w-7 h-7 bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0 mt-1">JG</div>
       <div class="bg-white p-3 max-w-[85%] text-sm text-dark shadow-sm">
-        <p>Hey! Ich bin Julians KI-Assistent. Was moechtest du ueber Julian, seine Themen oder die Kommunalwahl wissen?</p>
+        <p>Hey! Ich bin Julians KI-Assistent. Was möchtest du über Julian, seine Themen oder die Kommunalwahl wissen?</p>
       </div>
     </div>
   </div>
@@ -299,7 +299,7 @@
       chatInput.disabled = true;
       chatSubmit.disabled = true;
     } else if (remaining <= 3) {
-      rateLimitText.textContent = `Noch ${remaining} Nachricht${remaining === 1 ? '' : 'en'} moeglich.`;
+      rateLimitText.textContent = `Noch ${remaining} Nachricht${remaining === 1 ? '' : 'en'} möglich.`;
       rateLimitDiv.classList.remove('hidden');
       chatInput.disabled = false;
       chatSubmit.disabled = false;
@@ -446,7 +446,7 @@
       if (response.status === 429) {
         throw new Error('Zu viele Anfragen. Bitte warte einen Moment.');
       }
-      throw new Error('Verbindungsfehler. Bitte versuch\'s spaeter nochmal.');
+      throw new Error('Verbindungsfehler. Bitte versuch\'s später nochmal.');
     }
 
     const data = await response.json();
@@ -519,7 +519,7 @@
     try {
       // Check if online
       if (!navigator.onLine) {
-        throw new Error('Keine Internetverbindung. Bitte pruefe deine Verbindung.');
+        throw new Error('Keine Internetverbindung. Bitte prüfe deine Verbindung.');
       }
 
       const reply = await sendMessage(message);

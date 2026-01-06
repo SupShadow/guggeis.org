@@ -1,0 +1,280 @@
+---
+/**
+ * VideoGallery.astro
+ * Displays multiple videos with lazy loading (click-to-play pattern)
+ * Supports both self-hosted MP4 and YouTube embeds
+ */
+
+interface VideoItem {
+  /** Unique identifier for the video */
+  id: string;
+  /** Video title */
+  title: string;
+  /** Optional description */
+  description?: string;
+  /** Poster/thumbnail image URL */
+  poster: string;
+  /** Video source - either YouTube ID or MP4 URL */
+  src: string;
+  /** Video type: 'youtube' or 'mp4' */
+  type: 'youtube' | 'mp4';
+  /** Optional duration string (e.g., "2:34") */
+  duration?: string;
+}
+
+interface Props {
+  /** Section title */
+  title?: string;
+  /** Section subtitle */
+  subtitle?: string;
+  /** Array of video items */
+  videos: VideoItem[];
+  /** Grid columns: 1, 2, or 3 */
+  columns?: 1 | 2 | 3;
+}
+
+const {
+  title = "Videos",
+  subtitle,
+  videos = [],
+  columns = 2
+} = Astro.props;
+
+const gridCols = {
+  1: 'grid-cols-1',
+  2: 'grid-cols-1 md:grid-cols-2',
+  3: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+};
+---
+
+<section id="video-gallery" class="relative">
+  <div class="mutig-angle-top bg-white pt-16 pb-12 lg:pt-24 lg:pb-20">
+    <div class="max-w-6xl mx-auto px-4">
+
+      {title && (
+        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-headline text-dark uppercase text-center mb-2" data-animate>
+          {title}
+        </h2>
+      )}
+
+      {subtitle && (
+        <p class="text-center text-gray text-sm sm:text-base mb-8 max-w-2xl mx-auto" data-animate>
+          {subtitle}
+        </p>
+      )}
+
+      {videos.length === 0 ? (
+        <p class="text-center text-gray py-8">
+          Keine Videos verfügbar.
+        </p>
+      ) : (
+        <div class={`grid ${gridCols[columns]} gap-6 lg:gap-8`} data-animate-stagger>
+          {videos.map((video) => (
+            <article
+              class="video-card group relative"
+              data-video-id={video.id}
+              data-video-src={video.src}
+              data-video-type={video.type}
+              aria-labelledby={`video-title-${video.id}`}
+            >
+              {/* Video Container */}
+              <div class="video-wrapper relative aspect-video bg-dark overflow-hidden shadow-xl">
+                {/* Poster/Thumbnail */}
+                <div class="video-poster absolute inset-0 cursor-pointer">
+                  <img
+                    src={video.poster}
+                    alt=""
+                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
+                    decoding="async"
+                  />
+
+                  {/* Gradient Overlay */}
+                  <div class="absolute inset-0 bg-gradient-to-t from-dark/70 via-dark/30 to-transparent"></div>
+
+                  {/* Play Button */}
+                  <button
+                    type="button"
+                    class="play-button absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 lg:w-20 lg:h-20 bg-primary border-0 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/50"
+                    aria-label={`Video abspielen: ${video.title}`}
+                  >
+                    <svg class="w-6 h-6 lg:w-8 lg:h-8 ml-1" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </button>
+
+                  {/* Duration Badge */}
+                  {video.duration && (
+                    <span class="absolute bottom-3 right-3 bg-dark/80 text-white text-xs font-medium px-2 py-1">
+                      {video.duration}
+                    </span>
+                  )}
+
+                  {/* Type Badge */}
+                  <span class="absolute top-3 left-3 bg-dark/80 text-white text-xs font-medium px-2 py-1 uppercase tracking-wide">
+                    {video.type === 'youtube' ? 'YouTube' : 'Video'}
+                  </span>
+                </div>
+
+                {/* Video Player Container (injected on play) */}
+                <div class="video-player absolute inset-0 hidden">
+                  {/* YouTube iframe or video element will be injected here */}
+                </div>
+              </div>
+
+              {/* Video Info */}
+              <div class="mt-4">
+                <h3
+                  id={`video-title-${video.id}`}
+                  class="font-headline text-dark uppercase text-base lg:text-lg leading-tight"
+                >
+                  {video.title}
+                </h3>
+                {video.description && (
+                  <p class="text-gray text-sm mt-1 line-clamp-2">
+                    {video.description}
+                  </p>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+
+      {/* Cookie Notice for YouTube */}
+      {videos.some(v => v.type === 'youtube') && (
+        <p class="text-xs text-gray text-center mt-8" data-animate>
+          YouTube-Videos werden erst nach Klick geladen. Mit dem Abspielen akzeptierst du YouTube-Cookies.
+        </p>
+      )}
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .video-wrapper {
+    box-shadow:
+      0 20px 40px -12px rgba(0,0,0,0.2),
+      0 0 0 1px rgba(0,0,0,0.05);
+  }
+
+  .play-button {
+    animation: pulse-video 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-video {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(227, 0, 27, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 0 16px rgba(227, 0, 27, 0);
+    }
+  }
+
+  .video-poster.hidden {
+    display: none;
+  }
+
+  .video-player.active {
+    display: block;
+  }
+
+  /* Line clamp for descriptions */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .play-button {
+      animation: none;
+    }
+
+    .video-poster img {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  function initVideoGallery() {
+    const videoCards = document.querySelectorAll('.video-card');
+
+    videoCards.forEach(card => {
+      const poster = card.querySelector('.video-poster') as HTMLElement;
+      const playerContainer = card.querySelector('.video-player') as HTMLElement;
+      const playButton = card.querySelector('.play-button') as HTMLButtonElement;
+      const videoSrc = card.getAttribute('data-video-src');
+      const videoType = card.getAttribute('data-video-type');
+      const videoId = card.getAttribute('data-video-id');
+
+      if (!videoSrc || !poster || !playerContainer) return;
+
+      const handlePlay = () => {
+        if (videoType === 'youtube') {
+          // Create YouTube iframe with privacy-enhanced mode
+          const iframe = document.createElement('iframe');
+          iframe.src = `https://www.youtube-nocookie.com/embed/${videoSrc}?autoplay=1&rel=0&modestbranding=1`;
+          iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+          iframe.allowFullscreen = true;
+          iframe.title = `YouTube Video: ${card.querySelector('h3')?.textContent || 'Video'}`;
+          iframe.style.cssText = 'width:100%;height:100%;border:0;';
+
+          playerContainer.appendChild(iframe);
+        } else if (videoType === 'mp4') {
+          // Create HTML5 video element
+          const video = document.createElement('video');
+          video.src = videoSrc;
+          video.controls = true;
+          video.autoplay = true;
+          video.playsInline = true;
+          video.style.cssText = 'width:100%;height:100%;object-fit:contain;background:#000;';
+          video.setAttribute('aria-label', card.querySelector('h3')?.textContent || 'Video');
+
+          // Add source for better compatibility
+          const source = document.createElement('source');
+          source.src = videoSrc;
+          source.type = 'video/mp4';
+          video.appendChild(source);
+
+          // Fallback text
+          video.innerHTML += '<p>Dein Browser unterstützt keine HTML5-Videos.</p>';
+
+          playerContainer.appendChild(video);
+
+          // Handle video end - show poster again
+          video.addEventListener('ended', () => {
+            playerContainer.innerHTML = '';
+            playerContainer.classList.remove('active');
+            poster.classList.remove('hidden');
+          });
+        }
+
+        // Show player, hide poster
+        playerContainer.classList.add('active');
+        poster.classList.add('hidden');
+      };
+
+      // Click handler for poster
+      poster.addEventListener('click', handlePlay);
+
+      // Keyboard handler for play button
+      playButton.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handlePlay();
+        }
+      });
+    });
+  }
+
+  // Initialize on page load
+  initVideoGallery();
+
+  // Re-initialize on Astro page transitions (View Transitions API)
+  document.addEventListener('astro:page-load', initVideoGallery);
+</script>

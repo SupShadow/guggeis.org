@@ -1,0 +1,416 @@
+---
+/**
+ * PolitikQuiz.astro
+ * Client-side quiz matching user positions with Julian's priorities
+ * Saves results to localStorage, no backend needed
+ */
+
+interface QuizQuestion {
+  id: number;
+  text: string;
+  category: string;
+  options: { value: number; label: string }[];
+}
+
+const questions: QuizQuestion[] = [
+  {
+    id: 1,
+    text: "Wie wichtig ist dir bezahlbarer Wohnraum in Straubing?",
+    category: "wohnen",
+    options: [
+      { value: 5, label: "Sehr wichtig - Wohnen muss für alle bezahlbar sein" },
+      { value: 3, label: "Wichtig, aber der Markt regelt das schon" },
+      { value: 1, label: "Weniger wichtig für mich" }
+    ]
+  },
+  {
+    id: 2,
+    text: "Sollte die Stadt leerstehende Wohnungen anmieten und als Sozialwohnungen weitergeben (Teisnacher Modell)?",
+    category: "wohnen",
+    options: [
+      { value: 5, label: "Ja, das ist eine gute Lösung gegen Leerstand" },
+      { value: 3, label: "Vielleicht, muss gut umgesetzt werden" },
+      { value: 1, label: "Nein, der Staat soll sich da raushalten" }
+    ]
+  },
+  {
+    id: 3,
+    text: "Braucht Straubing besseren ÖPNV - auch abends und am Wochenende?",
+    category: "mobilitaet",
+    options: [
+      { value: 5, label: "Ja, Nachtbusse und bessere Taktung sind überfällig" },
+      { value: 3, label: "Wäre nett, aber kein Muss" },
+      { value: 1, label: "Nein, Auto reicht" }
+    ]
+  },
+  {
+    id: 4,
+    text: "Sollten Erzieherinnen in Straubing eine städtische Zulage bekommen, um den Fachkräftemangel zu bekämpfen?",
+    category: "familie",
+    options: [
+      { value: 5, label: "Ja, gute Betreuung braucht gutes Personal" },
+      { value: 3, label: "Kommt drauf an, wie es finanziert wird" },
+      { value: 1, label: "Nein, das verzerrt den Arbeitsmarkt" }
+    ]
+  },
+  {
+    id: 5,
+    text: "Was hältst du von Pop-up-Stores gegen Leerstand in der Innenstadt?",
+    category: "innenstadt",
+    options: [
+      { value: 5, label: "Super Idee - belebt die Innenstadt!" },
+      { value: 3, label: "Kann klappen, bin aber skeptisch" },
+      { value: 1, label: "Bringt nichts, braucht dauerhafte Lösungen" }
+    ]
+  },
+  {
+    id: 6,
+    text: "Sollte die Stadt ihre Finanzen transparent für alle Bürger offenlegen?",
+    category: "transparenz",
+    options: [
+      { value: 5, label: "Ja, Transparenz stärkt das Vertrauen" },
+      { value: 3, label: "Teilweise, manche Daten sind sensibel" },
+      { value: 1, label: "Nein, das verstehen die meisten eh nicht" }
+    ]
+  },
+  {
+    id: 7,
+    text: "Braucht Straubing eine App für Anträge, Mängelmelder und digitale Services?",
+    category: "digitalisierung",
+    options: [
+      { value: 5, label: "Ja, moderne Verwaltung spart Zeit für alle" },
+      { value: 3, label: "Wäre praktisch, aber nicht zwingend" },
+      { value: 1, label: "Nein, das persönliche Gespräch ist besser" }
+    ]
+  },
+  {
+    id: 8,
+    text: "Wie wichtig ist dir Klimaschutz auf kommunaler Ebene?",
+    category: "klima",
+    options: [
+      { value: 5, label: "Sehr wichtig - mehr Grün, weniger Versiegelung" },
+      { value: 3, label: "Wichtig, aber Wirtschaft geht vor" },
+      { value: 1, label: "Weniger wichtig, das ist Bundessache" }
+    ]
+  },
+  {
+    id: 9,
+    text: "Sollte es mehr 'Kümmerer' in den Stadtteilen geben - Ansprechpartner für lokale Probleme?",
+    category: "sicherheit",
+    options: [
+      { value: 5, label: "Ja, persönliche Ansprechpartner sind wichtig" },
+      { value: 3, label: "Vielleicht, wenn es nicht zu viel kostet" },
+      { value: 1, label: "Nein, dafür gibt's schon Behörden" }
+    ]
+  },
+  {
+    id: 10,
+    text: "Sollte der Stadtrat live gestreamt werden, damit alle zuschauen können?",
+    category: "transparenz",
+    options: [
+      { value: 5, label: "Ja, Demokratie lebt von Beteiligung" },
+      { value: 3, label: "Bin unentschieden" },
+      { value: 1, label: "Nein, das braucht niemand" }
+    ]
+  }
+];
+---
+
+<section id="quiz" class="bg-white py-16 md:py-24">
+  <div class="container mx-auto px-4">
+    <div class="max-w-2xl mx-auto">
+      <div class="text-center mb-12">
+        <span class="text-primary text-sm font-bold uppercase tracking-widest">Position-Check</span>
+        <h2 class="text-3xl md:text-4xl font-black text-dark mt-2">
+          Wie gut passen wir zusammen?
+        </h2>
+        <p class="text-dark/70 mt-4">
+          10 Fragen zu meinen Kernthemen. Am Ende siehst du, wie sehr unsere Positionen übereinstimmen.
+        </p>
+      </div>
+
+      <div
+        id="quiz-container"
+        class="bg-sand p-6 md:p-8 border-l-4 border-primary"
+        data-questions={JSON.stringify(questions)}
+      >
+        <!-- Progress Bar -->
+        <div id="quiz-progress" class="mb-6">
+          <div class="flex justify-between text-sm text-dark/60 mb-2">
+            <span id="progress-text">Frage 1 von 10</span>
+            <span id="progress-percent">0%</span>
+          </div>
+          <div class="h-2 bg-dark/10 overflow-hidden">
+            <div id="progress-bar" class="h-full bg-primary transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Question Content -->
+        <div id="quiz-content">
+          <!-- Dynamically populated -->
+        </div>
+
+        <!-- Result -->
+        <div id="quiz-result" class="hidden text-center py-8">
+          <!-- Populated after completion -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .quiz-option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 1rem 1.25rem;
+    border: 2px solid rgba(26, 26, 26, 0.1);
+    background: white;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .quiz-option:hover {
+    border-color: #E3001B;
+    background: rgba(227, 0, 27, 0.02);
+  }
+
+  .quiz-option:active {
+    transform: scale(0.99);
+  }
+
+  .quiz-option.selected {
+    border-color: #E3001B;
+    background: rgba(227, 0, 27, 0.05);
+  }
+
+  .result-circle {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 8px solid #E3001B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+  }
+
+  .result-percent {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #E3001B;
+  }
+
+  .category-breakdown {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    text-align: left;
+    margin-top: 1.5rem;
+  }
+
+  .category-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  .category-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #E3001B;
+  }
+
+  @media (max-width: 640px) {
+    .category-breakdown {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  const container = document.getElementById('quiz-container');
+  const questions = JSON.parse(container?.dataset.questions || '[]');
+  let currentIndex = 0;
+  const answers: Record<string, number[]> = {};
+
+  const categoryNames: Record<string, string> = {
+    wohnen: 'Wohnen',
+    mobilitaet: 'Mobilität',
+    familie: 'Familie',
+    innenstadt: 'Innenstadt',
+    transparenz: 'Transparenz',
+    digitalisierung: 'Digitalisierung',
+    klima: 'Klima',
+    sicherheit: 'Sicherheit'
+  };
+
+  function renderQuestion() {
+    const q = questions[currentIndex];
+    const content = document.getElementById('quiz-content');
+    const progressText = document.getElementById('progress-text');
+    const progressPercent = document.getElementById('progress-percent');
+    const progressBar = document.getElementById('progress-bar');
+
+    if (!content || !progressText || !progressPercent || !progressBar) return;
+
+    // Update progress
+    const percent = Math.round((currentIndex / questions.length) * 100);
+    progressText.textContent = `Frage ${currentIndex + 1} von ${questions.length}`;
+    progressPercent.textContent = `${percent}%`;
+    progressBar.style.width = `${percent}%`;
+
+    // Render question
+    content.innerHTML = `
+      <h3 class="text-xl md:text-2xl font-bold text-dark mb-6 leading-tight">${q.text}</h3>
+      <div class="space-y-3">
+        ${q.options.map((opt: { value: number; label: string }) => `
+          <button
+            class="quiz-option"
+            data-value="${opt.value}"
+            data-category="${q.category}"
+          >
+            ${opt.label}
+          </button>
+        `).join('')}
+      </div>
+    `;
+
+    // Add event listeners
+    document.querySelectorAll('.quiz-option').forEach(btn => {
+      btn.addEventListener('click', handleAnswer);
+    });
+  }
+
+  function handleAnswer(e: Event) {
+    const target = e.target as HTMLElement;
+    const value = parseInt(target.dataset.value || '0');
+    const category = target.dataset.category || '';
+
+    // Store answer
+    if (!answers[category]) {
+      answers[category] = [];
+    }
+    answers[category].push(value);
+
+    // Visual feedback
+    target.classList.add('selected');
+
+    // Next question after short delay
+    setTimeout(() => {
+      currentIndex++;
+      if (currentIndex < questions.length) {
+        renderQuestion();
+      } else {
+        showResult();
+      }
+    }, 200);
+  }
+
+  function showResult() {
+    // Calculate scores
+    const maxPossible = questions.length * 5;
+    let totalScore = 0;
+    const categoryScores: Record<string, { score: number; max: number }> = {};
+
+    for (const [cat, scores] of Object.entries(answers)) {
+      const catScore = scores.reduce((a, b) => a + b, 0);
+      const catMax = scores.length * 5;
+      categoryScores[cat] = { score: catScore, max: catMax };
+      totalScore += catScore;
+    }
+
+    const matchPercent = Math.round((totalScore / maxPossible) * 100);
+
+    // Hide progress
+    const progressEl = document.getElementById('quiz-progress');
+    if (progressEl) progressEl.classList.add('hidden');
+
+    // Hide content, show result
+    const content = document.getElementById('quiz-content');
+    const result = document.getElementById('quiz-result');
+    if (content) content.classList.add('hidden');
+    if (result) {
+      result.classList.remove('hidden');
+
+      // Generate category breakdown
+      const categoryHTML = Object.entries(categoryScores)
+        .sort((a, b) => (b[1].score / b[1].max) - (a[1].score / a[1].max))
+        .map(([cat, { score, max }]) => {
+          const catPercent = Math.round((score / max) * 100);
+          return `
+            <div class="category-item">
+              <span class="category-dot" style="opacity: ${catPercent / 100}"></span>
+              <span>${categoryNames[cat] || cat}: ${catPercent}%</span>
+            </div>
+          `;
+        }).join('');
+
+      // Personalized message based on score
+      let message = '';
+      if (matchPercent >= 80) {
+        message = 'Wir sind uns sehr einig! Schau dir mein Wahlprogramm an.';
+      } else if (matchPercent >= 60) {
+        message = 'Wir haben viele gemeinsame Positionen. Lass uns im Gespräch die Unterschiede klären!';
+      } else if (matchPercent >= 40) {
+        message = 'Wir haben unterschiedliche Ansichten, aber auch Gemeinsamkeiten. Lass uns reden!';
+      } else {
+        message = 'Wir sehen vieles anders. Trotzdem: Demokratie lebt vom Austausch!';
+      }
+
+      result.innerHTML = `
+        <div class="result-circle">
+          <span class="result-percent">${matchPercent}%</span>
+        </div>
+        <h3 class="text-2xl font-bold text-dark mb-2">Übereinstimmung</h3>
+        <p class="text-dark/70 mb-6">${message}</p>
+
+        <div class="category-breakdown">
+          ${categoryHTML}
+        </div>
+
+        <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+          <a href="/wahlprogramm" class="btn btn-primary text-center justify-center">
+            Mein Wahlprogramm
+          </a>
+          <button id="quiz-restart" class="btn btn-outline text-center justify-center">
+            Nochmal spielen
+          </button>
+        </div>
+
+        <p class="text-xs text-dark/50 mt-6">
+          Dein Ergebnis wurde lokal gespeichert. Du kannst es jederzeit wiederholen.
+        </p>
+      `;
+
+      // Restart button
+      document.getElementById('quiz-restart')?.addEventListener('click', () => {
+        currentIndex = 0;
+        Object.keys(answers).forEach(key => delete answers[key]);
+        result.classList.add('hidden');
+        content?.classList.remove('hidden');
+        progressEl?.classList.remove('hidden');
+        renderQuestion();
+      });
+
+      // Save to localStorage
+      localStorage.setItem('quiz-result', JSON.stringify({
+        matchPercent,
+        categoryScores,
+        totalScore,
+        answers,
+        date: new Date().toISOString()
+      }));
+    }
+  }
+
+  // Initialize
+  if (questions.length > 0) {
+    renderQuestion();
+  }
+</script>

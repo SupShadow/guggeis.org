@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import PolitikQuiz from '../components/PolitikQuiz.astro';
 
 const description =
   "Das Wahlprogramm von Julian Guggeis und der SPD Straubing zur Kommunalwahl 2026 - kompakte Zusammenfassung und Downloads.";
@@ -252,5 +253,8 @@ const programSchema = {
       </section>
     </div>
   </main>
+
+  <!-- Position-Check Quiz -->
+  <PolitikQuiz />
   <Footer />
 </Layout>

@@ -1,0 +1,27 @@
+name = "guggeis-chat-api"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+# Route configuration for chat.guggeis.org
+routes = [
+  { pattern = "chat.guggeis.org/*", zone_name = "guggeis.org" }
+]
+
+# Environment variables (secrets should be set via wrangler secret)
+# Required: ANTHROPIC_API_KEY (set via `wrangler secret put ANTHROPIC_API_KEY`)
+
+[vars]
+ENVIRONMENT = "production"
+ALLOWED_ORIGIN = "https://guggeis.org"
+RATE_LIMIT_REQUESTS = 100
+RATE_LIMIT_WINDOW_MINUTES = 1
+
+# KV namespace for rate limiting
+[[kv_namespaces]]
+binding = "RATE_LIMIT_KV"
+id = "TO_BE_CREATED"
+preview_id = "TO_BE_CREATED"
+
+# Development settings
+[env.dev]
+vars = { ENVIRONMENT = "development", ALLOWED_ORIGIN = "http://localhost:4321" }

@@ -1,0 +1,573 @@
+---
+// ChatWidget.astro - AI Chat Widget for guggeis.org
+// Communicates with Cloudflare Worker at chat.guggeis.org/api/chat
+// Rate limited to 10 messages per hour (localStorage-based)
+---
+
+<!-- Chat Toggle Button (Bottom-right, similar to WhatsApp button) -->
+<button
+  id="chat-toggle"
+  type="button"
+  class="fixed right-4 w-14 h-14 bg-primary text-white flex items-center justify-center shadow-lg hover:bg-[#c9001a] active:scale-95 transition-all z-50"
+  style="bottom: calc(6rem + env(safe-area-inset-bottom))"
+  aria-label="Chat mit Julian starten"
+  aria-expanded="false"
+  aria-controls="chat-window"
+>
+  <!-- Chat icon (visible when closed) -->
+  <svg id="chat-icon-open" class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M21 15a4 4 0 01-4 4H8l-5 3V7a4 4 0 014-4h10a4 4 0 014 4z" />
+  </svg>
+  <!-- Close icon (visible when open) -->
+  <svg id="chat-icon-close" class="w-7 h-7 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M18 6L6 18M6 6l12 12" />
+  </svg>
+</button>
+
+<!-- Chat Window -->
+<div
+  id="chat-window"
+  class="fixed right-4 bg-white shadow-2xl flex-col z-50 hidden"
+  style="bottom: calc(8rem + env(safe-area-inset-bottom)); width: calc(100vw - 2rem); max-width: 380px; height: min(500px, calc(100vh - 12rem));"
+  role="dialog"
+  aria-labelledby="chat-header-title"
+  aria-modal="true"
+>
+  <!-- Header -->
+  <div class="bg-primary text-white p-4 flex items-center justify-between shrink-0">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 bg-white/20 flex items-center justify-center">
+        <span class="text-lg font-bold font-headline">JG</span>
+      </div>
+      <div>
+        <h2 id="chat-header-title" class="font-headline text-sm uppercase tracking-wide">Frag Julian</h2>
+        <p class="text-xs text-white/80">KI-Assistent</p>
+      </div>
+    </div>
+    <button
+      id="chat-minimize"
+      type="button"
+      class="w-8 h-8 flex items-center justify-center text-white/80 hover:text-white hover:bg-white/10 transition-colors"
+      aria-label="Chat minimieren"
+    >
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 6L6 18M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Messages Container -->
+  <div
+    id="chat-messages"
+    class="flex-1 overflow-y-auto p-4 space-y-3 bg-sand/30"
+    role="log"
+    aria-live="polite"
+    aria-relevant="additions"
+  >
+    <!-- Welcome message -->
+    <div class="chat-message chat-message-bot flex gap-2">
+      <div class="w-7 h-7 bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0 mt-1">JG</div>
+      <div class="bg-white p-3 max-w-[85%] text-sm text-dark shadow-sm">
+        <p>Hey! Ich bin Julians KI-Assistent. Was moechtest du ueber Julian, seine Themen oder die Kommunalwahl wissen?</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rate Limit Warning (hidden by default) -->
+  <div id="chat-rate-limit" class="hidden px-4 py-2 bg-accent-yellow/20 text-dark text-xs text-center border-t border-accent-yellow/30">
+    <span id="rate-limit-text">Du hast dein Limit erreicht. Versuch's in einer Stunde nochmal!</span>
+  </div>
+
+  <!-- Input Area -->
+  <div class="p-3 bg-white border-t border-gray/10 shrink-0">
+    <form id="chat-form" class="flex gap-2">
+      <label for="chat-input" class="sr-only">Deine Nachricht an Julian</label>
+      <input
+        type="text"
+        id="chat-input"
+        name="message"
+        class="flex-1 px-3 py-2 bg-sand/50 border-0 text-dark placeholder-gray/50 text-sm focus:ring-2 focus:ring-primary focus:outline-none"
+        placeholder="Schreib mir..."
+        maxlength="500"
+        autocomplete="off"
+        required
+      />
+      <button
+        type="submit"
+        id="chat-submit"
+        class="px-4 py-2 bg-primary text-white text-sm font-headline uppercase hover:bg-[#c9001a] active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary"
+        aria-label="Nachricht senden"
+      >
+        <span id="submit-text">Senden</span>
+        <svg id="submit-spinner" class="w-5 h-5 animate-spin hidden" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      </button>
+    </form>
+    <p class="text-[10px] text-gray/60 mt-2 text-center">
+      KI-generiert. <a href="/datenschutz" class="text-primary hover:underline">Datenschutz</a>
+    </p>
+  </div>
+</div>
+
+<style>
+  /* Chat message animations */
+  .chat-message {
+    animation: messageSlideIn 0.3s ease-out;
+  }
+
+  @keyframes messageSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* User message styling */
+  .chat-message-user {
+    justify-content: flex-end;
+  }
+
+  .chat-message-user > div:last-child {
+    background-color: var(--color-primary);
+    color: white;
+  }
+
+  /* Bot message styling */
+  .chat-message-bot > div:last-child {
+    background-color: white;
+  }
+
+  /* Typing indicator */
+  .typing-indicator {
+    display: flex;
+    gap: 4px;
+    padding: 12px 16px;
+  }
+
+  .typing-indicator span {
+    width: 8px;
+    height: 8px;
+    background-color: var(--color-gray);
+    border-radius: 50%;
+    animation: typingBounce 1.4s ease-in-out infinite;
+  }
+
+  .typing-indicator span:nth-child(1) { animation-delay: 0s; }
+  .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+  .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes typingBounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30% { transform: translateY(-4px); opacity: 1; }
+  }
+
+  /* Error message styling */
+  .chat-message-error > div:last-child {
+    background-color: rgba(227, 0, 27, 0.1);
+    border: 1px solid var(--color-primary);
+  }
+
+  /* Focus trap for accessibility */
+  #chat-window:focus-visible {
+    outline: none;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 480px) {
+    #chat-window {
+      right: 0.5rem !important;
+      width: calc(100vw - 1rem) !important;
+    }
+
+    #chat-toggle {
+      right: 0.5rem !important;
+    }
+  }
+
+  /* Hide on large screens where desktop has WhatsApp position */
+  @media (min-width: 1024px) {
+    #chat-toggle {
+      bottom: 1.5rem !important;
+      right: 1.5rem !important;
+    }
+
+    #chat-window {
+      bottom: 6rem !important;
+      right: 1.5rem !important;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .chat-message,
+    .typing-indicator span {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  // ===== Chat Widget Controller =====
+
+  interface ChatMessage {
+    role: 'user' | 'assistant' | 'error';
+    content: string;
+    timestamp: number;
+  }
+
+  interface RateLimitState {
+    count: number;
+    resetTime: number;
+  }
+
+  const RATE_LIMIT = 10;
+  const RATE_LIMIT_WINDOW = 60 * 60 * 1000; // 1 hour in ms
+  const API_ENDPOINT = 'https://chat.guggeis.org/api/chat';
+  const STORAGE_KEY_HISTORY = 'julian-chat-history';
+  const STORAGE_KEY_RATE = 'julian-chat-rate';
+
+  // DOM Elements
+  const chatToggle = document.getElementById('chat-toggle') as HTMLButtonElement;
+  const chatWindow = document.getElementById('chat-window') as HTMLDivElement;
+  const chatMessages = document.getElementById('chat-messages') as HTMLDivElement;
+  const chatForm = document.getElementById('chat-form') as HTMLFormElement;
+  const chatInput = document.getElementById('chat-input') as HTMLInputElement;
+  const chatSubmit = document.getElementById('chat-submit') as HTMLButtonElement;
+  const chatMinimize = document.getElementById('chat-minimize') as HTMLButtonElement;
+  const chatIconOpen = document.getElementById('chat-icon-open') as SVGElement;
+  const chatIconClose = document.getElementById('chat-icon-close') as SVGElement;
+  const rateLimitDiv = document.getElementById('chat-rate-limit') as HTMLDivElement;
+  const rateLimitText = document.getElementById('rate-limit-text') as HTMLSpanElement;
+  const submitText = document.getElementById('submit-text') as HTMLSpanElement;
+  const submitSpinner = document.getElementById('submit-spinner') as SVGElement;
+
+  let isOpen = false;
+  let isLoading = false;
+
+  // ===== Rate Limiting =====
+
+  function getRateLimitState(): RateLimitState {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY_RATE);
+      if (stored) {
+        const state = JSON.parse(stored) as RateLimitState;
+        // Check if window has expired
+        if (Date.now() > state.resetTime) {
+          return { count: 0, resetTime: Date.now() + RATE_LIMIT_WINDOW };
+        }
+        return state;
+      }
+    } catch (e) {
+      console.error('Error reading rate limit state:', e);
+    }
+    return { count: 0, resetTime: Date.now() + RATE_LIMIT_WINDOW };
+  }
+
+  function incrementRateLimit(): boolean {
+    const state = getRateLimitState();
+    if (state.count >= RATE_LIMIT) {
+      return false;
+    }
+    state.count++;
+    try {
+      localStorage.setItem(STORAGE_KEY_RATE, JSON.stringify(state));
+    } catch (e) {
+      console.error('Error saving rate limit state:', e);
+    }
+    return true;
+  }
+
+  function checkRateLimit(): boolean {
+    const state = getRateLimitState();
+    return state.count < RATE_LIMIT;
+  }
+
+  function updateRateLimitUI(): void {
+    const state = getRateLimitState();
+    const remaining = RATE_LIMIT - state.count;
+
+    if (remaining <= 0) {
+      const minutesLeft = Math.ceil((state.resetTime - Date.now()) / 60000);
+      rateLimitText.textContent = `Limit erreicht. Versuch's in ${minutesLeft} Min. nochmal!`;
+      rateLimitDiv.classList.remove('hidden');
+      chatInput.disabled = true;
+      chatSubmit.disabled = true;
+    } else if (remaining <= 3) {
+      rateLimitText.textContent = `Noch ${remaining} Nachricht${remaining === 1 ? '' : 'en'} moeglich.`;
+      rateLimitDiv.classList.remove('hidden');
+      chatInput.disabled = false;
+      chatSubmit.disabled = false;
+    } else {
+      rateLimitDiv.classList.add('hidden');
+      chatInput.disabled = false;
+      chatSubmit.disabled = false;
+    }
+  }
+
+  // ===== Chat History =====
+
+  function getChatHistory(): ChatMessage[] {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY_HISTORY);
+      if (stored) {
+        return JSON.parse(stored) as ChatMessage[];
+      }
+    } catch (e) {
+      console.error('Error reading chat history:', e);
+    }
+    return [];
+  }
+
+  function saveChatHistory(messages: ChatMessage[]): void {
+    try {
+      // Keep only last 20 messages
+      const trimmed = messages.slice(-20);
+      localStorage.setItem(STORAGE_KEY_HISTORY, JSON.stringify(trimmed));
+    } catch (e) {
+      console.error('Error saving chat history:', e);
+    }
+  }
+
+  function addMessageToHistory(role: 'user' | 'assistant' | 'error', content: string): void {
+    const history = getChatHistory();
+    history.push({ role, content, timestamp: Date.now() });
+    saveChatHistory(history);
+  }
+
+  // ===== UI Rendering =====
+
+  function createMessageElement(role: 'user' | 'assistant' | 'error', content: string): HTMLDivElement {
+    const wrapper = document.createElement('div');
+    wrapper.className = `chat-message ${role === 'user' ? 'chat-message-user' : role === 'error' ? 'chat-message-error chat-message-bot' : 'chat-message-bot'} flex gap-2`;
+
+    if (role === 'user') {
+      wrapper.innerHTML = `
+        <div class="bg-primary text-white p-3 max-w-[85%] text-sm shadow-sm ml-auto">
+          <p>${escapeHtml(content)}</p>
+        </div>
+      `;
+    } else {
+      const avatar = role === 'error'
+        ? '<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>'
+        : 'JG';
+      const bgColor = role === 'error' ? 'bg-primary/10' : 'bg-primary';
+
+      wrapper.innerHTML = `
+        <div class="w-7 h-7 ${bgColor} text-${role === 'error' ? 'primary' : 'white'} text-xs font-bold flex items-center justify-center shrink-0 mt-1">${avatar}</div>
+        <div class="bg-white p-3 max-w-[85%] text-sm text-dark shadow-sm ${role === 'error' ? 'border border-primary/30' : ''}">
+          <p>${escapeHtml(content)}</p>
+        </div>
+      `;
+    }
+
+    return wrapper;
+  }
+
+  function createTypingIndicator(): HTMLDivElement {
+    const wrapper = document.createElement('div');
+    wrapper.id = 'typing-indicator';
+    wrapper.className = 'chat-message chat-message-bot flex gap-2';
+    wrapper.innerHTML = `
+      <div class="w-7 h-7 bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0 mt-1">JG</div>
+      <div class="bg-white shadow-sm">
+        <div class="typing-indicator">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    `;
+    return wrapper;
+  }
+
+  function appendMessage(role: 'user' | 'assistant' | 'error', content: string): void {
+    const messageEl = createMessageElement(role, content);
+    chatMessages.appendChild(messageEl);
+    scrollToBottom();
+  }
+
+  function showTypingIndicator(): void {
+    const existing = document.getElementById('typing-indicator');
+    if (existing) existing.remove();
+
+    const indicator = createTypingIndicator();
+    chatMessages.appendChild(indicator);
+    scrollToBottom();
+  }
+
+  function hideTypingIndicator(): void {
+    const indicator = document.getElementById('typing-indicator');
+    if (indicator) indicator.remove();
+  }
+
+  function scrollToBottom(): void {
+    requestAnimationFrame(() => {
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    });
+  }
+
+  function escapeHtml(text: string): string {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function loadChatHistory(): void {
+    const history = getChatHistory();
+    // Clear existing messages except welcome
+    const welcome = chatMessages.querySelector('.chat-message');
+
+    // If there's history, load it (skip the welcome message duplicates)
+    if (history.length > 0) {
+      history.forEach(msg => {
+        appendMessage(msg.role, msg.content);
+      });
+    }
+  }
+
+  // ===== API Communication =====
+
+  async function sendMessage(message: string): Promise<string> {
+    const response = await fetch(API_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ message }),
+    });
+
+    if (!response.ok) {
+      if (response.status === 429) {
+        throw new Error('Zu viele Anfragen. Bitte warte einen Moment.');
+      }
+      throw new Error('Verbindungsfehler. Bitte versuch\'s spaeter nochmal.');
+    }
+
+    const data = await response.json();
+    return data.reply || 'Hmm, da ist etwas schiefgegangen. Versuch\'s nochmal!';
+  }
+
+  // ===== Event Handlers =====
+
+  function toggleChat(): void {
+    isOpen = !isOpen;
+
+    if (isOpen) {
+      chatWindow.classList.remove('hidden');
+      chatWindow.classList.add('flex');
+      chatToggle.setAttribute('aria-expanded', 'true');
+      chatIconOpen.classList.add('hidden');
+      chatIconClose.classList.remove('hidden');
+
+      // Focus input
+      setTimeout(() => {
+        chatInput.focus();
+      }, 100);
+
+      // Load history and check rate limit
+      loadChatHistory();
+      updateRateLimitUI();
+    } else {
+      chatWindow.classList.add('hidden');
+      chatWindow.classList.remove('flex');
+      chatToggle.setAttribute('aria-expanded', 'false');
+      chatIconOpen.classList.remove('hidden');
+      chatIconClose.classList.add('hidden');
+    }
+  }
+
+  async function handleSubmit(e: Event): Promise<void> {
+    e.preventDefault();
+
+    if (isLoading) return;
+
+    const message = chatInput.value.trim();
+    if (!message) return;
+
+    // Check rate limit
+    if (!checkRateLimit()) {
+      updateRateLimitUI();
+      return;
+    }
+
+    // Increment rate limit
+    if (!incrementRateLimit()) {
+      updateRateLimitUI();
+      return;
+    }
+
+    // Clear input
+    chatInput.value = '';
+
+    // Show user message
+    appendMessage('user', message);
+    addMessageToHistory('user', message);
+
+    // Set loading state
+    isLoading = true;
+    chatSubmit.disabled = true;
+    submitText.classList.add('hidden');
+    submitSpinner.classList.remove('hidden');
+    showTypingIndicator();
+
+    try {
+      // Check if online
+      if (!navigator.onLine) {
+        throw new Error('Keine Internetverbindung. Bitte pruefe deine Verbindung.');
+      }
+
+      const reply = await sendMessage(message);
+
+      hideTypingIndicator();
+      appendMessage('assistant', reply);
+      addMessageToHistory('assistant', reply);
+    } catch (error) {
+      hideTypingIndicator();
+      const errorMessage = error instanceof Error ? error.message : 'Ein Fehler ist aufgetreten.';
+      appendMessage('error', errorMessage);
+    } finally {
+      isLoading = false;
+      chatSubmit.disabled = false;
+      submitText.classList.remove('hidden');
+      submitSpinner.classList.add('hidden');
+      updateRateLimitUI();
+      chatInput.focus();
+    }
+  }
+
+  // Keyboard handling for accessibility
+  function handleKeydown(e: KeyboardEvent): void {
+    if (!isOpen) return;
+
+    // Escape to close
+    if (e.key === 'Escape') {
+      toggleChat();
+      chatToggle.focus();
+    }
+  }
+
+  // ===== Initialize =====
+
+  chatToggle?.addEventListener('click', toggleChat);
+  chatMinimize?.addEventListener('click', toggleChat);
+  chatForm?.addEventListener('submit', handleSubmit);
+  document.addEventListener('keydown', handleKeydown);
+
+  // Update rate limit UI periodically when open
+  setInterval(() => {
+    if (isOpen) {
+      updateRateLimitUI();
+    }
+  }, 60000); // Every minute
+
+  // Cleanup on page transitions (Astro)
+  document.addEventListener('astro:before-swap', () => {
+    document.removeEventListener('keydown', handleKeydown);
+  }, { once: true });
+</script>

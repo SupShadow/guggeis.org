@@ -121,6 +121,56 @@ const API_URL = "https://supshadow.github.io/spd-straubing-kampagne-termine/api/
     return div.innerHTML;
   }
 
+  // iCal-Datei generieren
+  function generateICalEvent(termin) {
+    const startDate = new Date(`${termin.datum}T${termin.uhrzeit || '00:00'}:00`);
+    const endDate = new Date(startDate.getTime() + 2 * 60 * 60 * 1000); // +2h default
+
+    const formatICalDate = (date) => {
+      return date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+    };
+
+    const uid = `${termin.datum}-${termin.uhrzeit || 'allday'}@guggeis.org`;
+    const now = formatICalDate(new Date());
+
+    const ical = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Julian Guggeis//Mutig für Straubing//DE',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      `UID:${uid}`,
+      `DTSTAMP:${now}`,
+      `DTSTART:${formatICalDate(startDate)}`,
+      `DTEND:${formatICalDate(endDate)}`,
+      `SUMMARY:${termin.titel || 'Wahlkampftermin'}`,
+      `DESCRIPTION:${termin.beschreibung || ''} - Julian Guggeis (SPD)`,
+      `LOCATION:${termin.ort || 'Straubing'}`,
+      'ORGANIZER;CN=Julian Guggeis:mailto:info@guggeis-it.de',
+      'URL:https://guggeis.org/#termine',
+      'STATUS:CONFIRMED',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+
+    return ical;
+  }
+
+  // iCal-Download auslösen
+  function downloadICalEvent(termin) {
+    const ical = generateICalEvent(termin);
+    const blob = new Blob([ical], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `guggeis-${termin.datum}.ics`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+
   async function loadTermine() {
     const loading = document.getElementById('termine-loading');
     const grid = document.getElementById('termine-grid');
@@ -262,13 +312,27 @@ const API_URL = "https://supshadow.github.io/spd-straubing-kampagne-termine/api/
               <span class="block text-accent-yellow font-headline text-2xl leading-none">${escapeHtml(day)}</span>
               <span class="block text-white/90 text-sm uppercase">${escapeHtml(month)} ${escapeHtml(year)}</span>
             </div>
-            <div>
+            <div class="flex-1">
               <h3 class="font-headline text-white uppercase text-lg mb-1">${escapeHtml(termin.titel)}</h3>
               <p class="text-white/90 text-sm mb-2">${escapeHtml(termin.uhrzeit)} Uhr • ${escapeHtml(termin.ort)}</p>
-              <p class="text-white/80 text-sm">${escapeHtml(termin.beschreibung)}</p>
+              <p class="text-white/80 text-sm mb-3">${escapeHtml(termin.beschreibung)}</p>
+              <button
+                class="ical-btn inline-flex items-center gap-2 text-accent-yellow hover:text-white text-sm transition-colors"
+                aria-label="Termin zum Kalender hinzufügen"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                Zum Kalender
+              </button>
             </div>
           </div>
         `;
+
+        // Event-Listener für iCal-Download
+        const icalBtn = card.querySelector('.ical-btn');
+        icalBtn?.addEventListener('click', () => downloadICalEvent(termin));
+
         grid?.appendChild(card);
       });
 

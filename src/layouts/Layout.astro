@@ -49,8 +49,10 @@ const bodyClass = isHome
     <link rel="canonical" href={canonicalURL} />
     <link rel="alternate" href={canonicalURL} hreflang="de-DE" />
 
-    <!-- Favicon -->
+    <!-- Favicon & PWA -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+    <link rel="manifest" href="/manifest.json" />
 
     <!-- Theme Color -->
     <meta name="theme-color" content="#E3001B" />
@@ -281,6 +283,17 @@ const bodyClass = isHome
         animationObserver?.disconnect();
         navObserver?.disconnect();
       }, { once: true });
+    </script>
+
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((reg) => console.log('[PWA] Service Worker registered:', reg.scope))
+            .catch((err) => console.error('[PWA] SW registration failed:', err));
+        });
+      }
     </script>
 
     <!-- Lenis Smooth Scroll -->

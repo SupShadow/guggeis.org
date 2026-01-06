@@ -1,6 +1,6 @@
 ---
 import ExitIntentPopup from '../components/ExitIntentPopup.astro';
-import ChatWidget from '../components/ChatWidget.astro';
+// import ChatWidget from '../components/ChatWidget.astro'; // TODO: Enable when CF Worker deployed
 
 interface Props {
   title: string;
@@ -182,12 +182,12 @@ const bodyClass = isHome
     {isHome && (
       <>
         <ExitIntentPopup />
-        <ChatWidget />
+        {/* <ChatWidget /> */}{/* TODO: Enable when CF Worker deployed */}
         <a
           href="https://wa.me/4915146523225?text=Hallo%20Julian%2C%20ich%20interessiere%20mich%20für%20deine%20Kampagne!"
           target="_blank"
           rel="noopener noreferrer"
-          class="fixed right-20 w-14 h-14 bg-[#25D366] text-white flex items-center justify-center shadow-lg hover:bg-[#20bd5a] active:scale-95 transition-all lg:hidden z-40"
+          class="fixed right-4 w-14 h-14 bg-[#25D366] text-white flex items-center justify-center shadow-lg hover:bg-[#20bd5a] active:scale-95 transition-all lg:hidden z-40"
           style="bottom: calc(6rem + env(safe-area-inset-bottom))"
           aria-label="Über WhatsApp kontaktieren"
         >
